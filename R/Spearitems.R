@@ -25,6 +25,7 @@
 #'
 #' @examples
 #' # Simulated example
+#' if (requireNamespace("rcompanion", quietly = TRUE)) {
 #' set.seed(123)
 #' items <- data.frame(
 #'   Item1 = sample(1:5, 100, replace = TRUE),
@@ -37,6 +38,7 @@
 #'
 #' # Using Kendall's tau (more conservative, robust to ties)
 #' SpearItems(items, edad, ci = TRUE, B = 500, method = "kendall")
+#'}
 #'
 #'@importFrom rcompanion spearmanRho
 #'
