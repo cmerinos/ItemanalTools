@@ -40,7 +40,7 @@
 #'
 #' @export
 SpearItems <- function(data.items, criteria, ci = TRUE, B = 1000, method = "spearman") {
-  require(rcompanion)
+  requireNamespace(rcompanion)
 
   output <- lapply(names(data.items), function(x) {
     vec <- data.items[[x]]
