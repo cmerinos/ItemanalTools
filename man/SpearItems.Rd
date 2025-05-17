@@ -36,20 +36,16 @@ For ordinal data with many ties or small samples, Kendall's tau is recommended.
 If an item shows high tie frequency (less than 50\% unique values), a message will suggest using method = "kendall".
 }
 \examples{
-# Simulated example
 if (requireNamespace("rcompanion", quietly = TRUE)) {
-set.seed(123)
-items <- data.frame(
-  Item1 = sample(1:5, 100, replace = TRUE),
-  Item2 = sample(1:5, 100, replace = TRUE)
-)
-edad <- rnorm(100, mean = 30, sd = 10)
+  set.seed(123)
+  items <- data.frame(
+    Item1 = sample(1:5, 100, replace = TRUE),
+    Item2 = sample(1:5, 100, replace = TRUE)
+  )
+  edad <- rnorm(100, mean = 30, sd = 10)
 
-# Using Spearman's rho (default)
-SpearItems(items, edad, ci = TRUE, B = 500)
-
-# Using Kendall's tau (more conservative, robust to ties)
-SpearItems(items, edad, ci = TRUE, B = 500, method = "kendall")
+  SpearItems(items, edad, ci = TRUE, B = 500)
+  SpearItems(items, edad, ci = TRUE, B = 500, method = "kendall")
 }
 
 }
