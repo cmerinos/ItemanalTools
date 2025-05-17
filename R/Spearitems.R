@@ -1,7 +1,7 @@
 #' @title SpearItems: Correlation Between Items and External Criterion (Nonparametric)
 #'
 #' @description
-#' Computes Spearman's rho or Kendall's tau correlation between each ordinal item and 
+#' Computes Spearman's rho or Kendall's tau correlation between each ordinal item and
 #' a continuous external criterion. Designed for item-level analysis with ordinal data.
 #' Confidence intervals are computed via bootstrap.
 #'
@@ -41,19 +41,18 @@
 #' @export
 SpearItems <- function(data.items, criteria, ci = TRUE, B = 1000, method = "spearman") {
   require(rcompanion)
-  
+
   output <- lapply(names(data.items), function(x) {
     vec <- data.items[[x]]
-    
-    # advertencia si hay muchos empates
-    if (length(unique(vec)) / length(vec) < 0.5) {
+
+    if (method == "spearman" && length(unique(vec)) / length(vec) < 0.5) {
       message(paste0("⚠️  Item '", x, "' has a high number of ties. Consider using method = 'kendall'."))
     }
-    
-    res <- spearmanRho(x = vec, y = criteria, 
-                       method = method, 
+
+    res <- spearmanRho(x = vec, y = criteria,
+                       method = method,
                        ci = ci, type = "perc", R = B)
-    
+
     if (ci) {
       data.frame(Item = x,
                  rho = res[1],
@@ -64,7 +63,7 @@ SpearItems <- function(data.items, criteria, ci = TRUE, B = 1000, method = "spea
                  rho = as.numeric(res))
     }
   })
-  
+
   result <- do.call(rbind, output)
   rownames(result) <- NULL
   return(result)
