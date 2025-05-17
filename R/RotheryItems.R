@@ -1,4 +1,4 @@
-#' @title rotheryICC: Nonparametric Intraclass Correlation (Rothery, 1979)
+#' @title RotheryItems: Nonparametric Intraclass Correlation (Rothery, 1979)
 #'
 #' @description
 #' Computes a nonparametric measure of intraclass correlation (Rothery, 1979) based on ranks,
@@ -29,7 +29,7 @@
 #' @examples
 #' set.seed(123)
 #' dat <- matrix(sample(1:5, 100, replace = TRUE), ncol = 5)
-#' rotheryICC(dat)
+#' RotheryItems(dat)
 #'
 #'@importFrom stats rank quantile qnorm sd mean
 #'
