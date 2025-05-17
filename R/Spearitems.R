@@ -38,6 +38,8 @@
 #' # Using Kendall's tau (more conservative, robust to ties)
 #' SpearItems(items, edad, ci = TRUE, B = 500, method = "kendall")
 #'
+#'@importFrom rcompanion spearmanRho
+#'
 #' @export
 SpearItems <- function(data.items, criteria, ci = TRUE, B = 1000, method = "spearman") {
   requireNamespace(rcompanion)
