@@ -46,7 +46,7 @@ SpearItems <- function(data.items, criteria, ci = TRUE, B = 1000, method = "spea
     vec <- data.items[[x]]
 
     if (method == "spearman" && length(unique(vec)) / length(vec) < 0.5) {
-      message(paste0("⚠️  Item '", x, "' has a high number of ties. Consider using method = 'kendall'."))
+      message(paste0("Item '", x, "' has a high number of ties. Consider using method = 'kendall'."))
     }
 
     res <- spearmanRho(x = vec, y = criteria,

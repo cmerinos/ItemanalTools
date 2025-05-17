@@ -31,6 +31,7 @@
 #' }
 #'
 #' @importFrom rcompanion wilcoxonRG
+#'
 #' @export
 RGitems <- function(data.items, group,
                     ci = TRUE,

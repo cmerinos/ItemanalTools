@@ -29,6 +29,8 @@
 #' )
 #' summaryItemAssoc(df = df, coef.col = "rg", lwr.col = "lwr.ci", upr.col = "lwr.upp")
 #'
+#' @importFrom stats median p.adjust setNames
+#'
 #' @export
 summaryItemAssoc <- function(df, coef.col, lwr.col = NULL, upr.col = NULL) {
   out <- data.frame(
