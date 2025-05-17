@@ -1,28 +1,33 @@
-#' AENOuni: Numero efectivo de opciones nominales para un ítem
+#' @title AENOuni: Effective Number of Nominal Options for a Single Item
 #'
-#' Calcula el numero efectivo de categorías utilizadas en un ítem politómico,
-#' basado en la entropía de Shannon. El valor resultante refleja la dispersión
-#' o utilización efectiva de las opciones de respuesta.
+#' @description
+#' Calculates the effective number of response categories used in a polytomous item,
+#' based on Shannon entropy (Samejima, 1980; Sato & Morimoto, 1976). The result
+#' reflects the dispersion or actual utilization
+#' of the available response options.
 #'
-#' Las categorías con frecuencia cero son tratadas como *ceros incidentales* (Linacre, 1999; 2002).
-#' Para evitar problemas con logaritmos indefinidos, su frecuencia se reemplaza por un valor pequeño
-#' definido en el argumento \code{pseudo_zero}, permitiendo continuar con el cálculo de la entropía.
+#' Response categories with zero frequency are treated as *incidental zeros*
+#' (Linacre, 1999; 2002). To avoid issues with undefined logarithms, such frequencies
+#' are replaced with a small value defined by the argument \code{pseudo_zero}.
+#' Within a content validity framework (Merino-Soto et al., 2022), this indicator provides
+#' objective information to assess the functionality of the response options.
 #'
-#' @param vector Un vector numérico, de factor o carácter con las respuestas de un ítem.
-#' @param k Número total de opciones de respuesta posibles. Este valor es obligatorio
-#'        y debe incluir todas las categorías teóricas, incluso si algunas no fueron utilizadas.
-#' @param pseudo_zero Valor pequeño que se asigna a categorías con frecuencia cero,
-#'        para evitar problemas con logaritmos indefinidos. Por defecto es \code{0.05}.
+#' @param vector A numeric, factor, or character vector of item responses.
+#' @param k The total number of theoretical response options (e.g., \code{k = 6} for 0–5).
+#'          This value is required, even if some categories were unused.
+#' @param pseudo_zero A small positive value used to replace zero frequencies,
+#'        avoiding undefined logarithms. Default is \code{0.05}.
 #'
-#' @return Una lista con un solo elemento:
-#' \item{AENO}{Valor numérico que indica el número efectivo de opciones utilizadas.}
+#' @return A list with one element:
+#' \item{AENO}{A numeric value indicating the effective number of options used.}
 #'
 #' @examples
-#' respuestas <- c(0, 1, 1, 2, 3, 3, 5, NA)
-#' AENOuni(respuestas, k = 6)
+#' responses <- c(0, 1, 1, 2, 3, 3, 5, NA)
+#' AENOuni(responses, k = 6)
 #'
 #' @references
-#' Sato, T., & Morimoto, U. (1976). Sentaku-shi keishiki tesuto kaitou bunpu no bunseki [Analyzing endorsement distribution of selected-response items].
+#' Sato, T., & Morimoto, U. (1976). Sentaku-shi keishiki tesuto kaitou bunpu no bunseki
+#' [Analyzing endorsement distribution of selected-response items].
 #' In *Proceedings of the 4th Annual Meeting of the Behaviometric Society of Japan*, Tokyo, Japan.
 #'
 #' Samejima, F. (1980). *Research on the Multiple-Choice Test Item in Japan: Toward the Validation of Mathematical Models*.
@@ -38,21 +43,21 @@
 #'
 #' @export
 AENOuni <- function(vector, k, pseudo_zero = 0.05) {
-  if (missing(k)) stop("Debe especificar el número total de opciones posibles con el argumento 'k'.")
+  if (missing(k)) stop("You must specify the total number of response options with the 'k' argument.")
 
-  prop_respuestas <- table(vector) / sum(!is.na(vector))
+  prop_responses <- table(vector) / sum(!is.na(vector))
 
-  categorias_completas <- as.character(0:(k - 1))
-  prop_respuestas_completo <- rep(0, k)
-  names(prop_respuestas_completo) <- categorias_completas
-  prop_respuestas_completo[names(prop_respuestas)] <- prop_respuestas
+  full_categories <- as.character(0:(k - 1))
+  prop_full <- rep(0, k)
+  names(prop_full) <- full_categories
+  prop_full[names(prop_responses)] <- prop_responses
 
-  prop_respuestas_completo[prop_respuestas_completo == 0] <- pseudo_zero
-  prop_respuestas_completo <- prop_respuestas_completo / sum(prop_respuestas_completo)
+  prop_full[prop_full == 0] <- pseudo_zero
+  prop_full <- prop_full / sum(prop_full)
 
-  OPLOG <- prop_respuestas_completo * log2(prop_respuestas_completo)
-  SUMLOG <- -sum(OPLOG)
-  AENO <- 2^SUMLOG
+  entropy_terms <- prop_full * log2(prop_full)
+  entropy <- -sum(entropy_terms)
+  AENO <- 2^entropy
 
   return(list(AENO = AENO))
 }
