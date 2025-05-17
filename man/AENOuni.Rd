@@ -38,7 +38,7 @@ AENOuni(responses, k = 6)
 }
 \references{
 Sato, T., & Morimoto, U. (1976). Sentaku-shi keishiki tesuto kaitou bunpu no bunseki
-\link{Analyzing endorsement distribution of selected-response items}.
+(Analyzing endorsement distribution of selected-response items).
 In \emph{Proceedings of the 4th Annual Meeting of the Behaviometric Society of Japan}, Tokyo, Japan.
 
 Samejima, F. (1980). \emph{Research on the Multiple-Choice Test Item in Japan: Toward the Validation of Mathematical Models}.
