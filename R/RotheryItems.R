@@ -1,25 +1,24 @@
-#' @title RotheryItems: Nonparametric Intraclass Correlation (Rothery, 1979)
+#' @title RotheryItems: Concordance Index for Repeated Measures (Rothery, 1979)
 #'
 #' @description
-#' Computes a nonparametric measure of intraclass correlation (Rothery, 1979) based on ranks,
-#' to assess agreement among items. Confidence intervals are estimated via bootstrap.
+#' Computes a nonparametric measure of concordance across items (columns) for each subject (row),
+#' following the method of Rothery (1979). Confidence intervals and p-values are estimated by bootstrap.
 #'
 #' @details
-#' The Rothery index ranges from 0 (no agreement) to 1 (perfect agreement),
-#' and is analogous in interpretation to the intraclass correlation coefficient (ICC1).
-#' It is computed from the ratio of between-column variance in ranks over total variance.
+#' The Rothery index (\code{psi}) ranges from 0 (no agreement) to 1 (perfect concordance),
+#' based on the variance of row-wise rank sums. This function reproduces the behavior of
+#' \code{nopaco::concordance.test(x)} with a single matrix input.
 #'
-#' @param data.items A data frame or matrix with ordinal item responses (rows = subjects, columns = items).
-#' @param ci Logical. If TRUE, computes confidence interval via bootstrap. Default is TRUE.
-#' @param B Integer. Number of bootstrap replications. Default is 1000.
+#' @param data.items A matrix or data frame where rows are subjects and columns are ordinal items (e.g., Likert-type).
+#' @param ci Logical. If TRUE (default), computes a confidence interval via bootstrap.
+#' @param B Number of bootstrap samples. Default is 1000.
 #' @param conf.level Confidence level for the interval. Default is 0.95.
-#' @param type Character. Type of confidence interval: \code{"perc"} (percentile; default) or \code{"norm"} (normal approximation).
 #'
 #' @return A data frame with:
 #' \itemize{
-#'   \item \code{psi}: Rothery intraclass correlation.
-#'   \item \code{lwr.ci}, \code{upr.ci}: lower and upper confidence limits (if \code{ci = TRUE}).
-#'   \item \code{p}: approximate p-value testing the null hypothesis of no agreement (psi = 0).
+#'   \item \code{psi}: Nonparametric concordance index.
+#'   \item \code{lwr.ci}, \code{upr.ci}: Lower and upper confidence bounds (if \code{ci = TRUE}).
+#'   \item \code{p}: Bootstrap-based p-value for H0: psi = 0.
 #' }
 #'
 #' @references
@@ -31,54 +30,46 @@
 #' dat <- matrix(sample(1:5, 100, replace = TRUE), ncol = 5)
 #' RotheryItems(dat)
 #'
-#'@importFrom stats quantile qnorm sd
-#'
+#' @importFrom stats quantile sd mean rank
 #' @export
-RotheryItems <- function(data.items, ci = TRUE, B = 1000, conf.level = 0.95, type = "perc") {
+RotheryItems <- function(data.items, ci = TRUE, B = 1000, conf.level = 0.95) {
   if (!is.matrix(data.items) && !is.data.frame(data.items)) {
     stop("`data.items` must be a matrix or data frame.")
   }
 
   data <- as.matrix(data.items)
   if (any(is.na(data))) stop("Missing values are not allowed.")
-  if (!type %in% c("perc", "norm")) stop("`type` must be 'perc' or 'norm'.")
 
   n <- nrow(data)
   k <- ncol(data)
-  R <- matrix(rank(data), nrow = n, ncol = k)
 
-  Rbar <- mean(R)
-  Rj.bar <- colMeans(R)
-  ST <- sum((R - Rbar)^2)
-  SB <- n * sum((Rj.bar - Rbar)^2)
+  # Step 1: rank each row (subject)
+  ranked <- t(apply(data, 1, rank))  # Each row is ranked across items
 
-  psi <- SB / ST
+  # Step 2: compute row sums of ranks
+  R_sum <- rowSums(ranked)
+  Rbar <- mean(R_sum)
+
+  # Step 3: compute psi
+  ST <- sum((R_sum - Rbar)^2)
+  maxST <- (k^2 * (n^2 - 1)) / 12  # max variance of row sums under perfect agreement
+  psi <- ST / maxST
+
   out <- data.frame(psi = round(psi, 3))
 
   if (ci) {
     boot.psi <- replicate(B, {
       idx <- sample(seq_len(n), replace = TRUE)
-      Rb <- R[idx, ]
-      Rbbar <- mean(Rb)
-      Rjb.bar <- colMeans(Rb)
-      STb <- sum((Rb - Rbbar)^2)
-      SBb <- n * sum((Rjb.bar - Rbbar)^2)
-      SBb / STb
+      boot_data <- data[idx, , drop = FALSE]
+      boot_rank <- t(apply(boot_data, 1, rank))
+      boot_R_sum <- rowSums(boot_rank)
+      STb <- sum((boot_R_sum - mean(boot_R_sum))^2)
+      STb / maxST
     })
 
     alpha <- 1 - conf.level
-
-    if (type == "perc") {
-      ci.lwr <- quantile(boot.psi, probs = alpha / 2)
-      ci.upr <- quantile(boot.psi, probs = 1 - alpha / 2)
-    } else if (type == "norm") {
-      m <- mean(boot.psi)
-      s <- sd(boot.psi)
-      z <- qnorm(1 - alpha / 2)
-      ci.lwr <- m - z * s
-      ci.upr <- m + z * s
-    }
-
+    ci.lwr <- quantile(boot.psi, probs = alpha / 2)
+    ci.upr <- quantile(boot.psi, probs = 1 - alpha / 2)
     p <- mean(boot.psi <= 0)
 
     out$lwr.ci <- round(ci.lwr, 3)

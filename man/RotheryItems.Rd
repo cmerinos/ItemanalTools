@@ -2,37 +2,35 @@
 % Please edit documentation in R/RotheryItems.R
 \name{RotheryItems}
 \alias{RotheryItems}
-\title{RotheryItems: Nonparametric Intraclass Correlation (Rothery, 1979)}
+\title{RotheryItems: Concordance Index for Repeated Measures (Rothery, 1979)}
 \usage{
-RotheryItems(data.items, ci = TRUE, B = 1000, conf.level = 0.95, type = "perc")
+RotheryItems(data.items, ci = TRUE, B = 1000, conf.level = 0.95)
 }
 \arguments{
-\item{data.items}{A data frame or matrix with ordinal item responses (rows = subjects, columns = items).}
+\item{data.items}{A matrix or data frame where rows are subjects and columns are ordinal items (e.g., Likert-type).}
 
-\item{ci}{Logical. If TRUE, computes confidence interval via bootstrap. Default is TRUE.}
+\item{ci}{Logical. If TRUE (default), computes a confidence interval via bootstrap.}
 
-\item{B}{Integer. Number of bootstrap replications. Default is 1000.}
+\item{B}{Number of bootstrap samples. Default is 1000.}
 
 \item{conf.level}{Confidence level for the interval. Default is 0.95.}
-
-\item{type}{Character. Type of confidence interval: \code{"perc"} (percentile; default) or \code{"norm"} (normal approximation).}
 }
 \value{
 A data frame with:
 \itemize{
-\item \code{psi}: Rothery intraclass correlation.
-\item \code{lwr.ci}, \code{upr.ci}: lower and upper confidence limits (if \code{ci = TRUE}).
-\item \code{p}: approximate p-value testing the null hypothesis of no agreement (psi = 0).
+\item \code{psi}: Nonparametric concordance index.
+\item \code{lwr.ci}, \code{upr.ci}: Lower and upper confidence bounds (if \code{ci = TRUE}).
+\item \code{p}: Bootstrap-based p-value for H0: psi = 0.
 }
 }
 \description{
-Computes a nonparametric measure of intraclass correlation (Rothery, 1979) based on ranks,
-to assess agreement among items. Confidence intervals are estimated via bootstrap.
+Computes a nonparametric measure of concordance across items (columns) for each subject (row),
+following the method of Rothery (1979). Confidence intervals and p-values are estimated by bootstrap.
 }
 \details{
-The Rothery index ranges from 0 (no agreement) to 1 (perfect agreement),
-and is analogous in interpretation to the intraclass correlation coefficient (ICC1).
-It is computed from the ratio of between-column variance in ranks over total variance.
+The Rothery index (\code{psi}) ranges from 0 (no agreement) to 1 (perfect concordance),
+based on the variance of row-wise rank sums. This function reproduces the behavior of
+\code{nopaco::concordance.test(x)} with a single matrix input.
 }
 \examples{
 set.seed(123)
