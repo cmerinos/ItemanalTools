@@ -7,6 +7,11 @@
 #' \code{Dm = 1 - (r_observed - ref.value)^2}.
 #'
 #' A Dm value closer to 1 indicates that the observed coefficient is close to the expected value.
+#' The value of the index depends on two components: the correlation and the reference value.
+#' This reference value is critical. In item analysis, it may be that the reference value
+#' is less than .30; the function that value but is not validated, and is lower than the one
+#' originally proposed at .50 (Tara & Kline,2010 ) and maintained in other studies
+#' (Dominguez-Lara, 2013, 2018).
 #'
 #'
 #' @param df A data frame of item-level results, typically returned by functions such as
@@ -43,9 +48,7 @@
 #'
 #' Dominguez-Lara, S. (2018). Testing a general hypothesis in empirical research using Dm-index.
 #' Interacciones, 4(1), 42-47. https://doi.org/10.24016/2018.v4n1.77
-
-
-
+#'
 #' @export
 DmIndex <- function(df, coef.col, lwr.col, upr.col, ref.value = 0.30) {
   coef.vec <- df[[coef.col]]
