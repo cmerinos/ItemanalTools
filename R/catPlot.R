@@ -43,6 +43,8 @@
 #' @import ggplot2
 #'
 #' @export
+utils::globalVariables(c("Category", "Item", "Mean.Score"))
+
 catPlot <- function(data, items = NULL, smooth = FALSE) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) stop("Package 'ggplot2' is required.")
 
