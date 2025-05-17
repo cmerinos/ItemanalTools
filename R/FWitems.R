@@ -1,25 +1,26 @@
-#' @title FWitems: Friedman Test + Kendall's W for Items
+#' @title FWitems: Friedman Test and Kendall's W for Ordinal Items
 #'
 #' @description
-#' Computes the Friedman test and Kendall’s W to assess differences and concordance among multiple ordinal items.
-#' This function assumes a repeated-measures structure (i.e., each row is a subject, columns are items).
+#' Performs the Friedman test and calculates Kendall's W to assess differences and concordance
+#' among multiple ordinal items in a repeated-measures design. Each row is assumed to be a subject,
+#' and each column an item.
 #'
-#' @param data.items A data frame or matrix of ordinal items (each column is an item, each row is a subject).
-#' @param ci Logical. Whether to compute confidence intervals for Kendall's W. Default is TRUE.
-#' @param correct Logical. Apply correction for ties in Kendall's W. Default is TRUE.
-#' @param type Character. Type of confidence interval ("norm", "basic", "perc", or "bca"). Default is "norm".
-#' @param B Number of bootstrap replicates. Default is 1000.
-#' @param conf.level Confidence level for the confidence intervals. Default is 0.95.
+#' @param data.items A data frame or matrix of ordinal item responses (rows = subjects, columns = items).
+#' @param ci Logical. Whether to compute confidence intervals for Kendall's W. Default is \code{TRUE}.
+#' @param correct Logical. Whether to apply correction for ties in Kendall's W. Default is \code{TRUE}.
+#' @param type Character. Type of bootstrap confidence interval for Kendall's W. One of
+#' \code{"norm"}, \code{"basic"}, \code{"perc"}, or \code{"bca"}. Default is \code{"norm"}.
+#' @param B Integer. Number of bootstrap replications. Default is \code{1000}.
+#' @param conf.level Confidence level for confidence intervals. Default is \code{0.95}.
 #'
 #' @return A list with two components:
-#' \itemize{
-#'   \item \code{Friedman}: Output of the \code{friedman.test}.
-#'   \item \code{KendallW}: A data frame with W and its confidence interval.
+#' \describe{
+#'   \item{\code{Friedman}}{Output of \code{friedman.test} applied to the items.}
+#'   \item{\code{KendallW}}{A data frame with Kendall's W and optional confidence intervals.}
 #' }
 #'
 #' @examples
-#' 
-#' ### Example 1 ---------------------
+#' # Example 1: basic usage
 #' set.seed(123)
 #' items <- data.frame(
 #'   Item1 = sample(1:5, 50, TRUE),
@@ -28,33 +29,33 @@
 #' )
 #' FWitems(items)
 #'
-#' ### Example 2 ---------------------
-#'
-#' # Ejemplo con tendencia de respuesta (mayor concordancia esperada)
+#' # Example 2: increased agreement expected
 #' set.seed(456)
 #' responses <- data.frame(
 #'   Item1 = sample(c(1, 2, 3), 30, replace = TRUE, prob = c(0.1, 0.2, 0.7)),
 #'   Item2 = sample(c(1, 2, 3), 30, replace = TRUE, prob = c(0.3, 0.4, 0.3)),
 #'   Item3 = sample(c(1, 2, 3), 30, replace = TRUE, prob = c(0.5, 0.3, 0.2)),
 #'   Item4 = sample(c(1, 2, 3), 30, replace = TRUE, prob = c(0.2, 0.4, 0.4)),
-#'   Item5 = sample(c(1, 2, 3), 30, replace = TRUE, prob = c(0.6, 0.3, 0.1)))
-#'   
+#'   Item5 = sample(c(1, 2, 3), 30, replace = TRUE, prob = c(0.6, 0.3, 0.1))
+#' )
 #' FWitems(responses, ci = TRUE, B = 500)
-#' 
+#'
 #' @export
 FWitems <- function(data.items, ci = TRUE, correct = TRUE, type = "norm", B = 1000, conf.level = 0.95) {
-  # Validar clase
   if (!is.data.frame(data.items) && !is.matrix(data.items)) {
     stop("`data.items` must be a data frame or matrix.")
   }
-  
-  # Asegurar formato matriz
+
   data.mat <- as.matrix(data.items)
-  
+
   # Friedman test
-  friedman <- friedman.test(data.mat)
-  
+  friedman <- stats::friedman.test(data.mat)
+
   # Kendall's W
+  if (!requireNamespace("rcompanion", quietly = TRUE)) {
+    stop("Package 'rcompanion' is required.")
+  }
+
   kw <- rcompanion::kendallW(data.mat,
                              correct = correct,
                              ci = ci,
@@ -62,15 +63,16 @@ FWitems <- function(data.items, ci = TRUE, correct = TRUE, type = "norm", B = 10
                              type = type,
                              R = B,
                              histogram = FALSE)
-  
-  # Preparar salida W
+
   if (ci) {
-    W.out <- data.frame(W = round(kw$W, 3),
-                        lwr.ci = round(kw$lower.ci, 3),
-                        upp.ci = round(kw$upper.ci, 3))
+    W.out <- data.frame(
+      W = round(kw$W, 3),
+      lwr.ci = round(kw$lower.ci, 3),
+      upp.ci = round(kw$upper.ci, 3)
+    )
   } else {
     W.out <- data.frame(W = round(kw$W, 3))
   }
-  
+
   return(list(Friedman = friedman, KendallW = W.out))
 }
