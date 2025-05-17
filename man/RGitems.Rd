@@ -2,7 +2,7 @@
 % Please edit documentation in R/RGitems.R
 \name{RGitems}
 \alias{RGitems}
-\title{RGitems: Wilcoxon Rank Effect Size for Multiple Items}
+\title{RGitems: Wilcoxon Rank-Biserial Effect Size for Multiple Items}
 \usage{
 RGitems(
   data.items,
@@ -16,32 +16,32 @@ RGitems(
 \arguments{
 \item{data.items}{A data frame or matrix where each column is an item and each row is a subject.}
 
-\item{group}{A grouping variable (factor or character vector) indicating group membership for each subject.
-Must contain exactly two unique levels and match the number of rows in \code{data.items}.}
+\item{group}{A grouping variable (factor or character vector) indicating group membership
+for each subject. Must contain exactly two unique levels.}
 
 \item{ci}{Logical. Should confidence intervals be computed? Default is \code{TRUE}.}
 
-\item{type}{Character. Type of bootstrap confidence interval. Options are \code{"norm"}, \code{"basic"},
-\code{"perc"}, or \code{"bca"}. Default is \code{"norm"}.}
+\item{type}{Character. Type of bootstrap confidence interval. One of \code{"norm"},
+\code{"basic"}, \code{"perc"}, or \code{"bca"}. Default is \code{"norm"}.}
 
-\item{B}{Integer. Number of bootstrap replicates for confidence interval estimation. Default is \code{1000}.}
+\item{B}{Integer. Number of bootstrap replicates for interval estimation. Default is \code{1000}.}
 
-\item{conf.level}{Numeric. Confidence level for the interval estimation. Default is \code{0.95}.}
+\item{conf.level}{Confidence level for the interval estimation. Default is \code{0.95}.}
 }
 \value{
-A data frame with one row per item. If \code{ci = TRUE}, the columns are:
-\itemize{
-\item \code{Item}: The name of the item.
-\item \code{rg}: The rank-biserial correlation coefficient.
-\item \code{lwr.ci}: Lower bound of the confidence interval.
-\item \code{lwr.upp}: Upper bound of the confidence interval.
+A data frame with one row per item. If \code{ci = TRUE}, columns are:
+\describe{
+\item{\code{Item}}{Item name.}
+\item{\code{rg}}{Wilcoxon rank-biserial correlation.}
+\item{\code{lwr.ci}}{Lower confidence limit.}
+\item{\code{lwr.upp}}{Upper confidence limit.}
 }
 If \code{ci = FALSE}, only \code{Item} and \code{rg} are returned.
 }
 \description{
-Computes the rank-biserial correlation coefficient (\code{r_g}) for multiple items,
-using the Wilcoxon-Mann-Whitney test across two groups. Optionally returns confidence intervals
-based on bootstrap resampling at the specified confidence level.
+Computes the rank-biserial correlation coefficient (\code{r_g}) for multiple items
+using the Wilcoxon-Mann-Whitney test between two independent groups.
+Optionally returns confidence intervals computed via bootstrap.
 }
 \examples{
 \dontrun{

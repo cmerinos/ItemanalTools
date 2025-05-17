@@ -7,47 +7,37 @@
 MurakamiPairs(x, group, B = 1000, adjust.method = "holm")
 }
 \arguments{
-\item{x}{A numeric vector containing the observed values.}
+\item{x}{A numeric vector of observed values.}
 
-\item{group}{A factor or vector indicating group membership, with at least two levels.}
+\item{group}{A factor or grouping vector indicating group membership (with at least two levels).}
 
-\item{B}{Integer. Number of permutations to compute the p-values (default = 1000).}
+\item{B}{Integer. Number of permutations to compute p-values. Default is \code{1000}.}
 
-\item{adjust.method}{Character string indicating the method of p-value adjustment.
-Options are those accepted by \code{\link{p.adjust}}: \code{"holm"}, \code{"bonferroni"},
-\code{"BH"}, \code{"none"}, etc. Default is \code{"holm"}.}
+\item{adjust.method}{Character string specifying the p-value adjustment method.
+Must be one of the options supported by \code{\link{p.adjust}}, e.g., \code{"holm"},
+\code{"bonferroni"}, \code{"BH"}, or \code{"none"}. Default is \code{"holm"}.}
 }
 \value{
 A data frame with one row per pairwise group comparison, and the following columns:
 \describe{
-\item{\code{Group1, Group2}}{The two groups being compared.}
-\item{\code{CucconiStatistic}}{The Cucconi statistic \( C_{st} \) computed for that pair.}
-\item{\code{p.value}}{Empirical p-value obtained via permutation.}
-\item{\code{p.adjusted}}{P-value adjusted for multiple comparisons using the specified method.}
+\item{\code{Group1, Group2}}{The names of the two groups being compared.}
+\item{\code{CucconiStatistic}}{The Cucconi statistic \( C_{st} \) for that pair.}
+\item{\code{p.value}}{Empirical p-value computed via permutation.}
+\item{\code{p.adjusted}}{Adjusted p-value using the selected method.}
 }
 }
 \description{
-Performs all-pairs nonparametric comparisons of groups using a Cucconi test,
+Performs all-pairs nonparametric comparisons between groups using the Cucconi test,
 which is sensitive to both location and scale differences.
-The method follows the pairwise ranking approach recommended by Murakami (2016),
-and p-values are computed via permutation for each group comparison.
+P-values are computed via permutation for each group pair.
 }
 \details{
-This function implements the pairwise version of the Cucconi test based on the method
-described in Murakami (2016). The test statistic is designed to simultaneously detect
-differences in both location (central tendency) and scale (dispersion) between two groups.
+This function implements the pairwise version of the Cucconi test as described by Murakami (2016).
+Each comparison is made using only the two groups involved (i.e., pairwise ranking),
+and permutation resampling is used to compute the p-value.
 
-Each comparison is carried out using only the two groups involved (pairwise ranking),
-and permutation resampling is used to obtain a p-value.
-
-The p-value returned in \code{p.adjusted} can be interpreted in the usual way:
-a value below 0.05 suggests a significant difference between the two groups,
-controlling for the familywise error rate or false discovery rate, depending on the
-adjustment method used.
-
-The largest value of the Cucconi statistic among all pairs (i.e., \code{max(C_{st})})
-is sometimes referred to as \code{SDC} in the literature, but should still be interpreted
-as the result of a specific comparison, not a global test.
+The maximum observed value of the Cucconi statistic across all pairs (\code{max(C_{st})})
+is sometimes referred to as SDC in the literature.
 }
 \examples{
 # Reproducing Example 1 from Murakami (2016)

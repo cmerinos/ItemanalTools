@@ -2,32 +2,42 @@
 % Please edit documentation in R/summaryItemAssoc.R
 \name{summaryItemAssoc}
 \alias{summaryItemAssoc}
-\title{summaryItemAssoc: Summary statistics for item association coefficients}
+\title{summaryItemAssoc: Summary Statistics for Item-Level Association Coefficients}
 \usage{
 summaryItemAssoc(df, coef.col, lwr.col = NULL, upr.col = NULL)
 }
 \arguments{
-\item{df}{Data frame returned by an ItemAn function (e.g., RGWil, SpearItems, epsilonitems).}
+\item{df}{A data frame returned by an item association function.}
 
-\item{coef.col}{Name of the column with the association coefficient (e.g., "rg", "tau", "eps2").}
+\item{coef.col}{Character. Name of the column containing the association coefficient (e.g., \code{"rg"}, \code{"rho"}, \code{"eps2"}).}
 
-\item{lwr.col}{Optional. Name of the column with lower CI bound.}
+\item{lwr.col}{Optional. Name of the column with lower confidence interval limits.}
 
-\item{upr.col}{Optional. Name of the column with upper CI bound.}
+\item{upr.col}{Optional. Name of the column with upper confidence interval limits.}
 }
 \value{
-A data frame with summary statistics (mean, median) for the coefficient and CIs (if given).
+A one-row data frame with the following columns:
+\describe{
+\item{\code{coef.mean}}{Mean of the association coefficients.}
+\item{\code{coef.median}}{Median of the association coefficients.}
+\item{\code{lwr.mean}, \code{lwr.median}}{Mean and median of the lower bounds (if provided).}
+\item{\code{upr.mean}, \code{upr.median}}{Mean and median of the upper bounds (if provided).}
+}
 }
 \description{
-Computes the mean and median of item-level coefficients (and optionally their confidence intervals).
+Computes descriptive statistics (mean, median) for a vector of item-level association coefficients
+and, optionally, their confidence intervals.
+
+This function is designed to be used with the output of functions like \code{RGitems},
+\code{SpearItems}, or \code{epsilonItems}, which return a data frame with item-wise statistics.
 }
 \examples{
-result <- data.frame(
-  Item = c("Item1", "Item2", "Item3"),
-  rg = c(.21, .35, .28),
-  lwr.ci = c(.12, .22, .15),
-  lwr.upp = c(.31, .45, .38)
+df <- data.frame(
+  Item = paste0("Item", 1:5),
+  rg = c(.22, .18, .35, .12, .29),
+  lwr.ci = c(.10, .05, .25, .00, .15),
+  lwr.upp = c(.33, .29, .45, .20, .40)
 )
-summaryItemAssoc(df = result, coef.col = "rg", lwr.col = "lwr.ci", upr.col = "lwr.upp")
+summaryItemAssoc(df = df, coef.col = "rg", lwr.col = "lwr.ci", upr.col = "lwr.upp")
 
 }

@@ -7,30 +7,38 @@
 DmIndex(df, coef.col, lwr.col, upr.col, ref.value = 0.3)
 }
 \arguments{
-\item{df}{A data frame of item-level results, typically returned by functions such as \code{RGWil}, \code{SpearItems}, or \code{epsilonitems}.}
+\item{df}{A data frame of item-level results, typically returned by functions such as
+\code{RGitems()}, \code{SpearItems()}, or \code{epsilonitems()}.}
 
-\item{coef.col}{Character. Name of the column containing the association coefficient (e.g., "rg", "tau", "eps2").}
+\item{coef.col}{Character. Name of the column containing the association coefficient
+(e.g., "rg", "tau", "eps2").}
 
-\item{lwr.col}{Character. Name of the column with the lower bound of the confidence interval.}
+\item{lwr.col}{Character. Name of the column containing the lower bound of the confidence interval.}
 
-\item{upr.col}{Character. Name of the column with the upper bound of the confidence interval.}
+\item{upr.col}{Character. Name of the column containing the upper bound of the confidence interval.}
 
-\item{ref.value}{Numeric. The reference correlation value to test against. Default is 0.30.}
+\item{ref.value}{Numeric. Reference value to compare against. Default is \code{0.30}.}
 }
 \value{
 A data frame with the following columns:
-\itemize{
-\item \code{Item}: The item name.
-\item \code{Dm}: Deviation index relative to the reference value.
-\item \code{solap}: "Yes" if the confidence interval includes the reference value; otherwise "No".
+\describe{
+\item{\code{Item}}{The item name.}
+\item{\code{Dm}}{Deviation index relative to the reference value.}
+\item{\code{Overlap}}{"Yes" if the confidence interval includes the reference value; otherwise "No".}
 }
 }
 \description{
-Computes the Dm index for each item, quantifying the deviation of observed associations
-from a reference value. Also flags whether the reference value falls within each item's confidence interval.
-The Dm index is calculated as: \cr
-\code{Dm = 1 - (r_observed - ref.value)^2} \cr
-A Dm closer to 1 indicates that the observed coefficient is close to the expected value.
+Computes the Dm index for each item, which quantifies how much an observed coefficient
+deviates from a reference value. It also flags whether the reference value falls within
+each item's confidence interval. The Dm index is calculated as:
+\code{Dm = 1 - (r_observed - ref.value)^2}.
+
+A Dm value closer to 1 indicates that the observed coefficient is close to the expected value.
+The value of the index depends on two components: the correlation and the reference value.
+This reference value is critical. In item analysis, it may be that the reference value
+is less than .30; the function that value but is not validated, and is lower than the one
+originally proposed at .50 (Tara & Kline,2010 ) and maintained in other studies
+(Dominguez-Lara, 2013, 2018).
 }
 \examples{
 result <- data.frame(
@@ -41,4 +49,15 @@ result <- data.frame(
 )
 DmIndex(df = result, coef.col = "rg", lwr.col = "lwr.ci", upr.col = "lwr.upp", ref.value = 0.30)
 
+}
+\references{
+Taras, V., & Kline, T. (2010). Scale validation via quantifying item validity using
+the Dm index. Psychological reports, 107(2), 535–546. https://doi.org/10.2466/03.PR0.107.5.535-546
+
+Dominguez Lara, S. (2013). Proposal for the calculation of the DM index for the validity of the items.
+Interdisciplinaria Revista de Psicología y Ciencias Afines, 30(2), 297–303.
+https://doi.org/10.16888/interd.2013.30.2.8
+
+Dominguez-Lara, S. (2018). Testing a general hypothesis in empirical research using Dm-index.
+Interacciones, 4(1), 42-47. https://doi.org/10.24016/2018.v4n1.77
 }

@@ -2,25 +2,50 @@
 % Please edit documentation in R/CucconiMult2.R
 \name{CucconiMult2}
 \alias{CucconiMult2}
-\title{CucconiMult2: Multigroup Cucconi Test for Multiple Variables}
+\title{CucconiMult2: Multivariable Cucconi Test for Multiple Groups}
 \usage{
 CucconiMult2(data, group, B = 1000)
 }
 \arguments{
-\item{data}{A data.frame or matrix. Each column represents a variable or item.}
+\item{data}{A data.frame or matrix where each column represents a variable (e.g., item).}
 
 \item{group}{A factor or grouping vector (same length as number of rows in \code{data}).}
 
-\item{B}{Integer. Number of permutations (default = 1000).}
+\item{B}{Integer. Number of permutations to compute p-values. Default is 1000.}
 }
 \value{
-A list with two data frames:
+A list with two components:
 \describe{
-\item{\code{Global}}{One row per variable with test statistic and p-value.}
-\item{\code{Partial}}{One row per variable × group with partial statistic.}
+\item{\code{Global}}{One row per variable, with the Cucconi test statistic and its p-value.}
+\item{\code{Partial}}{A named list with one data frame per group. Each contains
+partial statistics by variable.}
 }
 }
 \description{
-Applies a multisample Cucconi test across multiple variables (e.g., test items),
-evaluating simultaneous location and scale differences among groups for each variable.
+Performs a nonparametric test for assessing simultaneous location and scale differences
+across multiple groups for several variables (e.g., test items).
+It applies a multigroup Cucconi test to each variable using permutation.
+}
+\details{
+This function generalizes the original Cucconi test (Cucconi, 1968; Marozzi, 2014)
+to multivariable designs. Each variable is tested independently.
+}
+\examples{
+\dontrun{
+set.seed(123)
+dat <- data.frame(
+  item1 = c(rnorm(10), rnorm(10, 1), rnorm(10)),
+  item2 = c(rnorm(10), rnorm(10, 0), rnorm(10, sd = 2))
+)
+g <- factor(rep(c("A", "B", "C"), each = 10))
+CucconiMult2(dat, g, B = 500)
+}
+
+}
+\references{
+Cucconi, O. (1968). Un nuovo test non parametrico per il confronto tra due gruppi campionari.
+\emph{Giornale degli Economisti e Annali di Economia}, 17(1), 225–248.
+
+Marozzi, M. (2014). The multisample Cucconi test.
+\emph{Statistical Methods and Applications}, 23, 209–227. \doi{10.1007/s10260-014-0255-x}
 }
