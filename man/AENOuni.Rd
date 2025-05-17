@@ -2,7 +2,7 @@
 % Please edit documentation in R/AENOuni.R
 \name{AENOuni}
 \alias{AENOuni}
-\title{AENOuni: Número efectivo de opciones nominales para un ítem}
+\title{AENOuni: Numero efectivo de opciones nominales para un ítem}
 \usage{
 AENOuni(vector, k, pseudo_zero = 0.05)
 }
@@ -20,7 +20,7 @@ Una lista con un solo elemento:
 \item{AENO}{Valor numérico que indica el número efectivo de opciones utilizadas.}
 }
 \description{
-Calcula el número efectivo de categorías utilizadas en un ítem politómico,
+Calcula el numero efectivo de categorías utilizadas en un ítem politómico,
 basado en la entropía de Shannon. El valor resultante refleja la dispersión
 o utilización efectiva de las opciones de respuesta.
 }
