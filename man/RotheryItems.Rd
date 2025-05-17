@@ -2,7 +2,7 @@
 % Please edit documentation in R/RotheryItems.R
 \name{RotheryItems}
 \alias{RotheryItems}
-\title{rotheryICC: Nonparametric Intraclass Correlation (Rothery, 1979)}
+\title{RotheryItems: Nonparametric Intraclass Correlation (Rothery, 1979)}
 \usage{
 RotheryItems(data.items, ci = TRUE, B = 1000, conf.level = 0.95, type = "perc")
 }
@@ -37,7 +37,7 @@ It is computed from the ratio of between-column variance in ranks over total var
 \examples{
 set.seed(123)
 dat <- matrix(sample(1:5, 100, replace = TRUE), ncol = 5)
-rotheryICC(dat)
+RotheryItems(dat)
 
 }
 \references{

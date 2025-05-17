@@ -31,7 +31,7 @@
 #' dat <- matrix(sample(1:5, 100, replace = TRUE), ncol = 5)
 #' RotheryItems(dat)
 #'
-#'@importFrom stats rank quantile qnorm sd mean
+#'@importFrom stats quantile qnorm sd
 #'
 #' @export
 RotheryItems <- function(data.items, ci = TRUE, B = 1000, conf.level = 0.95, type = "perc") {
