@@ -3,7 +3,7 @@
 #' @description
 #' Computes the non-parametric effect size epsilon squared (ε²) for each ordinal item across multiple groups.
 #' Based on Kruskal-Wallis test. Bootstrap confidence intervals can be computed using different methods.
-#' #'Es una métrica interpretable como R^2 ajustado, así que son equivalentes (Frieman wet al., 2017; Vogt, 2005)
+#' Es una métrica interpretable como R^2 ajustado, así que son equivalentes (Frieman wet al., 2017; Vogt, 2005)
 #'
 #' @param data.items A data frame of ordinal item responses (e.g., Likert-type).
 #' @param group A grouping variable (factor, character, or numeric) with 3 or more levels.
@@ -27,8 +27,12 @@
 #'
 #'References
 #'Frieman, J., Saucier, D. A., & Miller, S. Principles & Methods of Statistical Analysis.
-#'Carroll & Nordholm, (1975). Sampling characteristics of Kelley’s ε2 and Hays w$2. Educational and Psychological Measurement. 35, 541-554.
-#'Kelley, T. (1935). An unbiased correlation ratio measure. Proceedings of the National Academy of Sciences. 21(9). 554-559.
+#'
+#'Carroll & Nordholm, (1975). Sampling characteristics of Kelley’s ε2 and Hays w$2.
+#'Educational and Psychological Measurement. 35, 541-554.
+#'
+#'Kelley, T. (1935). An unbiased correlation ratio measure. Proceedings of the National Academy
+#'of Sciences. 21(9). 554-559.
 #'Vogt, W.P. (2005). Dictionary of Statistics & Methodology: A Nontechnical Guide for the Social Sciences. SAGE.
 
 
