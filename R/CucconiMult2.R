@@ -1,104 +1,118 @@
-#' @title CucconiMult2: Multigroup Cucconi Test for Multiple Variables
+#' @title CucconiMult2: Multivariable Cucconi Test for Multiple Groups
 #'
 #' @description
-#' Applies a multisample Cucconi test across multiple variables (e.g., test items),
-#' evaluating simultaneous location and scale differences among groups for each variable.
+#' Performs a nonparametric test for assessing simultaneous location and scale differences
+#' across multiple groups for several variables (e.g., test items).
+#' It applies a multigroup Cucconi test to each variable using permutation.
 #'
-#' @param data A data.frame or matrix. Each column represents a variable or item.
-#' @param group A factor or grouping vector (same length as number of rows in `data`).
-#' @param B Integer. Number of permutations (default = 1000).
+#' @param data A data.frame or matrix where each column represents a variable (e.g., item).
+#' @param group A factor or grouping vector (same length as number of rows in \code{data}).
+#' @param B Integer. Number of permutations to compute p-values. Default is 1000.
 #'
-#' @return A list with two data frames:
+#' @return A list with two components:
 #' \describe{
-#'   \item{\code{Global}}{One row per variable with test statistic and p-value.}
-#'   \item{\code{Partial}}{One row per variable × group with partial statistic.}
+#'   \item{\code{Global}}{One row per variable, with the Cucconi test statistic and its p-value.}
+#'   \item{\code{Partial}}{A named list with one data frame per group. Each contains
+#'   partial statistics by variable.}
+#' }
+#'
+#' @details
+#' This function generalizes the original Cucconi test (Cucconi, 1968; Marozzi, 2014)
+#' to multivariable designs. Each variable is tested independently.
+#'
+#' @references
+#' Cucconi, O. (1968). Un nuovo test non parametrico per il confronto tra due gruppi campionari.
+#' \emph{Giornale degli Economisti e Annali di Economia}, 17(1), 225–248.
+#'
+#' Marozzi, M. (2014). The multisample Cucconi test.
+#' \emph{Statistical Methods and Applications}, 23, 209–227. \doi{10.1007/s10260-014-0255-x}
+#'
+#' @examples
+#' \dontrun{
+#' set.seed(123)
+#' dat <- data.frame(
+#'   item1 = c(rnorm(10), rnorm(10, 1), rnorm(10)),
+#'   item2 = c(rnorm(10), rnorm(10, 0), rnorm(10, sd = 2))
+#' )
+#' g <- factor(rep(c("A", "B", "C"), each = 10))
+#' CucconiMult2(dat, g, B = 500)
 #' }
 #'
 #' @export
 CucconiMult2 <- function(data, group, B = 1000) {
   if (!is.data.frame(data)) data <- as.data.frame(data)
-  if (length(group) != nrow(data)) stop("Length of group must match number of rows in data")
+  if (length(group) != nrow(data)) stop("Length of 'group' must match number of rows in 'data'.")
   if (!is.factor(group)) group <- as.factor(group)
-  
+
   group_levels <- levels(group)
-  results.global <- list()
-  
-  # Preparar lista vacía para cada grupo
-  results.partial.bygroup <- setNames(vector("list", length(group_levels)), group_levels)
+  global_results <- list()
+  partial_by_group <- setNames(vector("list", length(group_levels)), group_levels)
   for (g in group_levels) {
-    results.partial.bygroup[[g]] <- data.frame()
+    partial_by_group[[g]] <- data.frame()
   }
-  
+
   for (var in colnames(data)) {
     x <- data[[var]]
-    pooled.sample <- x[order(group)]
-    sample.sizes <- table(group)
-    sizes.vec <- as.vector(sample.sizes)
-    
-    MultiSampleCucconiStat <- function(pooled.sample, sample.sizes) {
+    pooled <- x[order(group)]
+    sample_sizes <- table(group)
+    sizes_vec <- as.vector(sample_sizes)
+
+    computeStat <- function(pooled.sample, sample.sizes) {
       sample.sizes <- c(0, sample.sizes)
       n <- sum(sample.sizes)
       K <- length(sample.sizes)
-      
+
       ranks <- rank(pooled.sample)
-      contrary.ranks <- n + 1 - ranks
-      
-      groups.ranks <- vector("list", K - 1)
-      groups.contrary.ranks <- vector("list", K - 1)
-      cum.sample.sizes <- cumsum(sample.sizes)
-      
+      contr.ranks <- n + 1 - ranks
+
+      group_ranks <- vector("list", K - 1)
+      group_contr <- vector("list", K - 1)
+      cum.sizes <- cumsum(sample.sizes)
+
       for (k in 1:(K - 1)) {
-        groups.ranks[[k]] <- ranks[(cum.sample.sizes[k] + 1):(cum.sample.sizes[k + 1])]
-        groups.contrary.ranks[[k]] <- contrary.ranks[(cum.sample.sizes[k] + 1):(cum.sample.sizes[k + 1])]
+        group_ranks[[k]] <- ranks[(cum.sizes[k] + 1):(cum.sizes[k + 1])]
+        group_contr[[k]] <- contr.ranks[(cum.sizes[k] + 1):(cum.sizes[k + 1])]
       }
-      
+
       sample.sizes <- sample.sizes[-1]
-      
+
       means <- sample.sizes * (n + 1) * (2 * n + 1) / 6
-      st.dev <- sqrt(sample.sizes * (n - sample.sizes) * (n + 1) * (2 * n + 1) * (8 * n + 11) / 180)
+      sds <- sqrt(sample.sizes * (n - sample.sizes) * (n + 1) * (2 * n + 1) * (8 * n + 11) / 180)
       covariance <- -(30 * n + 14 * n^2 + 19) / ((8 * n + 11) * (2 * n + 1))
-      
-      u.stat <- sapply(1:(K - 1), function(k) {
-        (sum(groups.ranks[[k]]^2) - means[k]) / st.dev[k]
-      })
-      
-      v.stat <- sapply(1:(K - 1), function(k) {
-        (sum(groups.contrary.ranks[[k]]^2) - means[k]) / st.dev[k]
-      })
-      
-      partial.c.stat <- (u.stat^2 + v.stat^2 - 2 * u.stat * v.stat * covariance) /
-        (2 * (1 - covariance^2))
-      
-      c.stat <- mean(partial.c.stat)
-      return(list(c.stat = c.stat, partial = partial.c.stat))
+
+      u <- sapply(1:(K - 1), function(k) (sum(group_ranks[[k]]^2) - means[k]) / sds[k])
+      v <- sapply(1:(K - 1), function(k) (sum(group_contr[[k]]^2) - means[k]) / sds[k])
+
+      partial <- (u^2 + v^2 - 2 * u * v * covariance) / (2 * (1 - covariance^2))
+      c_stat <- mean(partial)
+      return(list(c.stat = c_stat, partial = partial))
     }
-    
-    permutation.stats <- replicate(B, {
-      shuffled <- sample(pooled.sample)
-      MultiSampleCucconiStat(shuffled, sizes.vec)$c.stat
+
+    perm_stats <- replicate(B, {
+      shuffled <- sample(pooled)
+      computeStat(shuffled, sizes_vec)$c.stat
     })
-    
-    observed <- MultiSampleCucconiStat(pooled.sample, sizes.vec)
-    pval <- mean(permutation.stats >= observed$c.stat)
-    
-    results.global[[var]] <- data.frame(
+
+    observed <- computeStat(pooled, sizes_vec)
+    pval <- mean(perm_stats >= observed$c.stat)
+
+    global_results[[var]] <- data.frame(
       Variable = var,
       TestStatistic = round(observed$c.stat, 4),
       p.value = round(pval, 4)
     )
-    
-    # Registrar parciales por grupo
+
     for (i in seq_along(group_levels)) {
       g <- group_levels[i]
-      results.partial.bygroup[[g]] <- rbind(
-        results.partial.bygroup[[g]],
+      partial_by_group[[g]] <- rbind(
+        partial_by_group[[g]],
         data.frame(Variable = var, PartialStatistic = round(observed$partial[i], 4))
       )
     }
   }
-  
-  Global <- do.call(rbind, results.global)
-  Partial <- results.partial.bygroup
-  
+
+  Global <- do.call(rbind, global_results)
+  Partial <- partial_by_group
+
   return(list(Global = Global, Partial = Partial))
 }
