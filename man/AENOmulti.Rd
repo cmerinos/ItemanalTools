@@ -2,32 +2,31 @@
 % Please edit documentation in R/AENOmulti.R
 \name{AENOmulti}
 \alias{AENOmulti}
-\title{AENOmulti: Número efectivo de opciones para múltiples ítems}
+\title{AENOmulti: Effective Number of Nominal Options for Multiple Items}
 \usage{
 AENOmulti(data, k)
 }
 \arguments{
-\item{data}{Un \code{data.frame} con las respuestas a varios ítems (cada columna es un ítem).}
+\item{data}{A \code{data.frame} of item responses, where each column is an item.}
 
-\item{k}{Número total de opciones de respuesta posibles (por ejemplo, \code{k = 6} si las opciones van de 0 a 5).}
+\item{k}{Integer. Total number of response options possible (e.g., \code{k = 6} if options range from 0 to 5).}
 }
 \value{
-Un \code{data.frame} con los siguientes campos para cada ítem:
-\item{item}{Nombre del ítem.}
-\item{AENO}{Número efectivo de opciones utilizadas (redondeado a 3 decimales).}
-\item{cat.eff}{Número de categorías efectivamente utilizadas (observadas).}
-\item{n}{Número de respuestas válidas (sin NA).}
+A \code{data.frame} with the following columns for each item:
+\item{item}{Item name (column name from input).}
+\item{AENO}{Effective number of response options used (rounded to 3 decimals).}
+\item{cat.eff}{Number of observed categories actually used.}
+\item{n}{Number of valid (non-missing) responses.}
 }
 \description{
-Calcula el índice AENO (Número Efectivo de Opciones Nominales) para cada ítem
-en un conjunto de datos. Es útil para explorar la calidad de uso de las opciones
-de respuesta en escalas politómicas.
-}
-\details{
-Internamente llama a \code{\link{AENOuni}}. Las categorías con frecuencia cero
-son tratadas como \emph{ceros incidentales} (Linacre, 1999; 2002) y su frecuencia es
-reemplazada por un valor pequeño (por defecto \code{0.05}) para evitar problemas
-en el cálculo del logaritmo durante la estimación de entropía.
+Calculates the AENO index (Effective Number of Nominal Options; Samejima, 1980) for each item
+in a dataset. Useful for exploring how well response options are being utilized
+across polytomous items. AENO is a summary practical index for content validity
+focused in item analysis (Merino-Soto et al., 2022)
+
+Internally calls \code{\link{AENOuni}}. Response categories with zero frequency
+are treated as \emph{incidental zeros} (Linacre, 1999; 2002) and replaced with a small
+value (default \code{0.05}) to allow entropy-based computations.
 }
 \examples{
 data <- data.frame(
@@ -38,7 +37,8 @@ AENOmulti(data, k = 6)
 
 }
 \references{
-Sato, T., & Morimoto, U. (1976). Sentaku-shi keishiki tesuto kaitou bunpu no bunseki \link{Analyzing endorsement distribution of selected-response items}.
+Sato, T., & Morimoto, U. (1976). Sentaku-shi keishiki tesuto kaitou bunpu no bunseki
+\link{Analyzing endorsement distribution of selected-response items}.
 In \emph{Proceedings of the 4th Annual Meeting of the Behaviometric Society of Japan}, Tokyo, Japan.
 
 Samejima, F. (1980). \emph{Research on the Multiple-Choice Test Item in Japan: Toward the Validation of Mathematical Models}.

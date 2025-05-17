@@ -2,40 +2,43 @@
 % Please edit documentation in R/AENOuni.R
 \name{AENOuni}
 \alias{AENOuni}
-\title{AENOuni: Numero efectivo de opciones nominales para un ítem}
+\title{AENOuni: Effective Number of Nominal Options for a Single Item}
 \usage{
 AENOuni(vector, k, pseudo_zero = 0.05)
 }
 \arguments{
-\item{vector}{Un vector numérico, de factor o carácter con las respuestas de un ítem.}
+\item{vector}{A numeric, factor, or character vector of item responses.}
 
-\item{k}{Número total de opciones de respuesta posibles. Este valor es obligatorio
-y debe incluir todas las categorías teóricas, incluso si algunas no fueron utilizadas.}
+\item{k}{The total number of theoretical response options (e.g., \code{k = 6} for 0–5).
+This value is required, even if some categories were unused.}
 
-\item{pseudo_zero}{Valor pequeño que se asigna a categorías con frecuencia cero,
-para evitar problemas con logaritmos indefinidos. Por defecto es \code{0.05}.}
+\item{pseudo_zero}{A small positive value used to replace zero frequencies,
+avoiding undefined logarithms. Default is \code{0.05}.}
 }
 \value{
-Una lista con un solo elemento:
-\item{AENO}{Valor numérico que indica el número efectivo de opciones utilizadas.}
+A list with one element:
+\item{AENO}{A numeric value indicating the effective number of options used.}
 }
 \description{
-Calcula el numero efectivo de categorías utilizadas en un ítem politómico,
-basado en la entropía de Shannon. El valor resultante refleja la dispersión
-o utilización efectiva de las opciones de respuesta.
-}
-\details{
-Las categorías con frecuencia cero son tratadas como \emph{ceros incidentales} (Linacre, 1999; 2002).
-Para evitar problemas con logaritmos indefinidos, su frecuencia se reemplaza por un valor pequeño
-definido en el argumento \code{pseudo_zero}, permitiendo continuar con el cálculo de la entropía.
+Calculates the effective number of response categories used in a polytomous item,
+based on Shannon entropy (Samejima, 1980; Sato & Morimoto, 1976). The result
+reflects the dispersion or actual utilization
+of the available response options.
+
+Response categories with zero frequency are treated as \emph{incidental zeros}
+(Linacre, 1999; 2002). To avoid issues with undefined logarithms, such frequencies
+are replaced with a small value defined by the argument \code{pseudo_zero}.
+Within a content validity framework (Merino-Soto et al., 2022), this indicator provides
+objective information to assess the functionality of the response options.
 }
 \examples{
-respuestas <- c(0, 1, 1, 2, 3, 3, 5, NA)
-AENOuni(respuestas, k = 6)
+responses <- c(0, 1, 1, 2, 3, 3, 5, NA)
+AENOuni(responses, k = 6)
 
 }
 \references{
-Sato, T., & Morimoto, U. (1976). Sentaku-shi keishiki tesuto kaitou bunpu no bunseki \link{Analyzing endorsement distribution of selected-response items}.
+Sato, T., & Morimoto, U. (1976). Sentaku-shi keishiki tesuto kaitou bunpu no bunseki
+\link{Analyzing endorsement distribution of selected-response items}.
 In \emph{Proceedings of the 4th Annual Meeting of the Behaviometric Society of Japan}, Tokyo, Japan.
 
 Samejima, F. (1980). \emph{Research on the Multiple-Choice Test Item in Japan: Toward the Validation of Mathematical Models}.
