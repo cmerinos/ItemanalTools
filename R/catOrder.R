@@ -1,4 +1,4 @@
-#' @title Category Order Diagnostics for Polytomous Items
+#' @title catOrder: Category Order Diagnostics for Polytomous Items
 #'
 #' @description
 #' Evaluates whether response categories of Likert-type items follow a monotonic trend
@@ -21,7 +21,7 @@
 #'
 #' An additional internal component, \code{"means.long"}, is stored as an attribute of the returned list.
 #' This is not printed by default but can be accessed with \code{attr(result, "means.long")}, and is used
-#' by functions like \code{\link{cat.plot}}.
+#' by functions like \code{\link{catPlot}}.
 #'
 #' @examples
 #' \dontrun{
@@ -34,22 +34,24 @@
 #' )
 #' score <- rowSums(data)
 #'
-#' res <- cat.order(data, score.total = score, tests = "JT")
+#' res <- catOrder(data, score.total = score, tests = "JT")
 #'
-#' # Summary
-#' res$summary
-#'
-#' # Wide-format means
-#' res$means.wide
-#'
-#' # Internal long-format table
-#' head(attr(res, "means.long"))
+#' res$summary       # summary table
+#' res$means.wide    # category means in wide format
+#' head(attr(res, "means.long"))  # internal long-format means
 #' }
+#'
+#' @references
+#' Cuzick J. (1985). A Wilcoxon-type test for trend. Statistics in medicine, 4(1),
+#' 87–90. https://doi.org/10.1002/sim.4780040112
+#'
+#'Jonckheere, A. R. (1954) A distribution-free k-sample test against ordered alternatives.
+#'Biometrica 41, 133–145. http://dx.doi.org/10.2307/2333011
 #'
 #' @importFrom PMCMRplus jonckheereTest cuzickTest
 #'
 #' @export
-cat.order <- function(data, score.total, tests = c("JT", "Cu")) {
+catOrder <- function(data, score.total, tests = c("JT", "Cu")) {
   if (!requireNamespace("PMCMRplus", quietly = TRUE)) stop("Package 'PMCMRplus' is required.")
 
   test.columns <- list(
