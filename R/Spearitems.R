@@ -24,27 +24,23 @@
 #' If an item shows high tie frequency (less than 50% unique values), a message will suggest using method = "kendall".
 #'
 #' @examples
-#' # Simulated example
 #' if (requireNamespace("rcompanion", quietly = TRUE)) {
-#' set.seed(123)
-#' items <- data.frame(
-#'   Item1 = sample(1:5, 100, replace = TRUE),
-#'   Item2 = sample(1:5, 100, replace = TRUE)
-#' )
-#' edad <- rnorm(100, mean = 30, sd = 10)
+#'   set.seed(123)
+#'   items <- data.frame(
+#'     Item1 = sample(1:5, 100, replace = TRUE),
+#'     Item2 = sample(1:5, 100, replace = TRUE)
+#'   )
+#'   edad <- rnorm(100, mean = 30, sd = 10)
 #'
-#' # Using Spearman's rho (default)
-#' SpearItems(items, edad, ci = TRUE, B = 500)
-#'
-#' # Using Kendall's tau (more conservative, robust to ties)
-#' SpearItems(items, edad, ci = TRUE, B = 500, method = "kendall")
-#'}
-#'
-#'@importFrom rcompanion spearmanRho
+#'   SpearItems(items, edad, ci = TRUE, B = 500)
+#'   SpearItems(items, edad, ci = TRUE, B = 500, method = "kendall")
+#' }
 #'
 #' @export
 SpearItems <- function(data.items, criteria, ci = TRUE, B = 1000, method = "spearman") {
-  requireNamespace(rcompanion)
+  if (!requireNamespace("rcompanion", quietly = TRUE)) {
+    stop("Package 'rcompanion' is required for SpearItems(). Please install it.")
+  }
 
   output <- lapply(names(data.items), function(x) {
     vec <- data.items[[x]]
@@ -53,9 +49,11 @@ SpearItems <- function(data.items, criteria, ci = TRUE, B = 1000, method = "spea
       message(paste0("Item '", x, "' has a high number of ties. Consider using method = 'kendall'."))
     }
 
-    res <- spearmanRho(x = vec, y = criteria,
-                       method = method,
-                       ci = ci, type = "perc", R = B)
+    res <- getNamespace("rcompanion")$spearmanRho(
+      x = vec, y = criteria,
+      method = method,
+      ci = ci, type = "perc", R = B
+    )
 
     if (ci) {
       data.frame(Item = x,

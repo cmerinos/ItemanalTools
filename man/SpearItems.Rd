@@ -37,6 +37,7 @@ If an item shows high tie frequency (less than 50\% unique values), a message wi
 }
 \examples{
 # Simulated example
+if (requireNamespace("rcompanion", quietly = TRUE)) {
 set.seed(123)
 items <- data.frame(
   Item1 = sample(1:5, 100, replace = TRUE),
@@ -49,5 +50,6 @@ SpearItems(items, edad, ci = TRUE, B = 500)
 
 # Using Kendall's tau (more conservative, robust to ties)
 SpearItems(items, edad, ci = TRUE, B = 500, method = "kendall")
+}
 
 }
