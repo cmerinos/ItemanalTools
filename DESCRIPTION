@@ -1,0 +1,24 @@
+Package: Itemanalysis
+Title: Tools for Item-Level Statistical Analysis in Psychometrics
+Version: 0.1.0
+Authors@R: 
+    person("Cesar", "Merino Soto", email = "sikayax@yahoo.com.ar", role = c("aut", "cre"))
+Description: Collection of tools for analyzing items in psychological and educational scales, 
+    including nonparametric group comparisons, factorial simplicity indices, and item validity measures. 
+    Implements both multigroup and pairwise approaches based on the Cucconi test for joint 
+    location and scale differences, among other psychometric functions.
+Depends: 
+    R (>= 3.5.0)
+Imports:
+    stats,
+    utils
+Suggests:
+    knitr,
+    rmarkdown
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+BugReports: https://github.com/tuusuario/Itemanalysis/issues
+URL: https://github.com/tuusuario/Itemanalysis
