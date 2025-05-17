@@ -41,35 +41,20 @@
 #' }
 #'
 #' @import ggplot2
-
-utils::globalVariables(c("Category", "Item", "Mean.Score"))
-
 #' @export
 catPlot <- function(data, items = NULL, smooth = FALSE) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) stop("Package 'ggplot2' is required.")
 
-  # Extract 'means.long' attribute
   df <- attr(data, "means.long")
+  if (is.null(df)) stop("The object must be returned by 'catOrder()' and contain the 'means.long' attribute.")
 
-  if (is.null(df)) {
-    stop("The object must be returned by 'catOrder()' and contain the 'means.long' attribute.")
-  }
+  if (!is.null(items)) df <- df[df$Item %in% items, ]
 
-  # Filter items if specified
-  if (!is.null(items)) {
-    df <- df[df$Item %in% items, ]
-  }
-
-  # Base plot
   p <- ggplot2::ggplot(df, ggplot2::aes(x = Category, y = Mean.Score, group = Item)) +
     ggplot2::geom_point() +
     ggplot2::geom_line() +
     ggplot2::facet_wrap(~ Item, scales = "free_y") +
-    ggplot2::labs(
-      x = "Response Category",
-      y = "Mean of Total Score",
-      title = "Progression of Category Means by Item"
-    ) +
+    ggplot2::labs(x = "Response Category", y = "Mean of Total Score", title = "Progression of Category Means by Item") +
     ggplot2::theme_bw() +
     ggplot2::theme(
       panel.grid.major = ggplot2::element_blank(),
@@ -78,10 +63,12 @@ catPlot <- function(data, items = NULL, smooth = FALSE) {
       plot.title = ggplot2::element_text(hjust = 0.5, face = "bold")
     )
 
-  # Optional smoothing line
   if (smooth) {
     p <- p + ggplot2::geom_smooth(method = "loess", se = FALSE, linewidth = 0.5, linetype = "dashed")
   }
 
   return(p)
 }
+
+# Declare global variables for ggplot2
+utils::globalVariables(c("Category", "Item", "Mean.Score"))
