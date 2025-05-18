@@ -55,16 +55,8 @@ RotheryItems <- function(data.items, alpha = 0.05) {
   }
 
   .minPsi <- function(bn) {
-    bn <- sort(bn, decreasing = TRUE)
-    maxB <- max(bn)
-    n <- length(bn)
-    Q <- R <- matrix(seq_len(maxB * n), nrow = n)
-    for (i in seq_along(bn)) {
-      R[i, -seq_len(bn[i])] <- NA
-    }
-    Q[] <- rank(R)
-    Q[is.na(R)] <- NA
-    getPsi(Q)
+    omega <- getOmega(bn)
+    sum(bn * (bn - 1)) / (3 * omega)
   }
 
   .confEstimatorBeta <- function(x, mu, p, lower.tail, targetValue) {
