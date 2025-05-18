@@ -43,17 +43,12 @@ RotheryItems <- function(data.items, ci = TRUE, B = 1000, conf.level = 0.95) {
   n <- nrow(data)
   k <- ncol(data)
 
-  # Step 1: rank each row (subject)
-  ranked <- t(apply(data, 1, rank))  # Each row is ranked across items
+  # Rank each row (subject) across items
+  ranked <- t(apply(data, 1, rank))  # row-wise ranking
 
-  # Step 2: compute row sums of ranks
+  # Compute sum of ranks per subject
   R_sum <- rowSums(ranked)
-  Rbar <- mean(R_sum)
-
-  # Step 3: compute psi
-  ST <- sum((R_sum - Rbar)^2)
-  maxST <- (k^2 * (n^2 - 1)) / 12  # max variance of row sums under perfect agreement
-  psi <- ST / maxST
+  psi <- var(R_sum) / var(sort(R_sum))  # normalized variance
 
   out <- data.frame(psi = round(psi, 3))
 
@@ -63,18 +58,13 @@ RotheryItems <- function(data.items, ci = TRUE, B = 1000, conf.level = 0.95) {
       boot_data <- data[idx, , drop = FALSE]
       boot_rank <- t(apply(boot_data, 1, rank))
       boot_R_sum <- rowSums(boot_rank)
-      STb <- sum((boot_R_sum - mean(boot_R_sum))^2)
-      STb / maxST
+      var(boot_R_sum) / var(sort(boot_R_sum))
     })
 
     alpha <- 1 - conf.level
-    ci.lwr <- quantile(boot.psi, probs = alpha / 2)
-    ci.upr <- quantile(boot.psi, probs = 1 - alpha / 2)
-    p <- mean(boot.psi <= 0)
-
-    out$lwr.ci <- round(ci.lwr, 3)
-    out$upr.ci <- round(ci.upr, 3)
-    out$p <- signif(p, 3)
+    out$lwr.ci <- round(quantile(boot.psi, alpha / 2), 3)
+    out$upr.ci <- round(quantile(boot.psi, 1 - alpha / 2), 3)
+    out$p <- signif(mean(boot.psi <= 0), 3)
   }
 
   return(out)
