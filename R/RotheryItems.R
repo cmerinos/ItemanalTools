@@ -9,7 +9,7 @@
 #'
 #' @return A data.frame with:
 #' \itemize{
-#'   \item \code{psi}: Concordance statistic.
+#'   \item \code{psi}: Concordance statistic (unscaled).
 #'   \item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval.
 #'   \item \code{p}: One-sided p-value for H0: psi = 2/3.
 #'   \item \code{r}: Correlation-like transformation of \eqn{\psi}.
@@ -22,7 +22,7 @@
 #' @export
 RotheryItems <- function(data.items, alpha = 0.05) {
 
-  # --- Internal functions from nopaco ---
+  # --- Internal functions ---
 
   getPsi <- function(x) {
     x <- as.matrix(x)
@@ -50,14 +50,22 @@ RotheryItems <- function(data.items, alpha = 0.05) {
   }
 
   .minPsi <- function(bn) {
-    omega <- getOmega(bn)
-    sum(bn * (bn - 1)) / (3 * omega)
+    bn <- sort(bn, decreasing = TRUE)
+    maxB <- max(bn)
+    n <- length(bn)
+    Q <- R <- matrix(seq_len(maxB * n), nrow = n)
+    for (i in seq_along(bn)) {
+      R[i, -seq_len(bn[i])] <- NA
+    }
+    Q[] <- rank(R)
+    Q[is.na(R)] <- NA
+    getPsi(Q)
   }
 
-  .confEstimatorBeta <- function(beta, mu, p, targetValue, lower.tail) {
-    alpha <- mu * beta / (1 - mu)
-    p_est <- pbeta(targetValue, shape1 = alpha, shape2 = beta, lower.tail = lower.tail)
-    abs(p_est - p)
+  .confEstimatorBeta <- function(x, mu, p, lower.tail, targetValue) {
+    b <- x
+    a <- mu * b / (1 - mu)
+    (pbeta(targetValue, shape1 = a, shape2 = b, lower.tail = lower.tail) - p)^2
   }
 
   rfromPsi <- function(psi) {
@@ -65,7 +73,7 @@ RotheryItems <- function(data.items, alpha = 0.05) {
     2 * cos(pi * (1 - psi)) - 1
   }
 
-  # --- Main calculation ---
+  # --- Main computation ---
 
   x <- as.matrix(data.items)
   if (any(is.na(x))) stop("Missing values are not allowed.")

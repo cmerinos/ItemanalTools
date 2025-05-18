@@ -7,23 +7,22 @@
 RotheryItems(data.items, alpha = 0.05)
 }
 \arguments{
-\item{data.items}{A numeric matrix or data frame. Rows are subjects; columns are items or repeated measures.}
+\item{data.items}{A numeric matrix or data.frame. Rows are subjects, columns are items or replications.}
 
-\item{alpha}{Significance level for the lower confidence bound. Default is 0.05.}
+\item{alpha}{Significance level for the confidence interval. Default is 0.05.}
 }
 \value{
-A data frame with:
+A data.frame with:
 \itemize{
-\item \code{psi}: Concordance index.
+\item \code{psi}: Concordance statistic.
 \item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval.
-\item \code{p}: p-value for testing H0: psi = 2/3.
-\item \code{r}: Correlation-like transformation of psi.
+\item \code{p}: One-sided p-value for H0: psi = 2/3.
+\item \code{r}: Correlation-like transformation of \eqn{\psi}.
 }
 }
 \description{
-Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measures,
-using the revised-beta approach (Rbeta) based on Rothery (1979). Confidence intervals
-and p-values are estimated following the nopaco package method.
+Computes the nonparametric concordance statistic \eqn{\psi} from Rothery (1979),
+using the revised-beta method to estimate a lower confidence bound and p-value.
 }
 \references{
 Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
