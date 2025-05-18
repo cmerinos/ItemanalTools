@@ -7,7 +7,7 @@
 RotheryItems(data.items, alpha = 0.05)
 }
 \arguments{
-\item{data.items}{A matrix or data frame with ordinal item responses (rows = subjects, columns = items).}
+\item{data.items}{A numeric matrix or data frame. Rows are subjects; columns are items or repeated measures.}
 
 \item{alpha}{Significance level for the lower confidence bound. Default is 0.05.}
 }
@@ -15,16 +15,16 @@ RotheryItems(data.items, alpha = 0.05)
 A data frame with:
 \itemize{
 \item \code{psi}: Concordance index.
-\item \code{lwr.ci}, \code{upr.ci}: Lower and upper confidence interval.
-\item \code{p}: p-value for H0: psi = 2/3.
-\item \code{r}: Equivalent correlation coefficient.
+\item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval.
+\item \code{p}: p-value for testing H0: psi = 2/3.
+\item \code{r}: Correlation-like transformation of psi.
 }
 }
 \description{
-Computes a nonparametric measure of intraclass concordance for ordinal item responses,
-using the Rbeta method from Rothery (1979), adapted from the nopaco package.
+Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measures,
+using the revised-beta approach (Rbeta) based on Rothery (1979). Confidence intervals
+and p-values are estimated following the nopaco package method.
 }
 \references{
-Rothery, P. (1979). A nonparametric measure of intraclass correlation.
-\emph{Applied Statistics}, 28(1), 104–107.
+Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
 }
