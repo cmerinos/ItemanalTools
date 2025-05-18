@@ -27,7 +27,7 @@ using the revised-beta method to estimate a lower confidence bound and p-value.
 \details{
 The statistic \eqn{\psi} ranges from 0 (random concordance) to 1 (perfect concordance),
 and is computed from the variance of row-wise sums of item ranks, scaled relative to
-the theoretical minimum and maximum possible values.
+the theoretical minimum.
 }
 \references{
 Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.

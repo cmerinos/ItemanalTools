@@ -7,7 +7,7 @@
 #' @details
 #' The statistic \eqn{\psi} ranges from 0 (random concordance) to 1 (perfect concordance),
 #' and is computed from the variance of row-wise sums of item ranks, scaled relative to
-#' the theoretical minimum and maximum possible values.
+#' the theoretical minimum.
 #'
 #' @param data.items A numeric matrix or data.frame. Rows are subjects, columns are items or replications.
 #' @param alpha Significance level for the confidence interval. Default is 0.05.
@@ -87,9 +87,8 @@ RotheryItems <- function(data.items, alpha = 0.05) {
   v <- getVar(x)
   bn <- rowSums(!is.na(x))
   min.psi <- .minPsi(bn)
-  max.psi <- getPsi(apply(x, 2, sort))  # most concordant configuration
 
-  psi <- (psi.raw - min.psi) / (max.psi - min.psi)
+  psi <- (psi.raw - min.psi) / (1 - min.psi)
 
   meanB <- sum(bn * (bn * (bn - 1))) / sum(bn * (bn - 1))
   zeta <- 2/3 - sqrt(meanB + 1) / (9/2 * (meanB - 1)^1.5)
