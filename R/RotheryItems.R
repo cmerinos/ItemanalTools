@@ -30,7 +30,7 @@
 #' dat <- matrix(sample(1:5, 100, replace = TRUE), ncol = 5)
 #' RotheryItems(dat)
 #'
-#' @importFrom stats quantile sd mean rank
+#' @importFrom stats quantile sd
 #' @export
 RotheryItems <- function(data.items, ci = TRUE, B = 1000, conf.level = 0.95) {
   if (!is.matrix(data.items) && !is.data.frame(data.items)) {
