@@ -26,7 +26,7 @@ RotheryItems <- function(data.items, alpha = 0.05) {
   # ----- Aux: get concordance statistic -----
   getPsi <- function(x) {
     x <- as.matrix(x)
-    ranked <- apply(x, 2, rank)
+    ranked <- apply(x, 1, rank)
     row_sums <- rowSums(ranked)
     var(row_sums)
   }
