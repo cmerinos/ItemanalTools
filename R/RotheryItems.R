@@ -1,46 +1,39 @@
-#' @title RotheryItems: Nonparametric Concordance Index (Rothery, 1979)
+#' @title RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled)
 #'
 #' @description
-#' Computes the nonparametric concordance statistic \eqn{\psi} from Rothery (1979),
-#' using the revised-beta method to estimate a lower confidence bound and p-value.
+#' Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measures,
+#' scaled to [0,1], using the revised-beta approach (Rbeta) based on Rothery (1979) and the
+#' nopaco package. Confidence intervals and p-values are estimated using the Rbeta method.
 #'
-#' @details
-#' The statistic \eqn{\psi} ranges from 0 (random concordance) to 1 (perfect concordance),
-#' and is computed from the variance of row-wise sums of item ranks, scaled relative to
-#' the theoretical minimum.
+#' @param data.items A numeric matrix or data frame. Rows are subjects; columns are items or repeated measures.
+#' @param alpha Significance level for the lower confidence bound. Default is 0.05.
 #'
-#' @param data.items A numeric matrix or data.frame. Rows are subjects, columns are items or replications.
-#' @param alpha Significance level for the confidence interval. Default is 0.05.
-#'
-#' @return A data.frame with:
+#' @return A data frame with:
 #' \itemize{
-#'   \item \code{psi}: Scaled concordance statistic (0 to 1).
-#'   \item \code{lwr.ci}, \code{upr.ci}: Confidence interval for \eqn{\psi}.
-#'   \item \code{p}: One-sided p-value testing H0: \eqn{\psi \le 2/3}.
-#'   \item \code{r}: Transformed index \eqn{r = 2*cos(\pi*(1 - \psi)) - 1}.
+#'   \item \code{psi}: Scaled concordance index ([0,1]).
+#'   \item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval for the scaled index.
+#'   \item \code{p}: p-value for testing H0: psi = 2/3.
+#'   \item \code{r}: Correlation-like transformation of psi (scaled).
 #' }
 #'
 #' @references
-#' Rothery, P. (1979). A nonparametric measure of intraclass correlation. *Applied Statistics*, 28(1), 104–107.
+#' Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
 #'
-#' @importFrom stats var qbeta pbeta optimize
+#' @importFrom stats optimize pbeta qbeta rank var
 #' @export
 RotheryItems <- function(data.items, alpha = 0.05) {
 
-  # --- Internal functions ---
-
+  # ----- Aux: get concordance statistic -----
   getPsi <- function(x) {
     x <- as.matrix(x)
-    R <- apply(x, 2, rank)
-    S <- rowSums(R)
-    var(S)
+    ranked <- apply(x, 2, rank)
+    row_sums <- rowSums(ranked)
+    var(row_sums)
   }
 
-  getOmega <- function(bn) {
-    sum(bn * (bn - 1) * (sum(bn) - bn))
-  }
-
+  # ----- Aux: get variance under H0 (psi = 2/3) -----
   getVar <- function(x) {
+    x <- as.matrix(x)
     bn <- rowSums(!is.na(x))
     t <- sum(bn)
     omega <- getOmega(bn)
@@ -54,43 +47,54 @@ RotheryItems <- function(data.items, alpha = 0.05) {
     (cii - cij) / (45 * omega^2) * (t + 1)
   }
 
+  # ----- Aux: get Omega constant -----
+  getOmega <- function(bn) {
+    sum(bn * (bn - 1) * (sum(bn) - bn))
+  }
+
+  # ----- Aux: minimum possible value of psi under the design -----
   .minPsi <- function(bn) {
-    bn <- sort(bn, decreasing = TRUE)
-    maxB <- max(bn)
+    omega <- getOmega(bn)
+    sum(bn * (bn - 1)) / (3 * omega)
+  }
+
+  # ----- Aux: maximum possible value of psi under the design -----
+  .maxPsi <- function(bn) {
+    # Perfect concordance: all items/subjects have identical ranks
     n <- length(bn)
-    Q <- R <- matrix(seq_len(maxB * n), nrow = n)
-    for (i in seq_along(bn)) {
-      R[i, -seq_len(bn[i])] <- NA
-    }
-    Q[] <- rank(R)
-    Q[is.na(R)] <- NA
-    getPsi(Q)
+    maxB <- max(bn)
+    X <- matrix(rep(seq_len(maxB), each = n), nrow = n, byrow = TRUE)
+    getPsi(X)
   }
 
-  .confEstimatorBeta <- function(x, mu, p, lower.tail, targetValue) {
-    b <- x
-    a <- mu * b / (1 - mu)
-    (pbeta(targetValue, shape1 = a, shape2 = b, lower.tail = lower.tail) - p)^2
+  # ----- Aux: optimization target -----
+  .confEstimatorBeta <- function(beta, mu, p, targetValue, lower.tail) {
+    alpha <- mu * beta / (1 - mu)
+    p_est <- pbeta(targetValue, shape1 = alpha, shape2 = beta, lower.tail = lower.tail)
+    abs(p_est - p)
   }
 
+  # ----- Aux: r transformation -----
   rfromPsi <- function(psi) {
-    psi <- pmax(pmin(psi, 1), 0)
+    psi <- sapply(sapply(psi, max, 0.5), min, 1)
     2 * cos(pi * (1 - psi)) - 1
   }
 
-  # --- Main computation ---
-
+  # ---------- Main body ----------
   x <- as.matrix(data.items)
   if (any(is.na(x))) stop("Missing values are not allowed.")
 
-  psi.raw <- getPsi(x)
+  psi_raw <- getPsi(x)
   v <- getVar(x)
   bn <- rowSums(!is.na(x))
-  min.psi <- .minPsi(bn)
-
-  psi <- (psi.raw - min.psi) / (1 - min.psi)
-
   meanB <- sum(bn * (bn * (bn - 1))) / sum(bn * (bn - 1))
+
+  min_psi <- .minPsi(bn)
+  max_psi <- .maxPsi(bn)
+  # Avoid zero division
+  psi_scaled <- (psi_raw - min_psi) / (max_psi - min_psi)
+  psi_scaled <- min(max(psi_scaled, 0), 1)
+
   zeta <- 2/3 - sqrt(meanB + 1) / (9/2 * (meanB - 1)^1.5)
   iii <- 2 / getOmega(bn)
 
@@ -100,25 +104,35 @@ RotheryItems <- function(data.items, alpha = 0.05) {
 
   betaPar <- alphaPar * (9 * (meanB - 1)^1.5 / (2 * sqrt(meanB + 1)) - 1)
 
+  # p-value for unscaled psi
+  p <- pbeta(psi_raw - zeta - iii, shape1 = alphaPar, shape2 = betaPar, lower.tail = FALSE)
+
+  # confidence lower bound for unscaled psi
   if (is.nan(alphaPar) || is.nan(betaPar) || alphaPar <= 0 || betaPar <= 0) {
-    ci.lower <- NA
+    ci.lower.raw <- NA
     p <- NA
   } else {
-    p <- pbeta(psi, shape1 = alphaPar, shape2 = betaPar, lower.tail = FALSE)
-
-    est <- optimize(interval = c(1, 1e8), mu = psi, p = p,
-                    lower.tail = TRUE, targetValue = 2/3,
+    est <- optimize(interval = c(1, 1e8), mu = psi_raw - zeta - iii, p = p,
+                    lower.tail = TRUE, targetValue = 2/3 - zeta - iii,
                     f = .confEstimatorBeta)
     betaEst <- est$minimum
-    alphaEst <- psi * betaEst / (1 - psi)
-    ci.lower <- qbeta(alpha, alphaEst, betaEst, lower.tail = TRUE)
+    alphaEst <- (psi_raw - zeta - iii) * betaEst / (1 - (psi_raw - zeta - iii))
+    ci.lower.raw <- max(min_psi,
+                        qbeta(alpha, alphaEst, betaEst, lower.tail = TRUE) + zeta + iii)
   }
 
-  return(data.frame(
-    psi = round(psi, 3),
-    lwr.ci = round(ci.lower, 3),
+  # Scale the lower bound as well
+  lwr.ci <- (ci.lower.raw - min_psi) / (max_psi - min_psi)
+  lwr.ci <- min(max(lwr.ci, 0), 1)
+
+  # Output
+  out <- data.frame(
+    psi = round(psi_scaled, 3),
+    lwr.ci = round(lwr.ci, 3),
     upr.ci = 1,
     p = signif(p, 3),
-    r = round(rfromPsi(psi), 3)
-  ))
+    r = round(rfromPsi(psi_scaled), 3)
+  )
+
+  return(out)
 }

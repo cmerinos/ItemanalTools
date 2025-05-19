@@ -2,32 +2,28 @@
 % Please edit documentation in R/RotheryItems.R
 \name{RotheryItems}
 \alias{RotheryItems}
-\title{RotheryItems: Nonparametric Concordance Index (Rothery, 1979)}
+\title{RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled)}
 \usage{
 RotheryItems(data.items, alpha = 0.05)
 }
 \arguments{
-\item{data.items}{A numeric matrix or data.frame. Rows are subjects, columns are items or replications.}
+\item{data.items}{A numeric matrix or data frame. Rows are subjects; columns are items or repeated measures.}
 
-\item{alpha}{Significance level for the confidence interval. Default is 0.05.}
+\item{alpha}{Significance level for the lower confidence bound. Default is 0.05.}
 }
 \value{
-A data.frame with:
+A data frame with:
 \itemize{
-\item \code{psi}: Scaled concordance statistic (0 to 1).
-\item \code{lwr.ci}, \code{upr.ci}: Confidence interval for \eqn{\psi}.
-\item \code{p}: One-sided p-value testing H0: \eqn{\psi \le 2/3}.
-\item \code{r}: Transformed index \eqn{r = 2*cos(\pi*(1 - \psi)) - 1}.
+\item \code{psi}: Scaled concordance index (\link{0,1}).
+\item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval for the scaled index.
+\item \code{p}: p-value for testing H0: psi = 2/3.
+\item \code{r}: Correlation-like transformation of psi (scaled).
 }
 }
 \description{
-Computes the nonparametric concordance statistic \eqn{\psi} from Rothery (1979),
-using the revised-beta method to estimate a lower confidence bound and p-value.
-}
-\details{
-The statistic \eqn{\psi} ranges from 0 (random concordance) to 1 (perfect concordance),
-and is computed from the variance of row-wise sums of item ranks, scaled relative to
-the theoretical minimum.
+Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measures,
+scaled to \link{0,1}, using the revised-beta approach (Rbeta) based on Rothery (1979) and the
+nopaco package. Confidence intervals and p-values are estimated using the Rbeta method.
 }
 \references{
 Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
