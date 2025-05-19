@@ -35,7 +35,7 @@
 #' For a related method, see \code{\link[Itemanalysis]{FWitems}}, which computes
 #' Kendall's W and the Friedman test for item-based ordinal data.
 #' For an alternative implementation, see \code{\link[nopaco]{concordance.test}},
-#' which computes Rothery's nonparametric concordance index using a slightly different approach.
+#' which computes Rothery's nonparametric concordance index using a different approach.
 #'
 #' @seealso \code{\link[Itemanalysis]{FWitems}}, \code{\link[nopaco]{concordance.test}}
 #'
@@ -44,7 +44,7 @@
 #'
 #' @importFrom stats optimize pbeta qbeta var quantile sd
 #'
-#'#' @export
+#' @export
 RotheryItems <- function(data.items, alpha = 0.05, B = 1000, type = "perc") {
   # Error handling: Ensure matrix or data frame
   if (!is.matrix(data.items) && !is.data.frame(data.items)) {

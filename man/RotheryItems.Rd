@@ -39,7 +39,18 @@ The variance of the sum of midranks (VS) is a robust and theoretically justified
 even under large proportions of ties, as are typically observed in item-based ordinal data.
 For most practical applications involving rating scales and repeated measures, the VS-based approach is recommended
 and does not deviate from the foundational ideas of Rothery's nonparametric concordance.
+For ordinal item data, both Rothery’s concordance index (Psi) and Kendall’s W (from the Friedman test) provide robust,
+nonparametric estimates of overall agreement. Both are recommended for reporting, especially
+when a large proportion of ties is present, as is common in rating scales.
+Comparing both indices can help users better understand the nature of concordance in their dataset.
+For a related method, see \code{\link[Itemanalysis]{FWitems}}, which computes
+Kendall's W and the Friedman test for item-based ordinal data.
+For an alternative implementation, see \code{\link[nopaco]{concordance.test}},
+which computes Rothery's nonparametric concordance index using a different approach.
 }
 \references{
 Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
+}
+\seealso{
+\code{\link[Itemanalysis]{FWitems}}, \code{\link[nopaco]{concordance.test}}
 }
