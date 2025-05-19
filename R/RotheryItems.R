@@ -1,12 +1,16 @@
-#' @title RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled)
+#' @title RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled, bootstrap IC)
 #'
 #' @description
 #' Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measures,
-#' scaled to [0,1], using the revised-beta approach (Rbeta) based on Rothery (1979) and the
-#' nopaco package. Confidence intervals and p-values are estimated using the Rbeta method.
+#' scaled to [0,1], using the revised-beta approach (Rbeta) for p-value and
+#' bootstrap for the confidence interval, following the nopaco package convention.
+#'
+#' Empates (ties) en las columnas se resuelven usando rangos promedio (midranks).
 #'
 #' @param data.items A numeric matrix or data frame. Rows are subjects; columns are items or repeated measures.
 #' @param alpha Significance level for the lower confidence bound. Default is 0.05.
+#' @param B Number of bootstrap samples for confidence interval. Default is 1000.
+#' @param type Type of confidence interval: "perc" (percentile, default) or "norm" (normal approx.).
 #'
 #' @return A data frame with:
 #' \itemize{
@@ -19,14 +23,14 @@
 #' @references
 #' Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
 #'
-#' @importFrom stats optimize pbeta qbeta rank var
+#' @importFrom stats optimize pbeta qbeta rank var quantile sd
 #' @export
-RotheryItems <- function(data.items, alpha = 0.05) {
+RotheryItems <- function(data.items, alpha = 0.05, B = 1000, type = "perc") {
 
   # ----- Aux: get concordance statistic -----
   getPsi <- function(x) {
     x <- as.matrix(x)
-    ranked <- apply(x, 2, rank)
+    ranked <- apply(x, 2, rank, ties.method = "average")
     row_sums <- rowSums(ranked)
     var(row_sums)
   }
@@ -47,34 +51,28 @@ RotheryItems <- function(data.items, alpha = 0.05) {
     (cii - cij) / (45 * omega^2) * (t + 1)
   }
 
-  # ----- Aux: get Omega constant -----
   getOmega <- function(bn) {
     sum(bn * (bn - 1) * (sum(bn) - bn))
   }
 
-  # ----- Aux: minimum possible value of psi under the design -----
   .minPsi <- function(bn) {
     omega <- getOmega(bn)
     sum(bn * (bn - 1)) / (3 * omega)
   }
 
-  # ----- Aux: maximum possible value of psi under the design -----
   .maxPsi <- function(bn) {
-    # Perfect concordance: all items/subjects have identical ranks
     n <- length(bn)
     maxB <- max(bn)
     X <- matrix(rep(seq_len(maxB), each = n), nrow = n, byrow = TRUE)
     getPsi(X)
   }
 
-  # ----- Aux: optimization target -----
   .confEstimatorBeta <- function(beta, mu, p, targetValue, lower.tail) {
     alpha <- mu * beta / (1 - mu)
     p_est <- pbeta(targetValue, shape1 = alpha, shape2 = beta, lower.tail = lower.tail)
     abs(p_est - p)
   }
 
-  # ----- Aux: r transformation -----
   rfromPsi <- function(psi) {
     psi <- sapply(sapply(psi, max, 0.5), min, 1)
     2 * cos(pi * (1 - psi)) - 1
@@ -91,7 +89,6 @@ RotheryItems <- function(data.items, alpha = 0.05) {
 
   min_psi <- .minPsi(bn)
   max_psi <- .maxPsi(bn)
-  # Avoid zero division
   psi_scaled <- (psi_raw - min_psi) / (max_psi - min_psi)
   psi_scaled <- min(max(psi_scaled, 0), 1)
 
@@ -104,33 +101,36 @@ RotheryItems <- function(data.items, alpha = 0.05) {
 
   betaPar <- alphaPar * (9 * (meanB - 1)^1.5 / (2 * sqrt(meanB + 1)) - 1)
 
-  # p-value for unscaled psi
   p <- pbeta(psi_raw - zeta - iii, shape1 = alphaPar, shape2 = betaPar, lower.tail = FALSE)
 
-  # confidence lower bound for unscaled psi
-  if (is.nan(alphaPar) || is.nan(betaPar) || alphaPar <= 0 || betaPar <= 0) {
-    ci.lower.raw <- NA
-    p <- NA
-  } else {
-    est <- optimize(interval = c(1, 1e8), mu = psi_raw - zeta - iii, p = p,
-                    lower.tail = TRUE, targetValue = 2/3 - zeta - iii,
-                    f = .confEstimatorBeta)
-    betaEst <- est$minimum
-    alphaEst <- (psi_raw - zeta - iii) * betaEst / (1 - (psi_raw - zeta - iii))
-    ci.lower.raw <- max(min_psi,
-                        qbeta(alpha, alphaEst, betaEst, lower.tail = TRUE) + zeta + iii)
+  # ---- Bootstrap confidence interval for psi_scaled ----
+  n <- nrow(x)
+  boot.psi <- replicate(B, {
+    idx <- sample(seq_len(n), replace = TRUE)
+    xb <- x[idx, ]
+    psi_b <- getPsi(xb)
+    # Use fixed min/max psi for scaling
+    psi_scaled_b <- (psi_b - min_psi) / (max_psi - min_psi)
+    min(max(psi_scaled_b, 0), 1)
+  })
+
+  alpha2 <- alpha / 2
+
+  if (type == "norm") {
+    lwr.ci <- mean(boot.psi) - qnorm(1 - alpha2) * sd(boot.psi)
+    upr.ci <- mean(boot.psi) + qnorm(1 - alpha2) * sd(boot.psi)
+  } else {  # percentile
+    lwr.ci <- quantile(boot.psi, probs = alpha2, na.rm = TRUE)
+    upr.ci <- quantile(boot.psi, probs = 1 - alpha2, na.rm = TRUE)
   }
-
-  # Scale the lower bound as well
-  lwr.ci <- (ci.lower.raw - min_psi) / (max_psi - min_psi)
   lwr.ci <- min(max(lwr.ci, 0), 1)
+  upr.ci <- min(max(upr.ci, 0), 1)
 
-  # Output
   out <- data.frame(
     psi = round(psi_scaled, 3),
     lwr.ci = round(lwr.ci, 3),
-    upr.ci = 1,
-    p = signif(p, 3),
+    upr.ci = round(upr.ci, 3),
+    p = formatC(p, digits = 3, format = "e"),
     r = round(rfromPsi(psi_scaled), 3)
   )
 

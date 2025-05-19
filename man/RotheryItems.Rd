@@ -2,14 +2,18 @@
 % Please edit documentation in R/RotheryItems.R
 \name{RotheryItems}
 \alias{RotheryItems}
-\title{RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled)}
+\title{RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled, bootstrap IC)}
 \usage{
-RotheryItems(data.items, alpha = 0.05)
+RotheryItems(data.items, alpha = 0.05, B = 1000, type = "perc")
 }
 \arguments{
 \item{data.items}{A numeric matrix or data frame. Rows are subjects; columns are items or repeated measures.}
 
 \item{alpha}{Significance level for the lower confidence bound. Default is 0.05.}
+
+\item{B}{Number of bootstrap samples for confidence interval. Default is 1000.}
+
+\item{type}{Type of confidence interval: "perc" (percentile, default) or "norm" (normal approx.).}
 }
 \value{
 A data frame with:
@@ -22,8 +26,10 @@ A data frame with:
 }
 \description{
 Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measures,
-scaled to \link{0,1}, using the revised-beta approach (Rbeta) based on Rothery (1979) and the
-nopaco package. Confidence intervals and p-values are estimated using the Rbeta method.
+scaled to \link{0,1}, using the revised-beta approach (Rbeta) for p-value and
+bootstrap for the confidence interval, following the nopaco package convention.
+
+Empates (ties) en las columnas se resuelven usando rangos promedio (midranks).
 }
 \references{
 Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
