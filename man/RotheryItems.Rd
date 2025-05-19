@@ -2,7 +2,7 @@
 % Please edit documentation in R/RotheryItems.R
 \name{RotheryItems}
 \alias{RotheryItems}
-\title{RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled, bootstrap IC)}
+\title{RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled, bootstrap CI)}
 \usage{
 RotheryItems(data.items, alpha = 0.05, B = 1000, type = "perc")
 }
@@ -11,25 +11,34 @@ RotheryItems(data.items, alpha = 0.05, B = 1000, type = "perc")
 
 \item{alpha}{Significance level for the lower confidence bound. Default is 0.05.}
 
-\item{B}{Number of bootstrap samples for confidence interval. Default is 1000.}
+\item{B}{Number of bootstrap samples for the confidence interval. Default is 1000.}
 
-\item{type}{Type of confidence interval: "perc" (percentile, default) or "norm" (normal approx.).}
+\item{type}{Type of confidence interval: "perc" (percentile, default) or "norm" (normal approximation).}
 }
 \value{
 A data frame with:
 \itemize{
-\item \code{psi}: Scaled concordance index (\link{0,1}).
+\item \code{psi}: Scaled concordance index (\link{0, 1}).
 \item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval for the scaled index.
 \item \code{p}: p-value for testing H0: psi = 2/3.
 \item \code{r}: Correlation-like transformation of psi (scaled).
 }
 }
 \description{
-Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measures,
-scaled to \link{0,1}, using the revised-beta approach (Rbeta) for p-value and
-bootstrap for the confidence interval, following the nopaco package convention.
+Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measurements,
+scaled to the interval \link{0, 1}. The function uses the variance of summed midranks (VS) approach,
+which is theoretically consistent with Rothery's original formulation, but is robust in the presence of ties (tied values),
+making it particularly suitable for data from ordinal scales where ties are frequent.
+The p-value is calculated using the revised-beta (Rbeta) approximation, and the confidence interval is estimated via bootstrap,
+following the conventions of the \strong{nopaco} package.
 
-Empates (ties) en las columnas se resuelven usando rangos promedio (midranks).
+Ties in columns are resolved using midranks (average ranks).
+}
+\details{
+The variance of the sum of midranks (VS) is a robust and theoretically justified estimator of overall concordance,
+even under large proportions of ties, as are typically observed in item-based ordinal data.
+For most practical applications involving rating scales and repeated measures, the VS-based approach is recommended
+and does not deviate from the foundational ideas of Rothery's nonparametric concordance.
 }
 \references{
 Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.

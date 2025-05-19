@@ -1,45 +1,86 @@
-#' @title RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled, bootstrap IC)
+#' @title RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled, bootstrap CI)
 #'
 #' @description
-#' Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measures,
-#' scaled to [0,1], using the revised-beta approach (Rbeta) for p-value and
-#' bootstrap for the confidence interval, following the nopaco package convention.
+#' Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measurements,
+#' scaled to the interval [0, 1]. The function uses the variance of summed midranks (VS) approach,
+#' which is theoretically consistent with Rothery's original formulation, but is robust in the presence of ties (tied values),
+#' making it particularly suitable for data from ordinal scales where ties are frequent.
+#' The p-value is calculated using the revised-beta (Rbeta) approximation, and the confidence interval is estimated via bootstrap,
+#' following the conventions of the **nopaco** package.
 #'
-#' Empates (ties) en las columnas se resuelven usando rangos promedio (midranks).
+#' Ties in columns are resolved using midranks (average ranks).
 #'
 #' @param data.items A numeric matrix or data frame. Rows are subjects; columns are items or repeated measures.
 #' @param alpha Significance level for the lower confidence bound. Default is 0.05.
-#' @param B Number of bootstrap samples for confidence interval. Default is 1000.
-#' @param type Type of confidence interval: "perc" (percentile, default) or "norm" (normal approx.).
+#' @param B Number of bootstrap samples for the confidence interval. Default is 1000.
+#' @param type Type of confidence interval: "perc" (percentile, default) or "norm" (normal approximation).
 #'
 #' @return A data frame with:
 #' \itemize{
-#'   \item \code{psi}: Scaled concordance index ([0,1]).
+#'   \item \code{psi}: Scaled concordance index ([0, 1]).
 #'   \item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval for the scaled index.
 #'   \item \code{p}: p-value for testing H0: psi = 2/3.
 #'   \item \code{r}: Correlation-like transformation of psi (scaled).
 #' }
 #'
+#' @details
+#' The variance of the sum of midranks (VS) is a robust and theoretically justified estimator of overall concordance,
+#' even under large proportions of ties, as are typically observed in item-based ordinal data.
+#' For most practical applications involving rating scales and repeated measures, the VS-based approach is recommended
+#' and does not deviate from the foundational ideas of Rothery's nonparametric concordance.
+#' For ordinal item data, both Rothery’s concordance index (Psi) and Kendall’s W (from the Friedman test) provide robust,
+#' nonparametric estimates of overall agreement. Both are recommended for reporting, especially
+#' when a large proportion of ties is present, as is common in rating scales.
+#' Comparing both indices can help users better understand the nature of concordance in their dataset.
+#' For a related method, see \code{\link[Itemanalysis]{FWitems}}, which computes
+#' Kendall's W and the Friedman test for item-based ordinal data.
+#' For an alternative implementation, see \code{\link[nopaco]{concordance.test}},
+#' which computes Rothery's nonparametric concordance index using a slightly different approach.
+#'
+#' @seealso \code{\link[Itemanalysis]{FWitems}}, \code{\link[nopaco]{concordance.test}}
+#'
 #' @references
 #' Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
 #'
-#' @importFrom stats optimize pbeta qbeta rank var quantile sd
-#' @export
+#' @importFrom stats optimize pbeta qbeta var quantile sd
+#'
+#'#' @export
 RotheryItems <- function(data.items, alpha = 0.05, B = 1000, type = "perc") {
+  # Error handling: Ensure matrix or data frame
+  if (!is.matrix(data.items) && !is.data.frame(data.items)) {
+    stop("`data.items` must be a matrix or data frame.")
+  }
+  x <- as.matrix(data.items)
 
-  # ----- Aux: get concordance statistic -----
-  getPsi <- function(x) {
-    x <- as.matrix(x)
+  # Ensure all columns are numeric
+  if (!all(apply(x, 2, is.numeric))) {
+    stop("All columns in `data.items` must be numeric.")
+  }
+
+  # Remove rows with any missing values
+  na_rows <- apply(x, 1, function(row) any(is.na(row)))
+  if (any(na_rows)) {
+    warning(sprintf("Removed %d row(s) with NA values.", sum(na_rows)))
+    x <- x[!na_rows, , drop = FALSE]
+  }
+
+  # Check if enough data remains
+  if (nrow(x) < 2 || ncol(x) < 2) {
+    stop("Matrix must have at least 2 rows and 2 columns with valid data after NA removal.")
+  }
+
+  # --- Helper: Concordance statistic via variance of sum of midranks (VS) ---
+  getPsiVS <- function(x) {
     ranked <- apply(x, 2, rank, ties.method = "average")
     row_sums <- rowSums(ranked)
     var(row_sums)
   }
 
-  # ----- Aux: get variance under H0 (psi = 2/3) -----
+  # --- Helper: Variance under H0 (psi = 2/3) ---
   getVar <- function(x) {
-    x <- as.matrix(x)
     bn <- rowSums(!is.na(x))
     t <- sum(bn)
+    getOmega <- function(bn) sum(bn * (bn - 1) * (sum(bn) - bn))
     omega <- getOmega(bn)
     cij <- 0
     for (i in 1:(length(bn) - 1)) {
@@ -51,9 +92,7 @@ RotheryItems <- function(data.items, alpha = 0.05, B = 1000, type = "perc") {
     (cii - cij) / (45 * omega^2) * (t + 1)
   }
 
-  getOmega <- function(bn) {
-    sum(bn * (bn - 1) * (sum(bn) - bn))
-  }
+  getOmega <- function(bn) sum(bn * (bn - 1) * (sum(bn) - bn))
 
   .minPsi <- function(bn) {
     omega <- getOmega(bn)
@@ -64,58 +103,39 @@ RotheryItems <- function(data.items, alpha = 0.05, B = 1000, type = "perc") {
     n <- length(bn)
     maxB <- max(bn)
     X <- matrix(rep(seq_len(maxB), each = n), nrow = n, byrow = TRUE)
-    getPsi(X)
+    getPsiVS(X)
   }
 
-  .confEstimatorBeta <- function(beta, mu, p, targetValue, lower.tail) {
-    alpha <- mu * beta / (1 - mu)
-    p_est <- pbeta(targetValue, shape1 = alpha, shape2 = beta, lower.tail = lower.tail)
-    abs(p_est - p)
-  }
-
-  rfromPsi <- function(psi) {
-    psi <- sapply(sapply(psi, max, 0.5), min, 1)
-    2 * cos(pi * (1 - psi)) - 1
-  }
-
-  # ---------- Main body ----------
-  x <- as.matrix(data.items)
-  if (any(is.na(x))) stop("Missing values are not allowed.")
-
-  psi_raw <- getPsi(x)
-  v <- getVar(x)
+  # --- Main computation ---
+  psi_raw <- getPsiVS(x)
   bn <- rowSums(!is.na(x))
-  meanB <- sum(bn * (bn * (bn - 1))) / sum(bn * (bn - 1))
-
   min_psi <- .minPsi(bn)
   max_psi <- .maxPsi(bn)
   psi_scaled <- (psi_raw - min_psi) / (max_psi - min_psi)
   psi_scaled <- min(max(psi_scaled, 0), 1)
 
+  v <- getVar(x)
+  meanB <- sum(bn * (bn * (bn - 1))) / sum(bn * (bn - 1))
   zeta <- 2/3 - sqrt(meanB + 1) / (9/2 * (meanB - 1)^1.5)
   iii <- 2 / getOmega(bn)
-
   alphaPar <- (4 * (meanB + 1) / (81 * (meanB - 1)^3) -
                  ((8/9) * (meanB + 1)^1.5) / (81 * (meanB - 1)^4.5)) / v -
     sqrt(4 * (meanB + 1) / (81 * (meanB - 1)^3))
-
   betaPar <- alphaPar * (9 * (meanB - 1)^1.5 / (2 * sqrt(meanB + 1)) - 1)
-
   p <- pbeta(psi_raw - zeta - iii, shape1 = alphaPar, shape2 = betaPar, lower.tail = FALSE)
 
-  # ---- Bootstrap confidence interval for psi_scaled ----
+  # --- Bootstrap confidence interval for psi_scaled ---
   n <- nrow(x)
   boot.psi <- replicate(B, {
     idx <- sample(seq_len(n), replace = TRUE)
     xb <- x[idx, ]
-    psi_b <- getPsi(xb)
+    psi_b <- getPsiVS(xb)
     # Use fixed min/max psi for scaling
     psi_scaled_b <- (psi_b - min_psi) / (max_psi - min_psi)
     min(max(psi_scaled_b, 0), 1)
   })
 
   alpha2 <- alpha / 2
-
   if (type == "norm") {
     lwr.ci <- mean(boot.psi) - qnorm(1 - alpha2) * sd(boot.psi)
     upr.ci <- mean(boot.psi) + qnorm(1 - alpha2) * sd(boot.psi)
@@ -125,6 +145,11 @@ RotheryItems <- function(data.items, alpha = 0.05, B = 1000, type = "perc") {
   }
   lwr.ci <- min(max(lwr.ci, 0), 1)
   upr.ci <- min(max(upr.ci, 0), 1)
+
+  rfromPsi <- function(psi) {
+    psi <- sapply(sapply(psi, max, 0.5), min, 1)
+    2 * cos(pi * (1 - psi)) - 1
+  }
 
   out <- data.frame(
     psi = round(psi_scaled, 3),
