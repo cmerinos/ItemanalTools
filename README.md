@@ -13,6 +13,7 @@
 -   **Deviation of observed correlations from a reference value**
 -   **Associations between items and categorical grouping variables**
 -   **Summary of item-level association coefficients**
+-   **Corcordance and differences tests for multiple items**
 
 
 The package is aimed at researchers and practitioners conducting scale development, validation, and item refinement using both classical and modern psychometric methods.
