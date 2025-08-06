@@ -13,9 +13,9 @@
 -   **Deviation of observed correlations from a reference value**
 -   **Associations between items and categorical grouping variables**
 -   **Summary of item-level association coefficients**
--   **Corcordance and differences tests for multiple items**
+-   **Concordance and differences tests for multiple items**
 
-The package is aimed at researchers and practitioners conducting scale development, validation, and item refinement using both classical and modern psychometric methods. Especialmente recomendado para obtener evidencias del comportamiento estadistico de los items dentro de un marco de validez de contenido con foco cuantitativo.
+The package is aimed at researchers and practitioners conducting scale development, validation, and item refinement using both classical and modern psychometric methods. It is especially recommended for obtaining evidence on the statistical behavior of items within a content validity framework, with a focus on quantitative indicators.
 
 ## Installation
 
@@ -47,23 +47,20 @@ print(fsi$FSI.i)
 ## Selected Functions
 
 | Function | Description |
-|--------------------|----------------------------------------------------|
+|---------------------|---------------------------------------------------|
 | `AENO()` | Calculates the Factorial Simplicity Index (FSI) |
 | `AENO()` | Computes Hofmann’s index of factor complexity |
 | `cat.order()` | Monotonicity test using category means across response levels |
 | `catPlot()` | Plot of response category trend |
-| `RGitems()` | Nonparametric effect size Wilcoxon Rank-Biserial in two grups  |
+| `RGitems()` | Nonparametric effect size Wilcoxon Rank-Biserial in two grups |
 | `CucconiMult()` | Multigroup Cucconi Test for Location and Scale Differences |
 | `DmIndex()` | Item-Level Deviation Index from a Theoretical Association Value |
 | `epsilonItems()` | Nonparametric effect size epsilon squared across multiple groups |
 | `FWitems()` | Friedman test and Kendall’s W for repeated-measures item data |
 | `MurakamiPairs()` | All-pairs nonparametric comparisons between groups using the two-groups Cucconi test |
-| `RotheryItems()` |  Nonparametric concordance index for repeated ordinal measurements, based in Rothery (1979) |
-| `Spearitems()` |  Spearman's rho or Kendall's tau correlation between each ordinal item and a continuous external criterion |
-| `summaryItemAssoc()` |  Summary Statistics for Item-Level Association Coefficients |
-
-
-
+| `RotheryItems()` | Nonparametric concordance index for repeated ordinal measurements, based in Rothery (1979) |
+| `Spearitems()` | Spearman's rho or Kendall's tau correlation between each ordinal item and a continuous external criterion |
+| `summaryItemAssoc()` | Summary Statistics for Item-Level Association Coefficients |
 
 ## References
 
@@ -71,7 +68,7 @@ print(fsi$FSI.i)
 -   Rosario-Hernández, E., Rovira-Millán, L. V., Merino-Soto, C., & Angulo-Ramos, M. (2023). Review of the psychometric properties of the Patient Health Questionnaire-9 (PHQ-9) Spanish version in a sample of Puerto Rican workers. *Frontiers in psychiatry*, 14, 1024676. <https://doi.org/10.3389/fpsyt.2023.1024676>
 -   Jin, Q., & Yu, K. (2023). Adaptation and validation of the university-to-work success scale among Chinese university graduates. *Frontiers in psychology*, 14, 1258746. <https://doi.org/10.3389/fpsyg.2023.1258746>
 -   Cabedo-Peris, J., Merino-Soto, C., Chans, G. M., & Martí-Vilar, M. (2024). Exploring the Loss Aversion Scale's psychometric properties in Spain. *Scientific reports*, 14(1), 15756. <https://doi.org/10.1038/s41598-024-66695-6>
--   Merino-Soto, C., Angulo-Ramos, M., Rovira-Millán, L. V., & Rosario-Hernández, E. (2023). Psychometric properties of the generalized anxiety disorder-7 (GAD-7) in a sample of workers. *Frontiers in psychiatry*, 14, 999242. https://doi.org/10.3389/fpsyt.2023.999242
+-   Merino-Soto, C., Angulo-Ramos, M., Rovira-Millán, L. V., & Rosario-Hernández, E. (2023). Psychometric properties of the generalized anxiety disorder-7 (GAD-7) in a sample of workers. *Frontiers in psychiatry*, 14, 999242. <https://doi.org/10.3389/fpsyt.2023.999242>
 
 ## Contributing
 
