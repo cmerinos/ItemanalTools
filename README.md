@@ -15,8 +15,7 @@
 -   **Summary of item-level association coefficients**
 -   **Corcordance and differences tests for multiple items**
 
-
-The package is aimed at researchers and practitioners conducting scale development, validation, and item refinement using both classical and modern psychometric methods.
+The package is aimed at researchers and practitioners conducting scale development, validation, and item refinement using both classical and modern psychometric methods. Especialmente recomendado para obtener evidencias del comportamiento estadistico de los items dentro de un marco de validez de contenido con foco cuantitativo.
 
 ## Installation
 
@@ -24,10 +23,8 @@ To install the development version from GitHub:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("tuusuario/Itemanalysis")
+devtools::install_github("cmerinos/Itemanalysis")
 ```
-
-Replace `"tuusuario"` with your actual GitHub username.
 
 ## Example: FSI (Factorial Simplicity Index)
 
@@ -50,23 +47,31 @@ print(fsi$FSI.i)
 ## Selected Functions
 
 | Function | Description |
-|------------------|------------------------------------------------------|
-| `FSI()` | Calculates the Factorial Simplicity Index (FSI) |
-| `HofmannFac()` | Computes Hofmann’s index of factor complexity |
-| `RGWil()` | Computes rank-biserial correlation by groups (Wilcoxon-based) |
-| `SVALsingle()` | Substantive validity (psa, svc) for one item |
-| `SVALmult()` | Substantive validity for multiple items |
-| `BSIbootpp()` | Bootstrap-based confidence intervals for pre-post item change |
-| `AENOmulti()` | Calculates entropy for each ordinal item |
-| `FWitems()` | Friedman test and Kendall’s W for repeated-measures item data |
+|--------------------|----------------------------------------------------|
+| `AENO()` | Calculates the Factorial Simplicity Index (FSI) |
+| `AENO()` | Computes Hofmann’s index of factor complexity |
 | `cat.order()` | Monotonicity test using category means across response levels |
+| `catPlot()` | Plot of response category trend |
+| `RGitems()` | Nonparametric effect size Wilcoxon Rank-Biserial in two grups  |
+| `CucconiMult()` | Multigroup Cucconi Test for Location and Scale Differences |
+| `DmIndex()` | Item-Level Deviation Index from a Theoretical Association Value |
+| `epsilonItems()` | Nonparametric effect size epsilon squared across multiple groups |
+| `FWitems()` | Friedman test and Kendall’s W for repeated-measures item data |
+| `MurakamiPairs()` | All-pairs nonparametric comparisons between groups using the two-groups Cucconi test |
+| `RotheryItems()` |  Nonparametric concordance index for repeated ordinal measurements, based in Rothery (1979) |
+| `Spearitems()` |  Spearman's rho or Kendall's tau correlation between each ordinal item and a continuous external criterion |
+| `summaryItemAssoc()` |  Summary Statistics for Item-Level Association Coefficients |
+
+
+
 
 ## References
 
--   Fleming, J. S., & Merino Soto, C. (2005). *Medidas de simplicidad y de ajuste factorial*. Revista de Psicología, 23(2), 250–266.
--   Fleming, J. S. (2003). *Computing measures of simplicity of fit*. Behavior Research Methods, 35(4), 520–524.
--   Botella, J., Blázquez, D., Suero, M., & Juola, J. F. (2018). *Item Bootstrapping*. Frontiers in Psychology, 9, 223.
--   Hofmann, R. J. (1977). *Indices of factorial complexity*. Behavior Research Methods and Instrumentation, 9, 538–550.
+-   Merino-Soto, C., Juárez-García, A., Salinas-Escudero, G., & Toledano-Toledano, F. (2022). Item-level psychometric analysis of the psychosocial processes at Work Scale (PROPSIT) in workers. *International Journal of Environmental Research and Public Health*, 19(13), 7972. <https://doi.org/10.3390/ijerph19137972>
+-   Rosario-Hernández, E., Rovira-Millán, L. V., Merino-Soto, C., & Angulo-Ramos, M. (2023). Review of the psychometric properties of the Patient Health Questionnaire-9 (PHQ-9) Spanish version in a sample of Puerto Rican workers. *Frontiers in psychiatry*, 14, 1024676. <https://doi.org/10.3389/fpsyt.2023.1024676>
+-   Jin, Q., & Yu, K. (2023). Adaptation and validation of the university-to-work success scale among Chinese university graduates. *Frontiers in psychology*, 14, 1258746. <https://doi.org/10.3389/fpsyg.2023.1258746>
+-   Cabedo-Peris, J., Merino-Soto, C., Chans, G. M., & Martí-Vilar, M. (2024). Exploring the Loss Aversion Scale's psychometric properties in Spain. *Scientific reports*, 14(1), 15756. <https://doi.org/10.1038/s41598-024-66695-6>
+-   Merino-Soto, C., Angulo-Ramos, M., Rovira-Millán, L. V., & Rosario-Hernández, E. (2023). Psychometric properties of the generalized anxiety disorder-7 (GAD-7) in a sample of workers. *Frontiers in psychiatry*, 14, 999242. https://doi.org/10.3389/fpsyt.2023.999242
 
 ## Contributing
 
