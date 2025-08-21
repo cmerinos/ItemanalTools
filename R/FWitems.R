@@ -51,11 +51,12 @@ FWitems <- function(data.items, ci = TRUE, correct = TRUE, type = "norm", B = 10
   # Friedman test
   friedman <- stats::friedman.test(data.mat)
 
-  # Kendall's W
+  # Verificar paquete
   if (!requireNamespace("rcompanion", quietly = TRUE)) {
     stop("Package 'rcompanion' is required.")
   }
 
+  # Kendall's W
   kw <- rcompanion::kendallW(data.mat,
                              correct = correct,
                              ci = ci,
@@ -64,6 +65,7 @@ FWitems <- function(data.items, ci = TRUE, correct = TRUE, type = "norm", B = 10
                              R = B,
                              histogram = FALSE)
 
+  # Armar salida según 'ci'
   if (ci) {
     W.out <- data.frame(
       W = round(kw$W, 3),
@@ -71,7 +73,7 @@ FWitems <- function(data.items, ci = TRUE, correct = TRUE, type = "norm", B = 10
       upp.ci = round(kw$upper.ci, 3)
     )
   } else {
-    W.out <- data.frame(W = round(kw$W, 3))
+    W.out <- data.frame(W = round(kw, 3))
   }
 
   return(list(Friedman = friedman, KendallW = W.out))
