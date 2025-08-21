@@ -67,16 +67,16 @@ catPlot(data = science.catorder)
 
 | Function | Description |
 |----------------------|--------------------------------------------------|
-| `AENO()` | Calculates the Factorial Simplicity Index (FSI) |
-| `AENO()` | Computes Hofmann’s index of factor complexity |
+| `AENO()` | Calculates the Actual Equivalent Number of Options (AENO) |
+| `AENOmulti()` | Actual Equivalent Number of Options for Multiple Items |
 | `cat.order()` | Monotonicity test using category means across response levels |
 | `catPlot()` | Plot of response category trend |
-| `RGitems()` | Nonparametric effect size Wilcoxon Rank-Biserial in two grups |
-| `CucconiMult()` | Multigroup Cucconi Test for Location and Scale Differences |
-| `DmIndex()` | Item-Level Deviation Index from a Theoretical Association Value |
+| `CucconiMult()` | Multigroup Cucconi Test for location and dcale simultaneous differences |
+| `DmIndex()` | Item-Level Deviation Index from a theoretical association value |
 | `epsilonItems()` | Nonparametric effect size epsilon squared across multiple groups |
 | `FWitems()` | Friedman test and Kendall’s W for repeated-measures item data |
 | `MurakamiPairs()` | All-pairs nonparametric comparisons between groups using the two-groups Cucconi test |
+| `RGitems()` | Nonparametric effect size Wilcoxon Rank-Biserial in two grups |
 | `RotheryItems()` | Nonparametric concordance index for repeated ordinal measurements, based in Rothery (1979) |
 | `Spearitems()` | Spearman's rho or Kendall's tau correlation between each ordinal item and a continuous external criterion |
 | `summaryItemAssoc()` | Summary Statistics for Item-Level Association Coefficients |
