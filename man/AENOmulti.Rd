@@ -2,7 +2,7 @@
 % Please edit documentation in R/AENOmulti.R
 \name{AENOmulti}
 \alias{AENOmulti}
-\title{AENOmulti: Effective Number of Nominal Options for Multiple Items}
+\title{AENOmulti: Actual Equivalent Number of Options for Multiple Items}
 \usage{
 AENOmulti(data, k)
 }
@@ -19,9 +19,9 @@ A \code{data.frame} with the following columns for each item:
 \item{n}{Number of valid (non-missing) responses.}
 }
 \description{
-Calculates the AENO index (Effective Number of Nominal Options; Samejima, 1980) for each item
+Calculates the AENO index (actual equivalent number of options; Samejima, 1980) for each item
 in a dataset. Useful for exploring how well response options are being utilized
-across polytomous items. AENO is a summary practical index for content validity
+across polytomous items. AENO is a summary practical index for effective options responses
 focused in item analysis (Merino-Soto et al., 2022)
 
 Internally calls \code{\link{AENOuni}}. Response categories with zero frequency
