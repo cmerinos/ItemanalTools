@@ -76,5 +76,6 @@ FWitems <- function(data.items, ci = TRUE, correct = TRUE, type = "norm", B = 10
     W.out <- data.frame(W = round(kw, 3))
   }
 
+
   return(list(Friedman = friedman, KendallW = W.out))
 }
