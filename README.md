@@ -7,14 +7,20 @@
 **Itemanalysis** is an R package for in-depth item-level psychometric analysis. It provides functions to assess:
 
 -   **Effective Number of Nominal Options (Samejima's AENO)**
+
 -   **Item-level associations with external variables**
+
 -   **Monotonic trends in response categories of Likert-type items**
+
 -   **Between-group differences in both central tendency and dispersion**
--   **Deviation of observed correlations from a reference value**
+
+-   **Deviation of observed correlations from reference values, for item validity**
+
 -   **Associations between items and categorical grouping variables**
+
 -   **Summary of item-level association coefficients**
+
 -   **Concordance and differences tests for multiple items**
--   **Quantifying item validity**
 
 The package is aimed at researchers and practitioners conducting scale development, validation, and item refinement using both classical and modern psychometric methods. It is especially recommended for obtaining evidence on the statistical behavior of items within a content validity framework, with a focus on quantitative indicators.
 
@@ -32,17 +38,29 @@ devtools::install_github("cmerinos/Itemanalysis")
 ``` r
 library(Itemanalysis)
 
-# Simulated factor loadings (4 items, 2 factors)
-loadings <- matrix(c(
-  0.8, 0.2,
-  0.75, 0.3,
-  0.1, 0.9,
-  0.2, 0.85
-), nrow = 4, byrow = TRUE)
+# Load example data
+mirt::Science
 
-# Calculate FSI
-fsi <- FSI(loadings)
-print(fsi$FSI.i)
+AENOmulti(Science, k = 6)
+
+FWitems(Science, ci = T,correct = T)
+
+RotheryItems(data.items = Science, alpha = .05)
+
+epsilonItems(data.items = Science, group = sample(1:3, size = 392, replace = TRUE), ci = T)
+
+RGitems(data.items = Science, group = sample(1:2, size = 392, replace = TRUE), ci = T)
+
+SpearItems(data.items = Science, criteria = sample(1:2, size = 392, replace = TRUE), ci = T)
+
+SpearItems(data.items = Science, criteria = sample(1:2, size = 392, replace = TRUE), ci = T, method = "kendall")
+
+catOrder(data = Science, score.total = rowSums(Science))
+
+science.catorder <- Itemanalysis::catOrder(data = Science, score.total = rowSums(Science))
+
+catPlot(data = science.catorder)
+
 ```
 
 ## Selected Functions
