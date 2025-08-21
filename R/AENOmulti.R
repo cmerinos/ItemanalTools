@@ -1,7 +1,7 @@
-#' @title AENOmulti: Effective Number of Nominal Options for Multiple Items
+#' @title AENOmulti: Actual Equivalent Number of Options for Multiple Items
 #'
 #' @description
-#' Calculates the AENO index (Effective Number of Nominal Options; Samejima, 1980) for each item
+#' Calculates the AENO index (actual equivalent number of options; Samejima, 1980) for each item
 #' in a dataset. Useful for exploring how well response options are being utilized
 #' across polytomous items. AENO is a summary practical index for effective options responses
 #' focused in item analysis (Merino-Soto et al., 2022)
