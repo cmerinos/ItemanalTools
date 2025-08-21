@@ -56,26 +56,29 @@ FWitems <- function(data.items, ci = TRUE, correct = TRUE, type = "norm", B = 10
     stop("Package 'rcompanion' is required.")
   }
 
-  # Kendall's W
-  kw <- rcompanion::kendallW(data.mat,
-                             correct = correct,
-                             ci = ci,
-                             conf = conf.level,
-                             type = type,
-                             R = B,
-                             histogram = FALSE)
+  # Calcular W exacto, siempre
+  W.value <- rcompanion::kendallW(data.mat,
+                                  correct = correct,
+                                  ci = FALSE)
 
-  # Armar salida según 'ci'
+  # Si se solicita CI, calcular bootstrap solo para los intervalos
   if (ci) {
+    W.ci <- rcompanion::kendallW(data.mat,
+                                 correct = correct,
+                                 ci = TRUE,
+                                 conf = conf.level,
+                                 type = type,
+                                 R = B,
+                                 histogram = FALSE)
+
     W.out <- data.frame(
-      W = round(kw$W, 3),
-      lwr.ci = round(kw$lower.ci, 3),
-      upp.ci = round(kw$upper.ci, 3)
+      W = round(W.value, 3),
+      lwr.ci = round(W.ci$lower.ci, 3),
+      upp.ci = round(W.ci$upper.ci, 3)
     )
   } else {
-    W.out <- data.frame(W = round(kw, 3))
+    W.out <- data.frame(W = round(W.value, 3))
   }
-
 
   return(list(Friedman = friedman, KendallW = W.out))
 }
