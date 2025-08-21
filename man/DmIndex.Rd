@@ -2,62 +2,109 @@
 % Please edit documentation in R/DmIndex.R
 \name{DmIndex}
 \alias{DmIndex}
-\title{DmIndex: Item-Level Deviation Index from a Theoretical Association Value}
+\title{DmIndex: Deviation Index from a Theoretical Association}
 \usage{
-DmIndex(df, coef.col, lwr.col, upr.col, ref.value = 0.3)
+DmIndex(
+  df,
+  coef.col,
+  ref.value = 0.5,
+  metric = c("fisher", "r"),
+  ci.method = c("none", "zboot"),
+  conf.level = 0.95,
+  B = 2000,
+  n.eff = NULL,
+  round.digits = 3,
+  clamp.zero = TRUE,
+  item.col = "Item"
+)
 }
 \arguments{
-\item{df}{A data frame of item-level results, typically returned by functions such as
-\code{RGitems()}, \code{SpearItems()}, or \code{epsilonitems()}.}
+\item{df}{A data frame containing item-level results.}
 
-\item{coef.col}{Character. Name of the column containing the association coefficient
-(e.g., "rg", "tau", "eps2").}
+\item{coef.col}{Character. Name of the column with observed correlations (e.g. \code{"rg"}, \code{"tau"}, \code{"r"}).}
 
-\item{lwr.col}{Character. Name of the column containing the lower bound of the confidence interval.}
+\item{ref.value}{Numeric. Reference value(s). May be a single scalar (applied to all items)
+or a vector of the same length as \code{nrow(df)}. Default = 0.50.}
 
-\item{upr.col}{Character. Name of the column containing the upper bound of the confidence interval.}
+\item{metric}{Character. Scale for computation:
+\itemize{
+\item \code{"r"}: raw correlation scale
+\item \code{"fisher"}: Fisher z scale (default).
+}}
 
-\item{ref.value}{Numeric. Reference value to compare against. Default is \code{0.30}.}
+\item{ci.method}{Character. Confidence interval method: \code{"none"} or \code{"zboot"}.
+\itemize{
+\item \code{"none"}: only point estimate of Dm is reported.
+\item \code{"zboot"}: \strong{parametric bootstrap} confidence interval, assuming the
+Fisher z transformation of the correlation is normally distributed with
+variance 1/(n.eff - 3). Requires \code{n.eff}.
+}}
+
+\item{conf.level}{Confidence level for bootstrap CI. Default = 0.95.}
+
+\item{B}{Integer. Number of bootstrap replicates for \code{"zboot"}. Default = 2000.}
+
+\item{n.eff}{Integer. Effective sample size used to approximate SE in Fisher z.
+Required for bootstrap (\code{ci.method="zboot"}).}
+
+\item{round.digits}{Integer. Number of decimal places to report. Default = 3.}
+
+\item{clamp.zero}{Logical. If TRUE and \code{metric="r"}, truncate negative Dm at 0.
+Default = TRUE.}
+
+\item{item.col}{Character. Name of the column with item labels. Default \code{"Item"}.}
 }
 \value{
 A data frame with the following columns:
-\describe{
-\item{\code{Item}}{The item name.}
-\item{\code{Dm}}{Deviation index relative to the reference value.}
-\item{\code{Overlap}}{"Yes" if the confidence interval includes the reference value; otherwise "No".}
+\itemize{
+\item \code{Item}: item name.
+\item \code{Dm}: Deviation Index point estimate.
+\item \code{Dm.lwr}, \code{Dm.upr}: lower and upper bootstrap CI bounds (if \code{ci.method="zboot"}).
+\item \code{coef.mean}: observed coefficient.
+\item \code{abs.diff.mean}: absolute difference between observed and reference value
+(in \code{r} or Fisher z scale, depending on \code{metric}).
 }
 }
 \description{
-Computes the Dm index for each item, which quantifies how much an observed coefficient
-deviates from a reference value. It also flags whether the reference value falls within
-each item's confidence interval. The Dm index is calculated as:
-\code{Dm = 1 - (r_observed - ref.value)^2}.
+Computes the \strong{Deviation Index (Dm)} for each item, defined as:
+\deqn{Dm = \sqrt{1 - (r - r_{ref})^2}}
+or, if \code{metric="fisher"},
+\deqn{Dm = \sqrt{1 - (z(r) - z(r_{ref}))^2}},
+where \eqn{z()} is the Fisher transformation.
 
-A Dm value closer to 1 indicates that the observed coefficient is close to the expected value.
-The value of the index depends on two components: the correlation and the reference value.
-This reference value is critical. In item analysis, it may be that the reference value
-is less than .30; the function that value but is not validated, and is lower than the one
-originally proposed at .50 (Tara & Kline,2010 ) and maintained in other studies
-(Dominguez-Lara, 2013, 2018).
+Confidence intervals are estimated by bootstrap in the Fisher z
+domain, then transformed back to the Dm scale.
+}
+\details{
+The Deviation Index (Taras & Kline, 2010) quantifies the proximity of
+an observed correlation to a theoretical reference. Values closer to 1 indicate
+better agreement with the reference.
+
+The \code{"zboot"} option performs a \strong{parametric bootstrap} in the Fisher z domain:
+for each replicate, a Fisher z value is sampled from
+\eqn{N(\hat{z}, 1/(n.eff-3))}, transformed back, and used to compute Dm.
+The empirical quantiles across replicates form the confidence interval.
+This is not a nonparametric bootstrap on raw data, but an approximation
+suitable when only correlation coefficients are available.
 }
 \examples{
-result <- data.frame(
+df <- data.frame(
   Item = paste0("Item", 1:5),
-  rg = c(.22, .18, .35, .12, .29),
-  lwr.ci = c(.10, .05, .25, .00, .15),
-  lwr.upp = c(.33, .29, .45, .20, .40)
+  tau = c(.22, .18, .35, .12, .29)
 )
-DmIndex(df = result, coef.col = "rg", lwr.col = "lwr.ci", upr.col = "lwr.upp", ref.value = 0.30)
+# Only point estimates
+DmIndex(df, coef.col = "tau", ref.value = 0.30, ci.method = "none")
+
+# With parametric bootstrap CI (requires n.eff)
+DmIndex(df, coef.col = "tau", ref.value = 0.30,
+        ci.method = "zboot", n.eff = 250, B = 500)
 
 }
 \references{
-Taras, V., & Kline, T. (2010). Scale validation via quantifying item validity using
-the Dm index. Psychological reports, 107(2), 535–546. https://doi.org/10.2466/03.PR0.107.5.535-546
-
-Dominguez Lara, S. (2013). Proposal for the calculation of the DM index for the validity of the items.
-Interdisciplinaria Revista de Psicología y Ciencias Afines, 30(2), 297–303.
+Dominguez Lara, S. (2013). Propuesta para el cálculo del índice DM para la validez de los
+ítemes. \emph{Interdisciplinaria Revista de Psicología y Ciencias Afines}, 30(2), 297–303.
 https://doi.org/10.16888/interd.2013.30.2.8
 
-Dominguez-Lara, S. (2018). Testing a general hypothesis in empirical research using Dm-index.
-Interacciones, 4(1), 42-47. https://doi.org/10.24016/2018.v4n1.77
+Taras, V., & Kline, T. (2010). Scale validation via quantifying item validity using the
+Dm index. \emph{Psychological reports}, 107(2), 535–546. https://doi.org/10.2466/03.PR0.107.5.535-546
 }
