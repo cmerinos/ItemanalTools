@@ -76,6 +76,7 @@ catPlot(data = science.catorder)
 | `epsilonItems()` | Nonparametric effect size epsilon squared across multiple groups |
 | `FWitems()` | Friedman test and Kendall’s W for repeated-measures item data |
 | `MurakamiPairs()` | All-pairs nonparametric comparisons between groups using the two-groups Cucconi test |
+| `ralerting()` | Correlation between observed correlation pattern and expected  correlation pattern |
 | `RGitems()` | Nonparametric effect size Wilcoxon Rank-Biserial in two grups |
 | `RotheryItems()` | Nonparametric concordance index for repeated ordinal measurements, based in Rothery (1979) |
 | `Spearitems()` | Spearman's rho or Kendall's tau correlation between each ordinal item and a continuous external criterion |
