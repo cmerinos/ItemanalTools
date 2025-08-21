@@ -2,7 +2,7 @@
 % Please edit documentation in R/AENOuni.R
 \name{AENOuni}
 \alias{AENOuni}
-\title{AENOuni: Effective Number of Nominal Options for a Single Item}
+\title{AENOuni: Actual Equivalent Number of Options for one item}
 \usage{
 AENOuni(vector, k, pseudo_zero = 0.05)
 }
@@ -20,9 +20,9 @@ A list with one element:
 \item{AENO}{A numeric value indicating the effective number of options used.}
 }
 \description{
-Calculates the effective number of response categories used in a polytomous item,
-based on Shannon entropy (Samejima, 1980; Sato & Morimoto, 1976). The result
-reflects the dispersion or actual utilization
+Calculates the effective number of response categories (or actual equivalent number of
+options) used in a polytomous item, based on Shannon entropy (Samejima, 1980;
+Sato & Morimoto, 1976). The result reflects the dispersion or actual utilization
 of the available response options.
 
 Response categories with zero frequency are treated as \emph{incidental zeros}
