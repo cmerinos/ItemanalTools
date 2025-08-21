@@ -6,7 +6,7 @@
 
 **Itemanalysis** is an R package for in-depth item-level psychometric analysis. It provides functions to assess:
 
--   **Effective Number of Nominal Options (AENO)**
+-   **Effective Number of Nominal Options (Samejima's AENO)**
 -   **Item-level associations with external variables**
 -   **Monotonic trends in response categories of Likert-type items**
 -   **Between-group differences in both central tendency and dispersion**
@@ -14,6 +14,7 @@
 -   **Associations between items and categorical grouping variables**
 -   **Summary of item-level association coefficients**
 -   **Concordance and differences tests for multiple items**
+-   **Quantifying item validity**
 
 The package is aimed at researchers and practitioners conducting scale development, validation, and item refinement using both classical and modern psychometric methods. It is especially recommended for obtaining evidence on the statistical behavior of items within a content validity framework, with a focus on quantitative indicators.
 
@@ -47,7 +48,7 @@ print(fsi$FSI.i)
 ## Selected Functions
 
 | Function | Description |
-|---------------------|---------------------------------------------------|
+|----------------------|--------------------------------------------------|
 | `AENO()` | Calculates the Factorial Simplicity Index (FSI) |
 | `AENO()` | Computes Hofmann’s index of factor complexity |
 | `cat.order()` | Monotonicity test using category means across response levels |
