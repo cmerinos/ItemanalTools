@@ -1,10 +1,10 @@
-#' r.alerting: ralerting-CV with permutation test and bootstrap CIs
+#' ralerting: ralerting-CV with permutation test and bootstrap CIs
 #'
 #' @description
 #' Computes the QCV alerting index (ralerting-CV) as the correlation between
 #' Fisher-z transformed observed correlations and mean-centered predicted
 #' correlations. Provides a one-sided randomization (permutation) p-value and
-#' bootstrap confidence intervals for r.alerting. Includes a minimal-variance
+#' bootstrap confidence intervals for ralerting. Includes a minimal-variance
 #' jitter mechanism to handle constant predicted profiles.
 #'
 #' @param actr Numeric vector. Observed validity correlations (one per criterion).
@@ -35,13 +35,13 @@
 #'         profiles (default \eqn{\pm 0.001}) to enable computation while
 #'         transparently reporting the perturbation used.
 #'   \item It provides nonparametric bootstrap confidence intervals (percentile,
-#'         basic, or normal) for \code{r.alerting}, based on paired resampling of
+#'         basic, or normal) for \code{ralerting}, based on paired resampling of
 #'         \code{(actr_i, predr_i)}.
 #' }
 #' The one-sided randomization p-value is computed by permuting \eqn{\lambda}
 #' (as in \code{qcv::ralertingp()}), estimating \eqn{p = mean(r_{null} \ge r_{obs})}.
 #'
-#' \strong{Interpretation.} \code{r.alerting} quantifies shape similarity between the
+#' \strong{Interpretation.} \code{ralerting} quantifies shape similarity between the
 #' hypothesized profile and the observed validity profile (Furr & Heuckeroth, 2019).
 #' Large values indicate that criteria predicted to correlate more strongly with the
 #' focal test indeed do so, and vice versa.
@@ -57,59 +57,59 @@
 #' @references
 #' Furr, R. M., & Heuckeroth, S. (2019). The “Quantifying Construct Validity”
 #' procedure: Its role, value, interpretations, and computation. \emph{Assessment}.
-#' 
+#'
 #' Westen, D., & Rosenthal, R. (2003). Quantifying construct validity: Two simple
 #' measures. \emph{Journal of Personality and Social Psychology}, 84(3), 608–618.
 #' See also the \code{qcv} R package for an implementation of QCV indices.
 #'
 #' @examples
 #' # Constant predictions (e.g., ref value from DmIndex): jitter enables computation
-#' r.alerting(actr = c(.233, .449, .257, .092, -.002, .174),
+#' ralerting(actr = c(.233, .449, .257, .092, -.002, .174),
 #'            predr = rep(.50, 6),
 #'            iter = 1000, B = 1000, seed = 123)
 #'
 #' # Strict mode (no jitter) -> NA if predictions are constant
-#' r.alerting(actr = c(.233, .449, .257, .092, -.002, .174),
+#' ralerting(actr = c(.233, .449, .257, .092, -.002, .174),
 #'            predr = rep(.50, 6),
 #'            jitter = 0, iter = 2000, B = 0, seed = 123)
 #'
 #' # Non-constant predictions: no jitter applied
-#' r.alerting(actr = c(.10, .35, .08, .31, .17, .33),
+#' ralerting(actr = c(.10, .35, .08, .31, .17, .33),
 #'            predr = c(.19, .201, .21, .201, .20, .201),
 #'            iter = 2000, B = 2000, seed = 321)
 #'
 #' @export
-r.alerting <- function(actr, predr, iter = 1000, B = 1000, conf.level = 0.95,
+ralerting <- function(actr, predr, iter = 1000, B = 1000, conf.level = 0.95,
                        type = c("perc","basic","norm"), jitter = 0.001,
                        seed = NULL, digits = 3) {
   type <- match.arg(type)
   stopifnot(is.numeric(actr), is.numeric(predr), length(actr) == length(predr))
   n <- length(actr)
-  
+
   # paired NA removal
   ok <- is.finite(actr) & is.finite(predr)
   if (!all(ok)) {
     actr <- actr[ok]; predr <- predr[ok]; n <- length(actr)
     if (n < 3) stop("Insufficient number of criteria after removing NAs.")
   }
-  
+
   # Fisher z, clipping to avoid ±Inf
   eps <- 1e-7
   actr <- pmin(pmax(actr, -1 + eps), 1 - eps)
   zactr <- atanh(actr)
-  
+
   # centered predictions
   lambda <- predr - mean(predr)
   const.pred <- (stats::sd(lambda) == 0)
-  
+
   jitter.used <- 0
   note <- ""
-  
+
   if (const.pred) {
     if (jitter <= 0) {
       warning("ralerting-CV not computable: 'predr' is constant and jitter = 0.")
       return(data.frame(
-        r.alerting = NA_real_, p.perm = NA_real_,
+        ralerting = NA_real_, p.perm = NA_real_,
         ci.lwr = NA_real_, ci.upr = NA_real_,
         method.ci = type, conf.level = conf.level,
         n.criteria = n, iter = iter, B = B,
@@ -123,21 +123,21 @@ r.alerting <- function(actr, predr, iter = 1000, B = 1000, conf.level = 0.95,
       note <- sprintf("predr was constant; added jitter ±%.4f to allow computation.", jitter)
     }
   }
-  
+
   if (stats::sd(lambda) == 0) {
     warning("ralerting-CV not computable: lambda has zero variance after jitter.")
     return(data.frame(
-      r.alerting = NA_real_, p.perm = NA_real_,
+      ralerting = NA_real_, p.perm = NA_real_,
       ci.lwr = NA_real_, ci.upr = NA_real_,
       method.ci = type, conf.level = conf.level,
       n.criteria = n, iter = iter, B = B,
       jitter.used = jitter.used, note = "lambda no variance after jitter."
     ))
   }
-  
-  # observed r.alerting
+
+  # observed ralerting
   r.obs <- as.numeric(stats::cor(zactr, lambda))
-  
+
   # permutation p-value (one-sided)
   p.perm <- NA_real_
   if (iter > 0) {
@@ -148,7 +148,7 @@ r.alerting <- function(actr, predr, iter = 1000, B = 1000, conf.level = 0.95,
     })
     p.perm <- mean(rnull >= r.obs)
   }
-  
+
   # bootstrap CI
   ci.lwr <- ci.upr <- NA_real_
   if (B > 0) {
@@ -184,9 +184,9 @@ r.alerting <- function(actr, predr, iter = 1000, B = 1000, conf.level = 0.95,
       }
     }
   }
-  
+
   data.frame(
-    r.alerting = round(r.obs, digits),
+    ralerting = round(r.obs, digits),
     p.perm     = ifelse(is.na(p.perm), NA, round(p.perm, digits)),
     ci.lwr     = ifelse(is.na(ci.lwr), NA, round(ci.lwr, digits)),
     ci.upr     = ifelse(is.na(ci.upr), NA, round(ci.upr, digits)),
