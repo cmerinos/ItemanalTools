@@ -33,7 +33,7 @@ To install the development version from GitHub:
 devtools::install_github("cmerinos/Itemanalysis")
 ```
 
-## Example: FSI (Factorial Simplicity Index)
+## Example: Basic use of Itemanalysis functions
 
 ``` r
 library(Itemanalysis)
