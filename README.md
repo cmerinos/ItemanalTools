@@ -41,17 +41,22 @@ library(Itemanalysis)
 # Load example data
 mirt::Science
 
+# Ficticious group
+group3 <- sample(1:3, size = 392, replace = TRUE)
+
+group2 <- sample(1:2, size = 392, replace = TRUE)
+
 AENOmulti(Science, k = 6)
 
 FWitems(Science, ci = T,correct = T)
 
 RotheryItems(data.items = Science, alpha = .05)
 
-epsilonItems(data.items = Science, group = sample(1:3, size = 392, replace = TRUE), ci = T)
+epsilonItems(data.items = Science, group = group, ci = T)
 
-RGitems(data.items = Science, group = sample(1:2, size = 392, replace = TRUE), ci = T)
+RGitems(data.items = Science, group = group, ci = T)
 
-SpearItems(data.items = Science, criteria = sample(1:2, size = 392, replace = TRUE), ci = T)
+SpearItems(data.items = Science, criteria = group2, ci = T)
 
 SpearItems(data.items = Science, criteria = sample(1:2, size = 392, replace = TRUE), ci = T, method = "kendall")
 
