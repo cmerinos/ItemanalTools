@@ -43,8 +43,12 @@ mirt::Science
 
 # Ficticious group
 group3 <- sample(1:3, size = 392, replace = TRUE)
-
 group2 <- sample(1:2, size = 392, replace = TRUE)
+
+# Ficticious score
+score <- sample(1:15, size = 392, replace = TRUE)
+
+# Item analysis
 
 AENOmulti(Science, k = 6)
 
