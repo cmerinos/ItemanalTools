@@ -92,7 +92,7 @@ df <- data.frame(
   Item = paste0("Item", 1:5),
   tau = c(.22, .18, .35, .12, .29)
 )
-# Only point estimates
+# Only point estimate, for a dataframe ("df", with a target colunm "tau")
 DmIndex(df, coef.col = "tau", ref.value = 0.30, ci.method = "none")
 
 # With parametric bootstrap CI (requires n.eff)
@@ -106,5 +106,5 @@ Dominguez Lara, S. (2013). Propuesta para el cálculo del índice DM para la val
 https://doi.org/10.16888/interd.2013.30.2.8
 
 Taras, V., & Kline, T. (2010). Scale validation via quantifying item validity using the
-Dm index. \emph{Psychological reports}, 107(2), 535–546. https://doi.org/10.2466/03.PR0.107.5.535-546
+Dm index. \emph{Psychological Reports}, 107(2), 535–546. https://doi.org/10.2466/03.PR0.107.5.535-546
 }
