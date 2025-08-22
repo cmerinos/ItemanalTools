@@ -84,9 +84,11 @@ RGitems <- function(data.items, group,
                         lwr.ci = round(lower, 3),
                         lwr.upp = round(upper, 3)))
     } else {
-      rg <- if ("rg" %in% colnames(res)) res[1, "rg"] else NA
+      # Cuando ci = FALSE, res es un vector nombrado
+      rg <- if ("rg" %in% names(res)) res["rg"] else NA
       return(data.frame(Item = x, rg = round(rg, 3)))
     }
+
   })
 
   result <- do.call(rbind, output)
