@@ -54,19 +54,19 @@
 #' suitable when only correlation coefficients are available.
 #'
 #' @references
-#' Dominguez Lara, S. (2013). Propuesta para el cálculo del índice DM para la validez de los 
+#' Dominguez Lara, S. (2013). Propuesta para el cálculo del índice DM para la validez de los
 #' ítemes. \emph{Interdisciplinaria Revista de Psicología y Ciencias Afines}, 30(2), 297–303.
 #' https://doi.org/10.16888/interd.2013.30.2.8
-#' 
+#'
 #' Taras, V., & Kline, T. (2010). Scale validation via quantifying item validity using the
-#' Dm index. \emph{Psychological reports}, 107(2), 535–546. https://doi.org/10.2466/03.PR0.107.5.535-546
-#' 
+#' Dm index. \emph{Psychological Reports}, 107(2), 535–546. https://doi.org/10.2466/03.PR0.107.5.535-546
+#'
 #' @examples
 #' df <- data.frame(
 #'   Item = paste0("Item", 1:5),
 #'   tau = c(.22, .18, .35, .12, .29)
 #' )
-#' # Only point estimates
+#' # Only point estimate, for a dataframe ("df", with a target colunm "tau")
 #' DmIndex(df, coef.col = "tau", ref.value = 0.30, ci.method = "none")
 #'
 #' # With parametric bootstrap CI (requires n.eff)
@@ -85,17 +85,17 @@ DmIndex <- function(df,
                     round.digits = 3,
                     clamp.zero = TRUE,
                     item.col = "Item") {
-  
+
   metric <- match.arg(metric)
   ci.method <- match.arg(ci.method)
-  
+
   if (!is.data.frame(df)) stop("`df` must be a data.frame.")
   if (!coef.col %in% names(df)) stop("`coef.col` not found in `df`.")
-  
+
   n <- nrow(df)
   # Handle item labels
   Items <- if (item.col %in% names(df)) df[[item.col]] else paste0("Item", seq_len(n))
-  
+
   # Reference value vector
   if (length(ref.value) == 1L) {
     ref.vec <- rep(ref.value, n)
@@ -104,12 +104,12 @@ DmIndex <- function(df,
   } else {
     stop("`ref.value` must be scalar or of length equal to nrow(df).")
   }
-  
+
   r <- df[[coef.col]]
-  
+
   # Fisher transform
   zfun <- function(x) atanh(pmin(pmax(x, -0.999999), 0.999999))
-  
+
   # Compute Dm (item-level)
   Dm_fun <- function(ri, refi, use_z, clamp0) {
     if (use_z) {
@@ -121,16 +121,16 @@ DmIndex <- function(df,
       out
     }
   }
-  
+
   Dm_obs <- mapply(function(ri, refi) Dm_fun(ri, refi, metric == "fisher", clamp.zero), r, ref.vec)
-  
+
   # Bootstrap CI (item-level)
   Dm_lwr <- Dm_upr <- rep(NA_real_, n)
   if (ci.method == "zboot") {
     if (is.null(n.eff)) stop("`n.eff` (effective sample size) is required for bootstrap.")
     q_hi <- (1 + conf.level) / 2
     zq   <- qnorm(q_hi)
-    
+
     for (i in seq_len(n)) {
       ri <- r[i]; refi <- ref.vec[i]
       if (is.na(ri) || is.na(refi)) next
@@ -148,7 +148,7 @@ DmIndex <- function(df,
       Dm_lwr[i] <- qs[1]; Dm_upr[i] <- qs[2]
     }
   }
-  
+
   out <- data.frame(
     Item = Items,
     Dm = round(Dm_obs, round.digits),
@@ -162,14 +162,14 @@ DmIndex <- function(df,
     },
     stringsAsFactors = FALSE
   )
-  
+
   ## ---- NUEVO: Dm.total (siempre) ----
   X <- if (metric == "fisher") zfun(r) else r
   T <- if (metric == "fisher") zfun(ref.vec) else ref.vec
   rmse_total <- sqrt(mean((X - T)^2, na.rm = TRUE))
   Dm_total   <- 1 - rmse_total
   if (clamp.zero) Dm_total <- max(0, Dm_total)
-  
+
   # --- NUEVO: IC para Dm.total cuando zboot
   Dm_total_lwr <- Dm_total_upr <- NA_real_
   if (ci.method == "zboot") {
@@ -197,7 +197,7 @@ DmIndex <- function(df,
       Dm_total_lwr <- qsT[1]; Dm_total_upr <- qsT[2]
     }
   }
-  
+
   total_row <- data.frame(
     Item = "Dm.total",
     Dm   = round(Dm_total, round.digits),
@@ -213,7 +213,7 @@ DmIndex <- function(df,
   )
   out <- rbind(out, total_row)
   ## -------------------------------
-  
+
   attr(out, "ref.value")   <- ref.value
   attr(out, "coef.col")    <- coef.col
   attr(out, "metric")      <- metric
@@ -224,6 +224,6 @@ DmIndex <- function(df,
   attr(out, "Dm.total")    <- unname(total_row$Dm)
   attr(out, "Dm.total.lwr")<- if (!is.na(total_row$Dm.lwr)) unname(total_row$Dm.lwr) else NA_real_
   attr(out, "Dm.total.upr")<- if (!is.na(total_row$Dm.upr)) unname(total_row$Dm.upr) else NA_real_
-  
+
   out
 }
