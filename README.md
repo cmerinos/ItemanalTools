@@ -98,6 +98,7 @@ catPlot(data = science.catorder)
 -   Jin, Q., & Yu, K. (2023). Adaptation and validation of the university-to-work success scale among Chinese university graduates. *Frontiers in psychology*, 14, 1258746. <https://doi.org/10.3389/fpsyg.2023.1258746>
 -   Cabedo-Peris, J., Merino-Soto, C., Chans, G. M., & Martí-Vilar, M. (2024). Exploring the Loss Aversion Scale's psychometric properties in Spain. *Scientific reports*, 14(1), 15756. <https://doi.org/10.1038/s41598-024-66695-6>
 -   Merino-Soto, C., Angulo-Ramos, M., Rovira-Millán, L. V., & Rosario-Hernández, E. (2023). Psychometric properties of the generalized anxiety disorder-7 (GAD-7) in a sample of workers. *Frontiers in psychiatry*, 14, 999242. <https://doi.org/10.3389/fpsyt.2023.999242>
+-   Archer, R. P., Handel, R. W., & Lynch, K. D. (2001). The effectiveness of MMPI-A items in discriminating between normative and clinical samples. *Journal of personality assessment*, 77(3), 420–435. <https://doi.org/10.1207/S15327752JPA7703_04>
 
 ## Contributing
 
