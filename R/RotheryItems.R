@@ -38,18 +38,18 @@
 #' which computes Rothery's nonparametric concordance index using a different approach.
 #'
 #' @section Implementation note:
-#' 
+#'
 #' This function is a faithful implementation of the nonparametric concordance index proposed by Rothery (1979),
 #' based on the probabilistic definition of intraclass concordance via ranked data. In Rothery’s original formulation,
-#' the concordance index \( r_c \) is defined as the proportion of triplets \((x_{ai}, x_{aj}, x_{\beta k})\) such that
-#' the observation from another group (the "outsider") does not fall between two observations from the same group.
-#' 
+#' the concordance index is defined as the proportion of triplets such that the observation from another
+#' group (the "outsider") does not fall between two observations from the same group.
+#'
 #' In practice, direct enumeration of all such triplets is computationally expensive. Following Rothery’s suggestion,
 #' this function uses an equivalent and efficient approach: the variance of the sum of midranks (VS) across rows, which
 #' captures the same concordance structure and supports datasets with ties (common in ordinal item responses).
-#' 
+#'
 #' Compared to the implementation in the `nopaco` package (\code{\link[nopaco]{concordance.test}}), this function:
-#' 
+#'
 #' \itemize{
 #'   \item \strong{Follows Rothery's theoretical formulation}: using rank-based logic and exact estimation of the null distribution.
 #'   \item \strong{Handles ties explicitly}: by computing midranks (average ranks), which `nopaco` does not document or control transparently.
@@ -57,11 +57,11 @@
 #'   \item \strong{Uses bootstrap for confidence intervals}: not available in `nopaco::concordance.test` for the one-sample case.
 #'   \item \strong{Provides transparent variance estimation}: with formulas adapted from Rothery's derivations.
 #' }
-#' 
+#'
 #' In contrast, `nopaco::concordance.test` includes algorithmic components implemented in C++ and uses internal methods
 #' (e.g., `Rbeta`) whose parameterizations are undocumented and may deviate from Rothery’s theoretical assumptions.
 #' This function offers a reproducible and open-source alternative grounded in the original statistical theory.
-#' 
+#'
 #' @seealso \code{\link[Itemanalysis]{FWitems}}, \code{\link[nopaco]{concordance.test}}
 #'
 #' @references
