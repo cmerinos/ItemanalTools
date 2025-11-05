@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measurements,
-#' scaled to the interval [0, 1]. The function uses the variance of summed midranks (VS) approach,
+#' scaled to the interval \[0, 1\]. The function uses the variance of summed midranks (VS) approach,
 #' which is theoretically consistent with Rothery's original formulation, but is robust in the presence of ties (tied values),
 #' making it particularly suitable for data from ordinal scales where ties are frequent.
 #' The p-value is calculated using the revised-beta (Rbeta) approximation, and the confidence interval is estimated via bootstrap,
@@ -17,7 +17,7 @@
 #'
 #' @return A data frame with:
 #' \itemize{
-#'   \item \code{psi}: Scaled concordance index ([0, 1]).
+#'   \item \code{psi}: Scaled concordance index (\[0, 1\]).
 #'   \item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval for the scaled index.
 #'   \item \code{p}: p-value for testing H0: psi = 2/3.
 #'   \item \code{r}: Correlation-like transformation of psi (scaled).
