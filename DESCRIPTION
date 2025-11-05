@@ -1,6 +1,7 @@
 Package: Itemanalysis
 Title: Tools for Item-Level Statistical Analysis in Psychometrics
 Version: 0.1.0
+Date: 2025-11-05
 Authors@R: 
     person("Cesar", "Merino Soto", email = "sikayax@yahoo.com.ar", role = c("aut", "cre"))
 Description: Collection of tools for analyzing items in psychological and educational scales, 
