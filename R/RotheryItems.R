@@ -53,7 +53,7 @@
 #' \itemize{
 #'   \item \strong{Follows Rothery's theoretical formulation}: using rank-based logic and exact estimation of the null distribution.
 #'   \item \strong{Handles ties explicitly}: by computing midranks (average ranks), which `nopaco` does not document or control transparently.
-#'   \item \strong{Scales the index to [0, 1]}: for interpretability, whereas Rothery's raw \( r_c \) is bounded by a structure-dependent minimum and 1.
+#'   \item \strong{Scales the index to \[0, 1\]}: for interpretability, whereas Rothery's raw \( r_c \) is bounded by a structure-dependent minimum and 1.
 #'   \item \strong{Uses bootstrap for confidence intervals}: not available in `nopaco::concordance.test` for the one-sample case.
 #'   \item \strong{Provides transparent variance estimation}: with formulas adapted from Rothery's derivations.
 #' }
