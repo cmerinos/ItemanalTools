@@ -1,7 +1,5 @@
 # Itemanalysis
 
-[![R-CMD-check](https://github.com/tuusuario/Itemanalysis/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tuusuario/Itemanalysis/actions)
-
 ## Overview
 
 **Itemanalysis** is an R package for in-depth item-level psychometric analysis. It provides functions to assess:
@@ -69,13 +67,12 @@ catOrder(data = Science, score.total = rowSums(Science))
 science.catorder <- Itemanalysis::catOrder(data = Science, score.total = rowSums(Science))
 
 catPlot(data = science.catorder)
-
 ```
 
 ## Selected Functions
 
 | Function | Description |
-|----------------------|--------------------------------------------------|
+|----|----|
 | `AENO()` | Calculates the Actual Equivalent Number of Options (AENO) |
 | `AENOmulti()` | Actual Equivalent Number of Options for Multiple Items |
 | `cat.order()` | Monotonicity test using category means across response levels |
@@ -85,7 +82,7 @@ catPlot(data = science.catorder)
 | `epsilonItems()` | Nonparametric effect size epsilon squared across multiple groups |
 | `FWitems()` | Friedman test and Kendall’s W for repeated-measures item data |
 | `MurakamiPairs()` | All-pairs nonparametric comparisons between groups using the two-groups Cucconi test |
-| `ralerting()` | Correlation between observed correlation pattern and expected  correlation pattern |
+| `ralerting()` | Correlation between observed correlation pattern and expected correlation pattern |
 | `RGitems()` | Nonparametric effect size Wilcoxon Rank-Biserial in two grups |
 | `RotheryItems()` | Nonparametric concordance index for repeated ordinal measurements, based in Rothery (1979) |
 | `Spearitems()` | Spearman's rho or Kendall's tau correlation between each ordinal item and a continuous external criterion |
