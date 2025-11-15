@@ -2,9 +2,9 @@
 % Please edit documentation in R/itemThresholds.R
 \name{itemThresholds}
 \alias{itemThresholds}
-\title{Item Thresholds for Likert-type Items}
+\title{Item Thresholds and equidistance (single item)}
 \usage{
-itemThresholds(x, link = "probit", conf.level = 0.95)
+itemThresholds(x, link = "probit", conf.level = 0.95, nd = 3)
 }
 \arguments{
 \item{x}{An ordered factor representing a Likert-type item.}
@@ -14,21 +14,35 @@ itemThresholds(x, link = "probit", conf.level = 0.95)
 
 \item{conf.level}{Confidence level for the threshold intervals.
 Default is 0.95.}
+
+\item{nd}{Number of digits used to round numeric outputs.
+Default is 3.}
 }
 \value{
-A list with four data frames:
+A list with five elements:
 \item{thresholds}{Threshold estimates and their standard errors.}
 \item{ci}{Confidence intervals for each threshold.}
 \item{differences}{Differences between consecutive thresholds
 (interpretable as standardized effect sizes on the latent scale).}
 \item{diff_tests}{z-tests for the differences between consecutive
 thresholds, including p-values.}
+\item{equidistance}{A list with:
+\itemize{
+\item \code{second_diffs}: data frame with second differences
+\eqn{d_j}, their standard errors, Z-tests and p-values.
+\item \code{wald}: data frame with the global Wald statistic,
+degrees of freedom and p-value for equidistance (or NA if
+not applicable).
+\item \code{EI.spratto}: the Equidistance Index as defined
+above.
+}}
 }
 \description{
 Estimates thresholds (cutpoints) for an ordinal Likert-type item
 using a cumulative link model (CLM).
 Provides estimates, confidence intervals, differences between
-consecutive thresholds, and z-tests for those differences.
+consecutive thresholds, z-tests for those differences, and
+indices/tests of threshold equidistance (Spratto-type index).
 }
 \details{
 This function fits an ordinal regression model without predictors
@@ -39,14 +53,28 @@ especially when the \code{link = "probit"} option is used
 (default). Larger differences indicate more distinct response
 categories, while small differences suggest redundancy.
 
+In addition, it evaluates the equidistance of thresholds. Let
+\eqn{\Delta_i = \tau_{i+1} - \tau_i} be the difference between
+consecutive thresholds. The Equidistance Index (Spratto) is
+computed as
+\deqn{
+  EI = \sqrt{\frac{1}{K-2}\sum_{i=1}^{K-2}(\Delta_i - \bar{\Delta})^2},
+}
+where \eqn{K} is the number of response categories and
+\eqn{\bar{\Delta}} is the mean of the \eqn{\Delta_i}.
+
+Local deviations from equidistance are assessed via second
+differences
+\deqn{
+  d_j = \tau_j - 2\tau_{j+1} + \tau_{j+2},
+}
+and their Z-tests. A global Wald test of equidistance is also
+computed using all second differences jointly (when there are
+at least four response categories).
+
 The z-tests for threshold differences are computed as
 \deqn{ z = \frac{ \tau_{i+1} - \tau_i }{ \sqrt{SE(\tau_{i+1})^2 + SE(\tau_i)^2} } }
 where \eqn{\tau_i} is the i-th threshold and \eqn{SE} its standard error.
-
-The function is designed as a lightweight, exploratory alternative
-to IRT or SEM approaches. For more exact threshold estimation,
-especially in large-scale applications, IRT models (e.g., GRM, PCM)
-or CFA with categorical items are recommended.
 
 Thresholds are estimated using the \pkg{ordinal} package, which
 implements cumulative link models via maximum likelihood.
@@ -60,6 +88,7 @@ res$thresholds
 res$ci
 res$differences
 res$diff_tests
+res$equidistance
 
 }
 \references{
