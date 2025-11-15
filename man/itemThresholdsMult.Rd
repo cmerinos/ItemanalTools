@@ -67,26 +67,63 @@ equidistance.
 
 The "figure-style" table for each item has the following columns:
 \describe{
-\item{row}{Label for the row (threshold name, contrast, or "Diff-Thr. Item").}
+\item{row}{Label for the row (threshold name, contrast, "Diff-Thr. Item",
+or "Z.local (d1)", "Z.local (d2)", etc.).}
 \item{Threshold}{Threshold estimate (if applicable).}
 \item{SE.threshold}{Standard error of the threshold.}
 \item{Diff.thresholds}{Difference between consecutive thresholds
 (if applicable).}
 \item{SE.diff}{Standard error of the difference between thresholds.}
-\item{Z}{Z-test of equidistance (only filled when there is a single
-second difference; otherwise NA).}
-\item{Wald}{Global Wald statistic for equidistance.}
+\item{Z}{Z-test of equidistance. For items with four categories (i.e.,
+three thresholds), this column is used in the "Diff-Thr. Item" row.
+For items with more than four categories, local Z-tests are shown
+in additional "Z.local (d*)" rows.}
+\item{Wald}{Global Wald statistic for equidistance (in the
+"Diff-Thr. Item" row).}
 \item{df}{Degrees of freedom of the Wald test.}
 \item{EI.spratto}{Equidistance Index (Spratto) for the item.}
 }
+\subsection{Z-tests of second differences (local equidistance tests)}{
+
+For items with four response categories (i.e., three thresholds), there is
+only one second difference, so the Z-test of equidistance is shown directly
+in the "Diff-Thr. Item" row.
+
+For items with more than four categories (i.e., more than one second
+difference), the function adds one extra row per second difference:
+
+\itemize{
+\item \code{Z.local (d1)}
+\item \code{Z.local (d2)}
+\item \code{Z.local (d3)}, etc.
+}
+
+These rows display the individual Z-tests of equidistance for each second
+difference. The global Wald test and the Equidistance Index (Spratto)
+remain reported in the "Diff-Thr. Item" row.
+
+This format mirrors the presentation style found in Spratto (2018) and
+similar analyses of threshold equidistance.
+}
 }
 \examples{
-\dontrun{
-data(Science, package = "mirt")
-res_mult <- itemThresholdsMult(data = bfi[, c("Comfort", "Work", "Future", "Benefit")])
-res_mult$summary
-res_mult$tables$Work
-}
+## Example 1: Item with 4 categories
+set.seed(123)
+x4 <- ordered(sample(1:4, 300, replace = TRUE,
+                    prob = c(.2, .3, .3, .2)))
+data4 <- data.frame(ItemA = x4)
+res4 <- itemThresholdsMult(data4)
+res4$summary
+res4$tables$ItemA
+
+## Example 2: Item with 5 categories (multiple Z.local rows)
+set.seed(456)
+x5 <- ordered(sample(1:5, 400, replace = TRUE,
+                    prob = c(.1, .2, .3, .25, .15)))
+data5 <- data.frame(ItemB = x5)
+res5 <- itemThresholdsMult(data5)
+res5$summary
+res5$tables$ItemB
 
 }
 \seealso{
