@@ -12,11 +12,11 @@ Imports:
     ggplot2,
     PMCMRplus,
     rcompanion,
-    stats
+    stats,
+    ordinal
 Suggests:
     knitr,
-    rmarkdown,
-    ordinal
+    rmarkdown
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

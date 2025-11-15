@@ -61,6 +61,8 @@
 #' Taras, V., & Kline, T. (2010). Scale validation via quantifying item validity using the
 #' Dm index. \emph{Psychological Reports}, 107(2), 535–546. https://doi.org/10.2466/03.PR0.107.5.535-546
 #'
+#'@importFrom stats rnorm
+#'
 #' @examples
 #' df <- data.frame(
 #'   Item = paste0("Item", 1:5),
