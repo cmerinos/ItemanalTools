@@ -55,11 +55,11 @@
 #'   and \code{qcv} package vignettes/examples for QCV workflows.
 #'
 #' @references
-#' Furr, R. M., & Heuckeroth, S. (2019). The “Quantifying Construct Validity”
+#' Furr, R. M., & Heuckeroth, S. (2019). The Quantifying Construct Validity
 #' procedure: Its role, value, interpretations, and computation. \emph{Assessment}.
 #'
 #' Westen, D., & Rosenthal, R. (2003). Quantifying construct validity: Two simple
-#' measures. \emph{Journal of Personality and Social Psychology}, 84(3), 608–618.
+#' measures. \emph{Journal of Personality and Social Psychology}, 84(3), 608-618.
 #' See also the \code{qcv} R package for an implementation of QCV indices.
 #'
 #' @examples
@@ -93,7 +93,7 @@ ralerting <- function(actr, predr, iter = 1000, B = 1000, conf.level = 0.95,
     if (n < 3) stop("Insufficient number of criteria after removing NAs.")
   }
 
-  # Fisher z, clipping to avoid ±Inf
+  # Fisher z, clipping to avoid +/-Inf
   eps <- 1e-7
   actr <- pmin(pmax(actr, -1 + eps), 1 - eps)
   zactr <- atanh(actr)
@@ -120,7 +120,7 @@ ralerting <- function(actr, predr, iter = 1000, B = 1000, conf.level = 0.95,
       predr <- predr + stats::runif(n, min = -jitter, max = jitter)
       lambda <- predr - mean(predr)
       jitter.used <- jitter
-      note <- sprintf("predr was constant; added jitter ±%.4f to allow computation.", jitter)
+      note <- sprintf("predr was constant; added jitter +/-%.4f to allow computation.", jitter)
     }
   }
 

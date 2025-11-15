@@ -87,6 +87,8 @@
 #' https://CRAN.R-project.org/package=ordinal
 #'
 #' @importFrom stats coef pnorm qnorm vcov pchisq
+#' @importFrom ordinal clm
+#'
 #' @export
 itemThresholds <- function(x, link = "probit", conf.level = 0.95, nd = 3) {
   if (!requireNamespace("ordinal", quietly = TRUE)) {

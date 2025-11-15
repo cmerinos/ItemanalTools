@@ -41,6 +41,6 @@ Allows setting specific response levels and includes missing values if desired.
 \examples{
 data <- data.frame(item1 = c(1, 2, 2, 3, 3, NA),
                    item2 = c(1, 1, 2, 2, 3, 3))
-freq.bind(data, levels = 1:3, proportion = TRUE)
+freqbind(data, levels = 1:3, proportion = TRUE)
 
 }
