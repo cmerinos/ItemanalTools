@@ -72,7 +72,7 @@ catPlot(data = science.catorder)
 ## Selected Functions
 
 | Function | Description |
-|----|----|
+|------------------------------------|------------------------------------|
 | `AENO()` | Calculates the Actual Equivalent Number of Options (AENO) |
 | `AENOmulti()` | Actual Equivalent Number of Options for Multiple Items |
 | `cat.order()` | Monotonicity test using category means across response levels |
