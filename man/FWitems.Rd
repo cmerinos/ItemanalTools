@@ -61,3 +61,12 @@ responses <- data.frame(
 FWitems(responses, ci = TRUE, B = 500)
 
 }
+\references{
+Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. \emph{Journal of the American Statistical Association}, 32(200), 675–701. \doi{10.2307/2279372}
+
+Kendall, M.G. (1948). \emph{Rank correlation methods}. London: Griffin.
+
+Hays, W. L. (1981). \emph{Statistics (3rd Edition)}. Holt, Rinehart and Winston:New York
+
+Howell, D. C. (1997). \emph{Statistical methods for psychology (4th Edition)}. Duxbury Press:Belmont, CA.
+}

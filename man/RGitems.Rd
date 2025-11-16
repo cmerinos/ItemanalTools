@@ -43,6 +43,11 @@ Computes the rank-biserial correlation coefficient (\code{r_g}) for multiple ite
 using the Wilcoxon-Mann-Whitney test between two independent groups.
 Optionally returns confidence intervals computed via bootstrap.
 }
+\details{
+This function internally calls \code{rcompanion::wilcoxonRG} to compute the
+rank-biserial effect size (RG). The wrapper standardizes the output for
+item-level psychometric analysis.
+}
 \examples{
 \dontrun{
 data(iris)
@@ -50,4 +55,13 @@ sub <- subset(iris, Species \%in\% c("setosa", "versicolor"))
 RGitems(data.items = sub[, 1:4], group = sub$Species)
 }
 
+}
+\references{
+Willson, V. L. (1976). Critical Values of the Rank-Biserial Correlation Coefficient. \emph{Educational and Psychological Measurement}, 36(2), 297-300. \doi{10.1177/001316447603600207}
+
+Cureton, E. E. (1968). Rank-Biserial Correlation when Ties Are Present. \emph{Educational and Psychological Measurement}, 28(1), 77-79. \doi{10.1177/001316446802800107}
+
+Glass, G. V. (1966). Note on Rank Biserial Correlation. \emph{Educational and Psychological Measurement}, 26(3), 623-631. \doi{10.1177/001316446602600307}
+
+Cureton, E. E. (1956). Rank-biserial correlation. \emph{Psychometrika}, 21, 287–290. \doi{10.1007/BF02289138}
 }

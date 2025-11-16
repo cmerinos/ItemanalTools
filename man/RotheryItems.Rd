@@ -76,7 +76,11 @@ This function offers a reproducible and open-source alternative grounded in the 
 }
 
 \references{
-Rothery, P. (1979). A nonparametric measure of intraclass correlation. \emph{Applied Statistics}, 28(1), 104–107.
+Rothery P. (1979). A nonparametric measure of intraclass correlation. \emph{Biometrika}, 66(3), 629-639. \doi{10.1093/biomet/66.3.629}
+
+Harper, D. G. C. (1994) Some comments on the repeatability of measurements. \emph{Ringing & Migration}, 15(2), 84-90, \doi{10.1080/03078698.1994.9674078}
+
+Shirahata, S. (1982) A nonparametric measure of interclass correlation. \emph{Communications in Statistics - Theory and Methods}, 11:15, 1723-1732, \doi{10.1080/03610928208828344}
 }
 \seealso{
 \code{\link[Itemanalysis]{FWitems}}, \code{\link[nopaco]{concordance.test}}
