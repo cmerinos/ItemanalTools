@@ -58,5 +58,5 @@ MurakamiPairs(x = x, group = group, B = 1000, adjust.method = "holm")
 \references{
 Murakami, H. (2016). All-pairs multiple comparisons based on the Cucconi test.
 \emph{AStA Advances in Statistical Analysis}, 100, 355–368.
-\doi{10.1007/s10182-016-0268-x}
+\href{https://doi.org/10.1007/s10182-016-0268-x}
 }

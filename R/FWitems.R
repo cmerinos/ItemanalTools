@@ -20,7 +20,7 @@
 #' }
 #'
 #' @references
-#' Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. \emph{Journal of the American Statistical Association}, 32(200), 675–701. \doi{10.2307/2279372}
+#' Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. \emph{Journal of the American Statistical Association}, 32(200), 675–701. \href{https://doi.org/10.2307/2279372}
 #'
 #' Kendall, M.G. (1948). \emph{Rank correlation methods}. London: Griffin.
 #'
