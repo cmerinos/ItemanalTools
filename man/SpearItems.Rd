@@ -2,7 +2,7 @@
 % Please edit documentation in R/Spearitems.R
 \name{SpearItems}
 \alias{SpearItems}
-\title{SpearItems: Correlation Between Items and External Criterion (Nonparametric)}
+\title{Nonparametric Correlation Between Items and External Criterion}
 \usage{
 SpearItems(data.items, criteria, ci = TRUE, B = 1000, method = "spearman")
 }
@@ -34,6 +34,8 @@ Confidence intervals are computed via bootstrap.
 \details{
 For ordinal data with many ties or small samples, Kendall's tau is recommended.
 If an item shows high tie frequency (less than 50\% unique values), a message will suggest using method = "kendall".
+This function uses \code{rcompanion::spearmanRho} to compute Spearman's rho
+for each item, providing a consistent interface for item-level association analysis.
 }
 \examples{
 if (requireNamespace("rcompanion", quietly = TRUE)) {

@@ -1,4 +1,4 @@
-#' @title epsilonItems: Epsilon Squared (ε²) for Multiple-Group Item Comparison
+#' @title Epsilon Squared (ε²) for Multiple-Group Item Comparison
 #'
 #' @description
 #' Computes the nonparametric effect size epsilon squared (ε²) for each ordinal item
@@ -21,6 +21,11 @@
 #'   \item \code{eps2}: Epsilon squared effect size.
 #'   \item \code{lwr.ci}, \code{lwr.upp}: Lower and upper bounds of the confidence interval (if \code{ci = TRUE}).
 #' }
+#'
+#'#' @details
+#' This function relies on \code{rcompanion::epsilonSquared} to compute
+#' epsilon-squared, a nonparametric measure of effect size suitable for item-level
+#' comparisons.
 #'
 #' @examples
 #' set.seed(123)

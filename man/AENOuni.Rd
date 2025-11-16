@@ -2,7 +2,7 @@
 % Please edit documentation in R/AENOuni.R
 \name{AENOuni}
 \alias{AENOuni}
-\title{AENOuni: Actual Equivalent Number of Options for one item}
+\title{Actual Equivalent Number of Options for one item}
 \usage{
 AENOuni(vector, k, pseudo_zero = 0.05)
 }
@@ -46,9 +46,9 @@ Scientific Monograph, ONRT-1M3; Department of the Navy Office of Naval Research:
 
 Merino-Soto, C., Juárez-García, A., Salinas-Escudero, G., & Toledano-Toledano, F. (2022).
 Item-Level Psychometric Analysis of the Psychosocial Processes at Work Scale (PROPSIT) in Workers.
-\emph{International Journal of Environmental Research and Public Health, 19}(13), 7972. https://doi.org/10.3390/ijerph19137972
+\emph{International Journal of Environmental Research and Public Health}, 19(13), 7972. https://doi.org/10.3390/ijerph19137972
 
-Linacre, J. M. (1999). Investigating rating scale category utility. \emph{Journal of Outcome Measurement, 3}(2), 103–122.
+Linacre, J. M. (1999). Investigating rating scale category utility. \emph{Journal of Outcome Measurement}, 3(2), 103–122.
 
-Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement, 3}(1), 85–106.
+Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement}, 3(1), 85–106.
 }

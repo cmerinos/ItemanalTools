@@ -2,7 +2,7 @@
 % Please edit documentation in R/ralerting.R
 \name{ralerting}
 \alias{ralerting}
-\title{ralerting: ralerting-CV with permutation test and bootstrap CIs}
+\title{@title ralerting-Construct Validity with permutation test and bootstrap CIs}
 \usage{
 ralerting(
   actr,
@@ -39,7 +39,7 @@ Interpreted as \eqn{\pm}jitter. Set to \code{0} to disable (default \code{0.001}
 \item{digits}{Integer. Number of decimals to round the reported statistics (default \code{3}).}
 }
 \description{
-Computes the QCV alerting index (ralerting-CV) as the correlation between
+Computes the alerting index (ralerting-CV) for the Quantifying Construct Validity procedure (QCV) as the correlation between
 Fisher-z transformed observed correlations and mean-centered predicted
 correlations. Provides a one-sided randomization (permutation) p-value and
 bootstrap confidence intervals for ralerting. Includes a minimal-variance
@@ -77,16 +77,20 @@ undefined without variance in \eqn{\lambda}. The jitter option is a pragmatic
 device to permit computation; use with interpretive caution.
 }
 \examples{
+# Example 1 -----------
+
 # Constant predictions (e.g., ref value from DmIndex): jitter enables computation
 ralerting(actr = c(.233, .449, .257, .092, -.002, .174),
            predr = rep(.50, 6),
            iter = 1000, B = 1000, seed = 123)
 
+# Example 2 -----------
 # Strict mode (no jitter) -> NA if predictions are constant
 ralerting(actr = c(.233, .449, .257, .092, -.002, .174),
            predr = rep(.50, 6),
            jitter = 0, iter = 2000, B = 0, seed = 123)
 
+# Example 3 -----------
 # Non-constant predictions: no jitter applied
 ralerting(actr = c(.10, .35, .08, .31, .17, .33),
            predr = c(.19, .201, .21, .201, .20, .201),
@@ -94,11 +98,12 @@ ralerting(actr = c(.10, .35, .08, .31, .17, .33),
 
 }
 \references{
-Furr, R. M., & Heuckeroth, S. (2019). The Quantifying Construct Validity
-procedure: Its role, value, interpretations, and computation. \emph{Assessment}.
+Furr, R. M., & Heuckeroth, S. (2019). The “quantifying construct validity” procedure: Its role,
+value, interpretations, and computation. \emph{Assessment}, 26(4), 555–566. https://doi.org/10.1177/1073191118820638
 
-Westen, D., & Rosenthal, R. (2003). Quantifying construct validity: Two simple
-measures. \emph{Journal of Personality and Social Psychology}, 84(3), 608-618.
+Westen, D., & Rosenthal, R. (2003). Quantifying construct validity: Two simple measures.
+\emph{Journal of Personality and Social Psychology}, 84(3), 608–618. https://doi.org/10.1037/0022-3514.84.3.608
+
 See also the \code{qcv} R package for an implementation of QCV indices.
 }
 \seealso{

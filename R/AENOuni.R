@@ -1,4 +1,4 @@
-#' @title AENOuni: Actual Equivalent Number of Options for one item
+#' @title Actual Equivalent Number of Options for one item
 #'
 #' @description
 #' Calculates the effective number of response categories (or actual equivalent number of
@@ -30,16 +30,16 @@
 #' (Analyzing endorsement distribution of selected-response items).
 #' In *Proceedings of the 4th Annual Meeting of the Behaviometric Society of Japan*, Tokyo, Japan.
 #'
-#' Samejima, F. (1980). *Research on the Multiple-Choice Test Item in Japan: Toward the Validation of Mathematical Models*.
+#' Samejima, F. (1980). \emph{Research on the Multiple-Choice Test Item in Japan: Toward the Validation of Mathematical Models}.
 #' Scientific Monograph, ONRT-1M3; Department of the Navy Office of Naval Research: Tokyo, Japan.
 #'
 #' Merino-Soto, C., Juárez-García, A., Salinas-Escudero, G., & Toledano-Toledano, F. (2022).
 #' Item-Level Psychometric Analysis of the Psychosocial Processes at Work Scale (PROPSIT) in Workers.
-#' *International Journal of Environmental Research and Public Health, 19*(13), 7972. https://doi.org/10.3390/ijerph19137972
+#' \emph{International Journal of Environmental Research and Public Health}, 19(13), 7972. https://doi.org/10.3390/ijerph19137972
 #'
-#' Linacre, J. M. (1999). Investigating rating scale category utility. *Journal of Outcome Measurement, 3*(2), 103–122.
+#' Linacre, J. M. (1999). Investigating rating scale category utility. \emph{Journal of Outcome Measurement}, 3(2), 103–122.
 #'
-#' Linacre, J. M. (2002). Optimizing rating scale category effectiveness. *Journal of Applied Measurement, 3*(1), 85–106.
+#' Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement}, 3(1), 85–106.
 #'
 #' @export
 AENOuni <- function(vector, k, pseudo_zero = 0.05) {
