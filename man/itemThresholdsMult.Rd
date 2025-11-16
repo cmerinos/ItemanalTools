@@ -2,7 +2,7 @@
 % Please edit documentation in R/itemThresholdsMult.R
 \name{itemThresholdsMult}
 \alias{itemThresholdsMult}
-\title{Item Thresholds for Multiple Likert-type Items}
+\title{Item Thresholds and equidistance for Multiple Likert-type Items}
 \usage{
 itemThresholdsMult(
   data,

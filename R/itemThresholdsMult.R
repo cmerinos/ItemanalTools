@@ -1,4 +1,4 @@
-#' @title Item Thresholds for Multiple Likert-type Items
+#' @title Item Thresholds and equidistance for Multiple Likert-type Items
 #'
 #' @description
 #' Applies \code{itemThresholds()} to multiple Likert-type items in a data set

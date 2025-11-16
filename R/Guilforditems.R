@@ -89,7 +89,7 @@
 #' Duxbury Press.
 #'
 #' Willson, V. L. (1980). The distribution of Guilford's average rank-order
-#' correlation coefficient. \emph{Educational and Psychological Measurement}, 40(2), 427--431. \doi{10.1177/001316448004000209}
+#' correlation coefficient. \emph{Educational and Psychological Measurement}, 40(2), 427--431. https://doi.org/10.1177/001316448004000209
 #'
 #' @seealso
 #' \code{\link[stats]{friedman.test}}, \code{\link[stats]{cor}}, \code{\link[boot]{boot}},
