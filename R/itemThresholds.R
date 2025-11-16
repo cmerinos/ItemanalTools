@@ -86,11 +86,11 @@
 #' Ordinal Data*. R package version 2019.12-10.
 #' https://CRAN.R-project.org/package=ordinal
 #'
-#' Spratto, E. M. (2018). In search of equality: Developing an equal interval Likert response scale
-#' (Doctoral dissertations). https://commons.lib.jmu.edu/diss201019/172
+#' Spratto, E. M. (2018). \emph{In search of equality: Developing an equal interval Likert response scale
+#' (Doctoral dissertations)}. https://commons.lib.jmu.edu/diss201019/172
 #'
 #' Sideridis, G., Tsaousis, I., & Ghamdi, H. (2022). Equidistant Response Options on Likert-Type
-#' Instruments: Testing the Interval Scaling Assumption Using Mplus. Educational and Psychological Measurement,
+#' Instruments: Testing the Interval Scaling Assumption Using Mplus. \emph{Educational and Psychological Measurement},
 #' 83(5), 885-906. https://doi.org/10.1177/00131644221130482
 #'
 #' @importFrom stats coef pnorm qnorm vcov pchisq

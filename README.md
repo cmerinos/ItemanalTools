@@ -80,10 +80,13 @@ catPlot(data = science.catorder)
 | `CucconiMult()` | Multigroup Cucconi Test for location and dcale simultaneous differences |
 | `DmIndex()` | Item-Level Deviation Index from a theoretical association value |
 | `epsilonItems()` | Nonparametric effect size epsilon squared across multiple groups |
-| `FWitems()` | Friedman test and Kendall’s W for repeated-measures item data |
+| `FWitems()` | Friedman test and Kendall’s W for for item sets |
+| `Guilforditems()` | Guilford's average rank-order correlation for item sets |
+| `itemThresholds()` | itemThresholds and equidistance test for a single ordinal items |
+| `itemThresholdsMult()` | itemThresholds and equidistance test for a multiple ordinal items |
 | `MurakamiPairs()` | All-pairs nonparametric comparisons between groups using the two-groups Cucconi test |
 | `ralerting()` | Correlation between observed correlation pattern and expected correlation pattern |
-| `RGitems()` | Nonparametric effect size Wilcoxon Rank-Biserial in two grups |
+| `RGitems()` | Rank--biserial correlation effect size in two independent grups |
 | `RotheryItems()` | Nonparametric concordance index for repeated ordinal measurements, based in Rothery (1979) |
 | `Spearitems()` | Spearman's rho or Kendall's tau correlation between each ordinal item and a continuous external criterion |
 | `summaryItemAssoc()` | Summary Statistics for Item-Level Association Coefficients |
