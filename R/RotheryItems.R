@@ -1,4 +1,4 @@
-#' @title RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled, bootstrap CI)
+#' @title Rothery's Nonparametric Concordance Index
 #'
 #' @description
 #' Computes a nonparametric concordance index (\code{psi}) for repeated ordinal measurements,
@@ -70,7 +70,7 @@
 #' Harper, D. G. C. (1994) Some comments on the repeatability of measurements. \emph{Ringing & Migration}, 15(2), 84-90, \href{https://doi.org/10.1080/03078698.1994.9674078}
 #'
 #' Shirahata, S. (1982) A nonparametric measure of interclass correlation. \emph{Communications in Statistics - Theory and Methods}, 11:15, 1723-1732, \href{https://doi.org/10.1080/03610928208828344}
-
+#'
 #' @importFrom stats optimize pbeta qbeta var quantile sd
 #'
 #' @export

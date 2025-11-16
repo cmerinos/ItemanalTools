@@ -1,4 +1,4 @@
-#' @title MurakamiPairs: Pairwise Cucconi Test for Location and Scale Differences
+#' @title Pairwise Cucconi Test for Location and Scale Differences (Murakami's method)
 #'
 #' @description
 #' Performs all-pairs nonparametric comparisons between groups using the Cucconi test,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RotheryItems.R
 \name{RotheryItems}
 \alias{RotheryItems}
-\title{RotheryItems: Nonparametric Concordance Index (Rothery, 1979, scaled, bootstrap CI)}
+\title{Rothery's Nonparametric Concordance Index}
 \usage{
 RotheryItems(data.items, alpha = 0.05, B = 1000, type = "perc")
 }

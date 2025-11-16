@@ -2,7 +2,7 @@
 % Please edit documentation in R/MurakamiPairs.R
 \name{MurakamiPairs}
 \alias{MurakamiPairs}
-\title{MurakamiPairs: Pairwise Cucconi Test for Location and Scale Differences}
+\title{Pairwise Cucconi Test for Location and Scale Differences (Murakami's method)}
 \usage{
 MurakamiPairs(x, group, B = 1000, adjust.method = "holm")
 }
