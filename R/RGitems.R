@@ -14,6 +14,11 @@
 #' @param B Integer. Number of bootstrap replicates for interval estimation. Default is \code{1000}.
 #' @param conf.level Confidence level for the interval estimation. Default is \code{0.95}.
 #'
+#'@details
+#' This function internally calls \code{rcompanion::wilcoxonRG} to compute the
+#' rank-biserial effect size (RG). The wrapper standardizes the output for
+#' item-level psychometric analysis.
+#'
 #' @return A data frame with one row per item. If \code{ci = TRUE}, columns are:
 #' \describe{
 #'   \item{\code{Item}}{Item name.}
@@ -22,6 +27,16 @@
 #'   \item{\code{lwr.upp}}{Upper confidence limit.}
 #' }
 #' If \code{ci = FALSE}, only \code{Item} and \code{rg} are returned.
+#'
+#'@references
+#'
+#'Willson, V. L. (1976). Critical Values of the Rank-Biserial Correlation Coefficient. \emph{Educational and Psychological Measurement}, 36(2), 297-300. \doi{10.1177/001316447603600207}
+#'
+#'Cureton, E. E. (1968). Rank-Biserial Correlation when Ties Are Present. \emph{Educational and Psychological Measurement}, 28(1), 77-79. \doi{10.1177/001316446802800107}
+#'
+#'Glass, G. V. (1966). Note on Rank Biserial Correlation. \emph{Educational and Psychological Measurement}, 26(3), 623-631. \doi{10.1177/001316446602600307}
+#'
+#'Cureton, E. E. (1956). Rank-biserial correlation. \emph{Psychometrika}, 21, 287–290. \doi{10.1007/BF02289138}
 #'
 #' @examples
 #' \dontrun{
