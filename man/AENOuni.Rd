@@ -4,13 +4,15 @@
 \alias{AENOuni}
 \title{Actual Equivalent Number of Options for one item}
 \usage{
-AENOuni(vector, k, pseudo_zero = 0.05)
+AENOuni(vector, k, min.cat = 1, pseudo_zero = 0.05)
 }
 \arguments{
 \item{vector}{A numeric, factor, or character vector of item responses.}
 
 \item{k}{The total number of theoretical response options (e.g., \code{k = 6} for 0–5).
 This value is required, even if some categories were unused.}
+
+\item{min.cat}{Possible minimum value of theoretical response options. Default is \code{1}.}
 
 \item{pseudo_zero}{A small positive value used to replace zero frequencies,
 avoiding undefined logarithms. Default is \code{0.05}.}
@@ -33,7 +35,7 @@ objective information to assess the functionality of the response options.
 }
 \examples{
 responses <- c(0, 1, 1, 2, 3, 3, 5, NA)
-AENOuni(responses, k = 6)
+AENOuni(responses, k = 6, min.cat = 0)
 
 }
 \references{

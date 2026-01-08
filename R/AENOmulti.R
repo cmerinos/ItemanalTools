@@ -12,6 +12,7 @@
 #'
 #' @param data A \code{data.frame} of item responses, where each column is an item.
 #' @param k Integer. Total number of response options possible (e.g., \code{k = 6} if options range from 0 to 5).
+#' @param min.cat Possible minimum value of theoretical response options. Default is \code{1}.
 #'
 #' @return A \code{data.frame} with the following columns for each item:
 #' \item{item}{Item name (column name from input).}
@@ -45,32 +46,23 @@
 #' Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement}, 3(1), 85–106.
 #'
 #' @export
-AENOmulti <- function(data, k) {
+AENOmulti <- function(data, k, min.cat = 1) {
 
-  if (!is.data.frame(data)) {
-    stop("Input must be a data.frame with items as columns.")
-  }
-  if (missing(k)) {
-    stop("You must specify the total number of response options with the argument 'k'.")
-  }
+  if (!is.data.frame(data)) stop("Input must be a data.frame with items as columns.")
+  if (missing(k)) stop("You must specify 'k' (total number of response options).")
 
   results <- lapply(names(data), function(item_name) {
     vector <- data[[item_name]]
     vector_no_na <- vector[!is.na(vector)]
-    cat_eff <- length(unique(vector_no_na))
-    n_valid <- length(vector_no_na)
-
-    AENO <- round(AENOuni(vector, k = k)$AENO, 3)
 
     data.frame(
       item = item_name,
-      AENO = AENO,
-      cat.eff = cat_eff,
-      n = n_valid,
+      AENO = round(AENOuni(vector, k = k, min.cat = min.cat)$AENO, 3),
+      cat.eff = length(unique(vector_no_na)),
+      n = length(vector_no_na),
       stringsAsFactors = FALSE
     )
   })
 
-  result_df <- do.call(rbind, results)
-  return(result_df)
+  do.call(rbind, results)
 }

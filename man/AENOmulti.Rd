@@ -4,12 +4,14 @@
 \alias{AENOmulti}
 \title{Actual Equivalent Number of Options for Multiple Items}
 \usage{
-AENOmulti(data, k)
+AENOmulti(data, k, min.cat = 1)
 }
 \arguments{
 \item{data}{A \code{data.frame} of item responses, where each column is an item.}
 
 \item{k}{Integer. Total number of response options possible (e.g., \code{k = 6} if options range from 0 to 5).}
+
+\item{min.cat}{Possible minimum value of theoretical response options. Default is \code{1}.}
 }
 \value{
 A \code{data.frame} with the following columns for each item:

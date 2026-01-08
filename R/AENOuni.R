@@ -15,6 +15,7 @@
 #' @param vector A numeric, factor, or character vector of item responses.
 #' @param k The total number of theoretical response options (e.g., \code{k = 6} for 0–5).
 #'          This value is required, even if some categories were unused.
+#' @param min.cat Possible minimum value of theoretical response options. Default is \code{1}.
 #' @param pseudo_zero A small positive value used to replace zero frequencies,
 #'        avoiding undefined logarithms. Default is \code{0.05}.
 #'
@@ -23,7 +24,7 @@
 #'
 #' @examples
 #' responses <- c(0, 1, 1, 2, 3, 3, 5, NA)
-#' AENOuni(responses, k = 6)
+#' AENOuni(responses, k = 6, min.cat = 0)
 #'
 #' @references
 #' Sato, T., & Morimoto, U. (1976). Sentaku-shi keishiki tesuto kaitou bunpu no bunseki
@@ -42,21 +43,37 @@
 #' Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement}, 3(1), 85–106.
 #'
 #' @export
-AENOuni <- function(vector, k, pseudo_zero = 0.05) {
-  if (missing(k)) stop("You must specify the total number of response options with the 'k' argument.")
+AENOuni <- function(vector, k, min.cat = 1, pseudo_zero = 0.05) {
 
+  if (missing(k)) stop("You must specify 'k' (total number of response options).")
+  if (!min.cat %in% c(0, 1)) stop("'min.cat' must be 0 or 1.")
+
+  # observed proportions (omit NA automatically)
   prop_responses <- table(vector) / sum(!is.na(vector))
 
-  full_categories <- as.character(0:(k - 1))
-  prop_full <- rep(0, k)
-  names(prop_full) <- full_categories
-  prop_full[names(prop_responses)] <- prop_responses
+  # define theoretical categories
+  full_categories <- as.character(min.cat:(min.cat + k - 1))
 
+  # IMPORTANT: prevent vector extension by matching
+  prop_full <- setNames(rep(0, k), full_categories)
+  common <- intersect(names(prop_responses), full_categories)
+  prop_full[common] <- prop_responses[common]
+
+  # if there are observed categories not in the theoretical set, stop
+  extra <- setdiff(names(prop_responses), full_categories)
+  if (length(extra) > 0) {
+    stop(
+      "Observed categories not covered by (min.cat:(min.cat+k-1)): ",
+      paste(extra, collapse = ", "),
+      ". Please set 'min.cat' correctly or recode the item."
+    )
+  }
+
+  # incidental zeros
   prop_full[prop_full == 0] <- pseudo_zero
   prop_full <- prop_full / sum(prop_full)
 
-  entropy_terms <- prop_full * log2(prop_full)
-  entropy <- -sum(entropy_terms)
+  entropy <- -sum(prop_full * log2(prop_full))
   AENO <- 2^entropy
 
   return(list(AENO = AENO))
