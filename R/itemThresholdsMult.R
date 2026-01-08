@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Applies \code{itemThresholds()} to multiple Likert-type items in a data set
-#' and produces per-item summaries, including a "figure-style" table with
+#' and produces per-item summaries, including a formated table with
 #' thresholds, threshold differences, and equidistance tests (Spratto index).
 #'
 #' @details
@@ -19,14 +19,14 @@
 #' The output includes:
 #' \itemize{
 #'   \item A list of full \code{itemThresholds()} results per item.
-#'   \item A "figure-style" table per item with rows for thresholds,
+#'   \item A formated table per item with rows for thresholds,
 #'         threshold differences, and an overall equidistance row.
 #'   \item A summary data frame with one row per item, containing the number of
 #'         categories, the Spratto index, and the global Wald test of
 #'         equidistance.
 #' }
 #'
-#' The "figure-style" table for each item has the following columns:
+#' The formated table for each item has the following columns:
 #' \describe{
 #'   \item{row}{Label for the row (threshold name, contrast, "Diff-Thr. Item",
 #'         or "Z.local (d1)", "Z.local (d2)", etc.).}
