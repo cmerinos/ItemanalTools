@@ -20,6 +20,6 @@ Suggests:
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 BugReports: https://github.com/cmerinos/Itemanalysis/issues
 URL: https://github.com/cmerinos/Itemanalysis
+Config/roxygen2/version: 8.0.0

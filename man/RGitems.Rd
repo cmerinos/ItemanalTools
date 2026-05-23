@@ -34,7 +34,7 @@ A data frame with one row per item. If \code{ci = TRUE}, columns are:
 \item{\code{Item}}{Item name.}
 \item{\code{rg}}{Wilcoxon rank-biserial correlation.}
 \item{\code{lwr.ci}}{Lower confidence limit.}
-\item{\code{lwr.upp}}{Upper confidence limit.}
+\item{\code{upr.ci}}{Upper confidence limit.}
 }
 If \code{ci = FALSE}, only \code{Item} and \code{rg} are returned.
 }

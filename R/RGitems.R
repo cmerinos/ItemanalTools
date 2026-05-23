@@ -24,7 +24,7 @@
 #'   \item{\code{Item}}{Item name.}
 #'   \item{\code{rg}}{Wilcoxon rank-biserial correlation.}
 #'   \item{\code{lwr.ci}}{Lower confidence limit.}
-#'   \item{\code{lwr.upp}}{Upper confidence limit.}
+#'   \item{\code{upr.ci}}{Upper confidence limit.}
 #' }
 #' If \code{ci = FALSE}, only \code{Item} and \code{rg} are returned.
 #'
@@ -84,7 +84,7 @@ RGitems <- function(data.items, group,
 
     if (is.null(res)) {
       if (ci) {
-        return(data.frame(Item = x, rg = NA, lwr.ci = NA, lwr.upp = NA))
+        return(data.frame(Item = x, rg = NA, lwr.ci = NA, upr.ci = NA))
       } else {
         return(data.frame(Item = x, rg = NA))
       }
@@ -97,7 +97,7 @@ RGitems <- function(data.items, group,
       return(data.frame(Item = x,
                         rg = round(rg, 3),
                         lwr.ci = round(lower, 3),
-                        lwr.upp = round(upper, 3)))
+                        upr.ci = round(upper, 3)))
     } else {
       # Cuando ci = FALSE, res es un vector nombrado
       rg <- if ("rg" %in% names(res)) res["rg"] else NA
