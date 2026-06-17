@@ -28,7 +28,7 @@
 #' @return A data frame with one row per item and the following columns:
 #' \itemize{
 #'   \item \code{Item}: Item name (taken from \code{colnames(data.items)}).
-#'   \item \code{r.rd}: Hall-Lambert correlation coefficient (range approximately [-1, 1]).
+#'   \item \code{r.rd}: Hall-Lambert correlation coefficient (range approximately -1 to 1).
 #'   \item \code{H}: Chi-square statistic for testing \eqn{H_0: \rho_{rd}=0}.
 #'   \item \code{p.value}: p-value associated with the H statistic (\eqn{\chi^2} with 1 df).
 #'   \item \code{lwr.ci}: Lower bound of the confidence interval (if \code{ci=TRUE}).
