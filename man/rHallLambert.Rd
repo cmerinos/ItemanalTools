@@ -2,106 +2,52 @@
 % Please edit documentation in R/rHallLambert.R
 \name{rHallLambert}
 \alias{rHallLambert}
-\title{Hall-Lambert Correlation between Ordinal Items and a Dichotomous Criterion}
+\title{Hall–Lambert Correlation for Ordinal Items and a Dichotomous Criterion}
 \usage{
 rHallLambert(
   data.items,
   criterion,
   lower.level = NULL,
-  ci = FALSE,
+  ci = "chi",
   B = 1000,
   type = "perc",
   ties.method = "average"
 )
 }
 \arguments{
-\item{data.items}{A data frame or matrix where each column is an item (ordinal variable)
-and each row is a respondent. All columns must be numeric.}
+\item{data.items}{A data frame or matrix with ordinal items in columns and subjects in rows.}
 
-\item{criterion}{A vector of the same length as the number of rows in
-\code{data.items}, containing the dichotomous criterion. It can be a
-two-level factor, a logical vector, or a numeric vector with values 0/1.}
+\item{criterion}{A dichotomous vector (factor, logical, or numeric with two unique values).}
 
-\item{lower.level}{Specifies which level of the criterion is considered the
-"lower" group. By default, for factors the first level is taken; for
-logical vectors, \code{FALSE}; for numeric vectors, the smallest value.
-Can be overridden with a specific value (e.g., \code{lower.level = 0}
-or \code{lower.level = "Control"}).}
+\item{lower.level}{Specifies which level of the criterion is considered the "lower" group.}
 
-\item{ci}{Logical. If \code{TRUE}, bootstrap confidence intervals are computed
-for the coefficient. Default is \code{FALSE}.}
+\item{ci}{Character or logical: \code{NULL}/\code{FALSE}, \code{"chi"}, or \code{"boot"}.}
 
-\item{B}{Number of bootstrap replicates for the confidence intervals. Default is 1000.}
+\item{B}{Number of bootstrap replicates (if \code{ci = "boot"}). Default 1000.}
 
-\item{type}{Method for the confidence interval: \code{"perc"} (percentile, default),
-\code{"norm"} (normal approximation), or \code{"bca"} (bias-corrected and accelerated).}
+\item{type}{Method for bootstrap confidence intervals: \code{"perc"}, \code{"norm"}, or \code{"bca"}.}
 
-\item{ties.method}{Method for handling ties in the item ranks. Passed to \code{\link{rank}}.
-Default is \code{"average"}.}
+\item{ties.method}{Method for handling ties in ranks. Passed to \code{\link[=rank]{rank()}}. Default \code{"average"}.}
 }
 \value{
-A data frame with one row per item and the following columns:
-\itemize{
-\item \code{Item}: Item name (taken from \code{colnames(data.items)}).
-\item \code{r.rd}: Hall-Lambert correlation coefficient (range approximately -1 to 1).
-\item \code{H}: Chi-square statistic for testing \eqn{H_0: \rho_{rd}=0}.
-\item \code{p.value}: p-value associated with the H statistic (\eqn{\chi^2} with 1 df).
-\item \code{lwr.ci}: Lower bound of the confidence interval (if \code{ci=TRUE}).
-\item \code{upr.ci}: Upper bound of the confidence interval (if \code{ci=TRUE}).
-}
-All numeric values are rounded to three decimal places.
+A data frame with columns depending on \code{ci}.
 }
 \description{
-Computes the \eqn{r_{rd}} correlation coefficient proposed by Hall and Lambert (1962)
-to measure the association between an ordinal variable (e.g., Likert-type items)
-and a dichotomous criterion. The coefficient does not assume bivariate normality
-and is appropriate when the underlying continuous variable has a rectangular
-distribution or when only ranks are available.
-}
-\details{
-The coefficient \eqn{r_{rd}} is based on the following formula (equation 6a in Hall & Lambert, 1962):
-\deqn{r_{rd} = \frac{n(N+1) - 2Y}{n(N-n)}}
-where \eqn{N} is the total number of observations, \eqn{n} is the size of the
-lower group on the criterion, and \eqn{Y} is the sum of the ranks (with possible ties)
-of the subjects in that group.
-
-Significance is assessed using the H statistic (equation 10):
-\deqn{H = \frac{12 n (N-n) (\bar{P} - \bar{Q})^2}{N(N+1)}}
-which, under the null hypothesis of independence, is approximately distributed as
-\eqn{\chi^2} with 1 degree of freedom.
-
-The coefficient is designed for situations where the ordinal variable (item)
-can be treated as a series of ranks and the dichotomous variable is an external
-criterion. It is a robust alternative to the point-biserial and tetrachoric
-coefficients, especially when normality assumptions are not met.
+Hall–Lambert Correlation for Ordinal Items and a Dichotomous Criterion
 }
 \examples{
-if (requireNamespace("boot", quietly = TRUE)) {
-  # Simulated data: 100 respondents, 3 Likert items (1-5), dichotomous criterion (0/1)
-  set.seed(123)
-  items <- data.frame(
-    Item1 = sample(1:5, 100, replace = TRUE),
-    Item2 = sample(1:5, 100, replace = TRUE),
-    Item3 = sample(1:5, 100, replace = TRUE)
-  )
-  # Criterion: group (0 = control, 1 = treatment)
-  group <- sample(c(0,1), 100, replace = TRUE)
-
-  # Without confidence intervals (fast)
-  rHallLambert(items, group)
-
-  # With bootstrap confidence intervals (slower)
-  rHallLambert(items, group, ci = TRUE, B = 500)
-}
+set.seed(123)
+items <- data.frame(
+  Item1 = sample(1:5, 100, replace = TRUE),
+  Item2 = sample(1:5, 100, replace = TRUE)
+)
+group <- sample(c(0, 1), 100, replace = TRUE)
+rHallLambert(items, group)
+rHallLambert(items, group, ci = "boot", B = 500)
 
 }
 \references{
 Hall, A. C., & Lambert, J. A. (1962). A modification of biserial r for the
-correlation of a ranked variable with a dichotomous variable. \emph{The British
-Journal of Statistical Psychology}, 15(2), 129–132.
-\doi{10.1111/j.2044-8317.1962.tb00237.x}
-}
-\seealso{
-\code{\link{SpearItems}} for correlation between items and a continuous variable,
-\code{\link{RotheryItems}} for concordance among items.
+correlation of a ranked variable with a dichotomous variable.
+\emph{The British Journal of Statistical Psychology}, 15(2), 129–132.
 }
