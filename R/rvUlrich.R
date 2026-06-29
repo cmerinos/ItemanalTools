@@ -20,6 +20,8 @@
 #'   constants like `0.1`. Default is `NULL` (no correction).
 #' @param ci Logical. If `TRUE`, bootstrap confidence intervals and a two-sided
 #'   p-value are computed. Default `FALSE`.
+#' @param conf.level Confidence level for the bootstrap intervals. Default 0.95.
+#'   Used only if `ci = TRUE`.
 #' @param B Number of bootstrap replicates (if `ci = TRUE`). Default 1000.
 #' @param type Method for bootstrap confidence intervals: `"perc"`, `"norm"`, or
 #'   `"bca"`. Default `"perc"`. Ignored if `ci = FALSE`.
@@ -115,7 +117,9 @@ rvUlrich <- function(data.items,
                      add = NULL,
                      ci = FALSE,
                      B = 1000,
-                     type = "perc") {
+                     type = "perc",
+                     conf.level = 0.95,
+                     min.boot = 50) {
 
   # --- 1. Validations ---
   if (!is.data.frame(data.items) && !is.matrix(data.items)) {
@@ -130,6 +134,13 @@ rvUlrich <- function(data.items,
   }
   if (!is.null(add) && (!is.numeric(add) || length(add) != 1 || add < 0)) {
     stop("'add' must be a single non-negative numeric value or NULL.")
+  }
+  if (ci && !type %in% c("perc", "norm")) {
+    stop("Invalid 'type'. Use 'perc' or 'norm'.")
+  }
+  if (!is.numeric(conf.level) || length(conf.level) != 1 ||
+      conf.level <= 0 || conf.level >= 1) {
+    stop("'conf.level' must be a single numeric value between 0 and 1.")
   }
 
   # --- 2. Process criterion into binary 0/1 vector ---
@@ -169,24 +180,14 @@ rvUlrich <- function(data.items,
 
   # --- 3. Internal function to compute ν for one item ---
   calc_nu <- function(x) {
-    # x: vector of 0/1 (natural dichotomy X)
-    # dic: artificial dichotomy Y (0/1)
     tab <- table(x, dic)
-    if (any(dim(tab) < 2)) {
-      # one category missing -> undefined
-      return(NA_real_)
-    }
-    n00 <- tab[1, 1]
-    n01 <- tab[1, 2]
-    n10 <- tab[2, 1]
-    n11 <- tab[2, 2]
+    if (any(dim(tab) < 2)) return(NA_real_)
+    n00 <- tab[1, 1]; n01 <- tab[1, 2]
+    n10 <- tab[2, 1]; n11 <- tab[2, 2]
 
-    # Apply continuity correction if requested
     if (!is.null(add)) {
-      n00 <- n00 + add
-      n01 <- n01 + add
-      n10 <- n10 + add
-      n11 <- n11 + add
+      n00 <- n00 + add; n01 <- n01 + add
+      n10 <- n10 + add; n11 <- n11 + add
       N_corr <- n00 + n01 + n10 + n11
     } else {
       N_corr <- N
@@ -194,41 +195,53 @@ rvUlrich <- function(data.items,
 
     p0 <- (n00 + n01) / N_corr
     p1 <- (n10 + n11) / N_corr
-    if (p0 == 0 || p1 == 0 || p0 == 1 || p1 == 1) {
-      return(NA_real_)  # undefined if one group empty
-    }
+    if (p0 == 0 || p1 == 0 || p0 == 1 || p1 == 1) return(NA_real_)
 
     p00 <- n00 / N_corr
     p10 <- n10 / N_corr
-    # Avoid quantiles at 0 or 1 (would be infinite)
-    if (p00 == 0 || p00 == p0 || p10 == 0 || p10 == p1) {
-      return(NA_real_)
-    }
+    if (p00 == 0 || p00 == p0 || p10 == 0 || p10 == p1) return(NA_real_)
 
     delta <- qnorm(p00 / p0) - qnorm(p10 / p1)
     nu <- delta / sqrt(delta^2 + 1 / (p1 * (1 - p1)))
     return(nu)
   }
 
-  nu_vals <- sapply(data.items, calc_nu)
-  df_out <- data.frame(Item = colnames(data.items),
+  # --- 4. Compute ν for all items, handling constant items ---
+  n_items <- ncol(data.items)
+  nu_vals <- numeric(n_items)
+  constant_items <- character(0)
+
+  for (i in seq_len(n_items)) {
+    x <- data.items[[i]]
+    if (length(unique(x)) < 2) {
+      constant_items <- c(constant_items, names(data.items)[i])
+      nu_vals[i] <- NA
+    } else {
+      nu_vals[i] <- calc_nu(x)
+    }
+  }
+
+  if (length(constant_items) > 0) {
+    warning(sprintf(
+      "The following items have no variability (all values equal) and were set to NA: %s",
+      paste(constant_items, collapse = ", ")
+    ))
+  }
+
+  df_out <- data.frame(Item = names(data.items),
                        r.nu = nu_vals,
                        stringsAsFactors = FALSE)
 
-  # --- 4. Return if no bootstrap ---
+  # --- 5. Return if no bootstrap ---
   if (isFALSE(ci)) {
     num_cols <- sapply(df_out, is.numeric)
     df_out[num_cols] <- lapply(df_out[num_cols], round, 3)
     return(df_out)
   }
 
-  # --- 5. Bootstrap CIs and p-value ---
+  # --- 6. Bootstrap CIs and p-value ---
   if (!requireNamespace("boot", quietly = TRUE)) {
     stop("Package 'boot' is required for bootstrap CIs. Please install it.")
-  }
-
-  if (!type %in% c("perc", "norm", "bca")) {
-    stop("Invalid 'type'. Use 'perc', 'norm', or 'bca'.")
   }
 
   # Bootstrap function: compute ν for all items on resampled data
@@ -236,16 +249,16 @@ rvUlrich <- function(data.items,
     d <- data[indices, , drop = FALSE]
     dic_b <- dic_orig[indices]
     sapply(d, function(col) {
+      # Check for constant item in bootstrap sample
+      if (length(unique(col)) < 2) return(NA_real_)
       tab <- table(col, dic_b)
       if (any(dim(tab) < 2)) return(NA_real_)
       n00 <- tab[1, 1]; n01 <- tab[1, 2]
       n10 <- tab[2, 1]; n11 <- tab[2, 2]
 
       if (!is.null(add_orig)) {
-        n00 <- n00 + add_orig
-        n01 <- n01 + add_orig
-        n10 <- n10 + add_orig
-        n11 <- n11 + add_orig
+        n00 <- n00 + add_orig; n01 <- n01 + add_orig
+        n10 <- n10 + add_orig; n11 <- n11 + add_orig
         N_b <- n00 + n01 + n10 + n11
       } else {
         N_b <- length(dic_b)
@@ -269,33 +282,59 @@ rvUlrich <- function(data.items,
                          dic_orig = dic,
                          add_orig = add)
 
-  # Extract confidence intervals for each item
-  ic_list <- lapply(seq_len(ncol(data.items)), function(i) {
-    ci_boot <- switch(type,
-                      perc = boot::boot.ci(boot_obj, index = i, type = "perc"),
-                      norm = boot::boot.ci(boot_obj, index = i, type = "norm"),
-                      bca  = boot::boot.ci(boot_obj, index = i, type = "bca"))
-    if (type == "perc") {
-      c(lwr = ci_boot$perc[4], upr = ci_boot$perc[5])
-    } else if (type == "norm") {
-      c(lwr = ci_boot$norm[2], upr = ci_boot$norm[3])
-    } else { # bca
-      c(lwr = ci_boot$bca[4], upr = ci_boot$bca[5])
-    }
-  })
-  ic_mat <- do.call(rbind, ic_list)
-  df_out$lwr.ci <- ic_mat[, "lwr"]
-  df_out$upr.ci <- ic_mat[, "upr"]
-
-  # Two-sided bootstrap p-value
+  # Extract bootstrap replicates matrix
   boot_coefs <- boot_obj$t
-  p_boot <- sapply(seq_len(ncol(data.items)), function(i) {
+
+  # Compute percentiles based on conf.level
+  alpha <- 1 - conf.level
+  lower_prob <- alpha / 2
+  upper_prob <- 1 - alpha / 2
+
+  # For each item, compute CI and p-value manually
+  lwr_ci <- upr_ci <- p_val <- rep(NA_real_, n_items)
+
+  for (i in seq_len(n_items)) {
     obs <- df_out$r.nu[i]
-    if (is.na(obs)) return(NA_real_)
-    # Proportion of bootstrap estimates with absolute value >= |observed|
-    mean(abs(boot_coefs[, i]) >= abs(obs), na.rm = TRUE)
-  })
-  df_out$p.value <- p_boot
+    if (is.na(obs)) {
+      lwr_ci[i] <- upr_ci[i] <- p_val[i] <- NA
+      next
+    }
+
+    # Extract valid bootstrap replicates (non-NA)
+    t_vals <- boot_coefs[, i]
+    t_vals_ok <- t_vals[!is.na(t_vals)]
+    n_ok <- length(t_vals_ok)
+
+    if (n_ok < min.boot) {
+      warning(sprintf(
+        "Item '%s': only %d valid bootstrap replicates (min.boot = %d). CI and p-value set to NA.",
+        names(data.items)[i], n_ok, min.boot
+      ))
+      lwr_ci[i] <- upr_ci[i] <- p_val[i] <- NA
+      next
+    }
+
+    # Compute CI based on type
+    if (type == "perc") {
+      ci_perc <- quantile(t_vals_ok, probs = c(lower_prob, upper_prob), na.rm = TRUE)
+      lwr_ci[i] <- ci_perc[1]
+      upr_ci[i] <- ci_perc[2]
+    } else { # type == "norm"
+      m <- mean(t_vals_ok, na.rm = TRUE)
+      s <- sd(t_vals_ok, na.rm = TRUE)
+      z <- qnorm(1 - alpha / 2)
+      lwr_ci[i] <- m - z * s
+      upr_ci[i] <- m + z * s
+    }
+
+    # Compute two-sided p-value based on centered bootstrap distribution
+    centered <- t_vals_ok - obs
+    p_val[i] <- mean(abs(centered) >= abs(obs), na.rm = TRUE)
+  }
+
+  df_out$lwr.ci <- lwr_ci
+  df_out$upr.ci <- upr_ci
+  df_out$p.value <- p_val
 
   # Round numeric columns
   num_cols <- sapply(df_out, is.numeric)

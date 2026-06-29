@@ -1,12 +1,23 @@
 #' Hall–Lambert Correlation for Ordinal Items and a Dichotomous Criterion
 #'
+#' Computes the Hall–Lambert correlation coefficient (\eqn{r_{rd}}) between
+#' ordinal items and a dichotomous criterion, with optional chi-square test
+#' or bootstrap confidence intervals and p-value.
+#'
 #' @param data.items A data frame or matrix with ordinal items in columns and subjects in rows.
 #' @param criterion A dichotomous vector (factor, logical, or numeric with two unique values).
 #' @param lower.level Specifies which level of the criterion is considered the "lower" group.
 #' @param ci Character or logical: `NULL`/`FALSE`, `"chi"`, or `"boot"`.
+#' @param conf.level Confidence level for bootstrap intervals (if `ci = "boot"`). Default `0.95`.
 #' @param B Number of bootstrap replicates (if `ci = "boot"`). Default 1000.
 #' @param type Method for bootstrap confidence intervals: `"perc"`, `"norm"`, or `"bca"`.
 #' @param ties.method Method for handling ties in ranks. Passed to [rank()]. Default `"average"`.
+#'
+#' @details
+#' When `ci = "boot"`, the bootstrap confidence intervals are computed at the
+#' specified `conf.level` (e.g., 0.95 for 95% intervals). The two‑sided p‑value
+#' is derived from the bootstrap distribution as the proportion of replicates
+#' whose absolute value is at least as large as the observed coefficient.
 #'
 #' @return A data frame with columns depending on `ci`.
 #'
@@ -23,14 +34,15 @@
 #' )
 #' group <- sample(c(0, 1), 100, replace = TRUE)
 #' rHallLambert(items, group)
-#' rHallLambert(items, group, ci = "boot", B = 500)
+#' rHallLambert(items, group, ci = "boot", B = 500, conf.level = 0.90)
 #'
-#' @importFrom stats pchisq
+#' @importFrom stats pchisq qnorm
 #' @export
 rHallLambert <- function(data.items,
                          criterion,
                          lower.level = NULL,
                          ci = "chi",
+                         conf.level = 0.95,
                          B = 1000,
                          type = "perc",
                          ties.method = "average") {
@@ -45,6 +57,9 @@ rHallLambert <- function(data.items,
   }
   if (length(criterion) != nrow(data.items)) {
     stop("'criterion' must have the same length as the number of rows in 'data.items'.")
+  }
+  if (!is.numeric(conf.level) || conf.level <= 0 || conf.level >= 1) {
+    stop("'conf.level' must be a numeric value between 0 and 1.")
   }
 
   # --- 2. Process criterion into a binary 0/1 vector ---
@@ -103,7 +118,6 @@ rHallLambert <- function(data.items,
 
   # --- 4. Return depending on ci ---
   if (is.null(ci) || isFALSE(ci)) {
-    # Round numeric columns to 3 decimals
     num_cols <- sapply(df_out, is.numeric)
     df_out[num_cols] <- lapply(df_out[num_cols], round, 3)
     return(df_out)
@@ -112,7 +126,6 @@ rHallLambert <- function(data.items,
   if (ci == "chi") {
     df_out$H <- res[, "H"]
     df_out$p.value <- res[, "p_chi"]
-    # Round numeric columns
     num_cols <- sapply(df_out, is.numeric)
     df_out[num_cols] <- lapply(df_out[num_cols], round, 3)
     return(df_out)
@@ -141,12 +154,13 @@ rHallLambert <- function(data.items,
                            R = B,
                            dic_orig = dic)
 
-    # Extract confidence intervals
+    # Extract confidence intervals at conf.level
+    alpha <- 1 - conf.level
     ic_list <- lapply(seq_len(ncol(data.items)), function(i) {
       ci_boot <- switch(type,
-                        perc = boot::boot.ci(boot_obj, index = i, type = "perc"),
-                        norm = boot::boot.ci(boot_obj, index = i, type = "norm"),
-                        bca  = boot::boot.ci(boot_obj, index = i, type = "bca"),
+                        perc = boot::boot.ci(boot_obj, index = i, type = "perc", conf = conf.level),
+                        norm = boot::boot.ci(boot_obj, index = i, type = "norm", conf = conf.level),
+                        bca  = boot::boot.ci(boot_obj, index = i, type = "bca", conf = conf.level),
                         stop("Invalid 'type'. Use 'perc', 'norm', or 'bca'."))
       if (type == "perc") c(lwr = ci_boot$perc[4], upr = ci_boot$perc[5])
       else if (type == "norm") c(lwr = ci_boot$norm[2], upr = ci_boot$norm[3])
@@ -164,7 +178,6 @@ rHallLambert <- function(data.items,
     })
     df_out$p.value <- p_boot
 
-    # Round numeric columns
     num_cols <- sapply(df_out, is.numeric)
     df_out[num_cols] <- lapply(df_out[num_cols], round, 3)
     return(df_out)

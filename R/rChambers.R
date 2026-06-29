@@ -1,11 +1,23 @@
 #' Chambers Excess‑Area Correlation for Biserial Data
 #'
+#' Computes the excess‑area correlation coefficient (\eqn{r_E}) proposed by
+#' Chambers (1982) for biserial data. It provides a robust alternative to the
+#' point‑biserial and biserial coefficients, with optional bootstrap confidence
+#' intervals and p‑value.
+#'
 #' @param data.items A data frame or matrix with items in columns and subjects in rows.
 #' @param criterion A numeric vector (continuous criterion) to be dichotomized at `cut.point`.
 #' @param cut.point Numeric value used to dichotomize the criterion.
 #' @param ci Logical. If `TRUE` (default), bootstrap CIs and a two‑sided p‑value are returned.
+#' @param conf.level Confidence level for bootstrap intervals (if `ci = TRUE`). Default `0.95`.
 #' @param B Number of bootstrap replicates (if `ci = TRUE`). Default 1000.
 #' @param type Method for bootstrap confidence intervals: `"perc"`, `"norm"`, or `"bca"`.
+#'
+#' @details
+#' When `ci = TRUE`, the bootstrap confidence intervals are computed at the
+#' specified `conf.level` (e.g., 0.95 for 95% intervals). The two‑sided p‑value
+#' is derived from the bootstrap distribution as the proportion of replicates
+#' whose absolute value is at least as large as the observed coefficient.
 #'
 #' @return A data frame with columns depending on `ci`.
 #'
@@ -25,13 +37,14 @@
 #' )
 #' total_score <- rowSums(items) + rnorm(100, 0, 2)
 #' rChambers(items, total_score, cut.point = 10, ci = FALSE)
-#' rChambers(items, total_score, cut.point = 10, ci = TRUE, B = 500)
+#' rChambers(items, total_score, cut.point = 10, ci = TRUE, B = 500, conf.level = 0.90)
 #'
 #' @export
 rChambers <- function(data.items,
                       criterion,
                       cut.point,
                       ci = TRUE,
+                      conf.level = 0.95,
                       B = 1000,
                       type = "perc") {
 
@@ -51,6 +64,9 @@ rChambers <- function(data.items,
   }
   if (!is.numeric(cut.point) || length(cut.point) != 1) {
     stop("'cut.point' must be a single numeric value.")
+  }
+  if (!is.numeric(conf.level) || conf.level <= 0 || conf.level >= 1) {
+    stop("'conf.level' must be a numeric value between 0 and 1.")
   }
 
   # Remove rows with NAs in items or criterion
@@ -89,7 +105,6 @@ rChambers <- function(data.items,
 
   # --- 3. Return if no CI ---
   if (isFALSE(ci)) {
-    # Round numeric columns
     num_cols <- sapply(df_out, is.numeric)
     df_out[num_cols] <- lapply(df_out[num_cols], round, 3)
     return(df_out)
@@ -123,12 +138,13 @@ rChambers <- function(data.items,
                          crit = criterion,
                          cut = cut.point)
 
-  # Extract confidence intervals
+  # Extract confidence intervals at conf.level
+  alpha <- 1 - conf.level
   ic_list <- lapply(seq_len(ncol(data.items)), function(i) {
     ci_boot <- switch(type,
-                      perc = boot::boot.ci(boot_obj, index = i, type = "perc"),
-                      norm = boot::boot.ci(boot_obj, index = i, type = "norm"),
-                      bca  = boot::boot.ci(boot_obj, index = i, type = "bca"),
+                      perc = boot::boot.ci(boot_obj, index = i, type = "perc", conf = conf.level),
+                      norm = boot::boot.ci(boot_obj, index = i, type = "norm", conf = conf.level),
+                      bca  = boot::boot.ci(boot_obj, index = i, type = "bca", conf = conf.level),
                       stop("Invalid 'type'. Use 'perc', 'norm', or 'bca'."))
     if (type == "perc") c(lwr = ci_boot$perc[4], upr = ci_boot$perc[5])
     else if (type == "norm") c(lwr = ci_boot$norm[2], upr = ci_boot$norm[3])
@@ -146,7 +162,6 @@ rChambers <- function(data.items,
   })
   df_out$p.value <- p_boot
 
-  # Round numeric columns
   num_cols <- sapply(df_out, is.numeric)
   df_out[num_cols] <- lapply(df_out[num_cols], round, 3)
 
