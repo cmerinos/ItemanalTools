@@ -1,3 +1,5 @@
+# ItemanaTools 0.1.3
+
 # Itemanalysis 0.1.2
  - Non ASCII characters: removing
 
