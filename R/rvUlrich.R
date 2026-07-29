@@ -109,7 +109,7 @@
 #' # With Haldane correction for zero cells
 #' rvUlrich(items, criterion, add = 0.5, ci = FALSE)
 #'
-#' @importFrom stats qnorm  complete.cases
+#' @importFrom stats qnorm  complete.cases quantile sd
 #'
 #' @export
 rvUlrich <- function(data.items,

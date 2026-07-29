@@ -96,6 +96,8 @@
 #' for (i in 1:30) dat[i, ] <- dat[i, ] + rnorm(1, sd = 1.5)
 #' RotheryICC(dat, ci = TRUE, B = 500, type = "bca")
 #'
+#' @importFrom stats pbeta quantile sd
+#'
 #' @export
 RotheryICC <- function(data,
                        ci = TRUE,

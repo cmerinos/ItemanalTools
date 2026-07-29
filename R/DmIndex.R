@@ -75,6 +75,8 @@
 #' DmIndex(df, coef.col = "tau", ref.value = 0.30,
 #'         ci.method = "zboot", n.eff = 250, B = 500)
 #'
+#' @importFrom stats quantile
+#'
 #' @export
 DmIndex <- function(df,
                     coef.col,
