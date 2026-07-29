@@ -1,3 +1,5 @@
+# Itemanalysis 0.1.2
+
 # Itemanalysis 0.1.1
  - Changes pre CRAN
  
