@@ -36,8 +36,7 @@ This function implements the pairwise version of the Cucconi test as described b
 Each comparison is made using only the two groups involved (i.e., pairwise ranking),
 and permutation resampling is used to compute the p-value.
 
-The maximum observed value of the Cucconi statistic across all pairs \code{max(C_st)}
-is sometimes referred to as SDC in the literature.
+The maximum observed value of the Cucconi statistic across all pairs: {max(C_st)}.
 }
 \examples{
 # Reproducing Example 1 from Murakami (2016)

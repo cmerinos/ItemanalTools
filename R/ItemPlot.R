@@ -1,4 +1,4 @@
-#' @title itemPlot: Plot of item coefficients with confidence intervals
+#' @title ItemPlot: Plot of item coefficients with confidence intervals
 #'
 #' @description
 #' Creates a graphical display of item-level coefficients with their corresponding
@@ -106,7 +106,7 @@
 #'   upr.ci = c(.70, .63, .57, .50, .45)
 #' )
 #'
-#' itemPlot(res,
+#' ItemPlot(res,
 #'          show.values = TRUE,
 #'          value.format = "both",
 #'          threshold = 0.40)
@@ -123,7 +123,7 @@
 #'              .67, .58, .54, .48, .42)
 #' )
 #'
-#' itemPlot(res_g,
+#' ItemPlot(res_g,
 #'          group = "group",
 #'          show.values = TRUE,
 #'          value.format = "both",

@@ -1,19 +1,19 @@
 # inst/CITATION
 
-citHeader("To cite Itemanalysis in publications use:")
+citHeader("To cite ItemanalTools in publications use:")
 
 citEntry(
   entry = "Manual",
-  title = "Itemanalysis",
+  title = "ItemanalTools",
   author = person("Cesar", "Merino-Soto"),
   year = format(Sys.Date(), "%Y"),
   note = paste("R package version", meta$Version),
-  url = "https://github.com/cmerinos/Itemanalysis",
+  url = "https://github.com/cmerinos/ItemanalTools",
   textVersion = paste(
     "Merino-Soto, C.",
     paste0("(", format(Sys.Date(), "%Y"), ")."),
     "Itemanalysis: Tools for expanded item analysis in psychometrics.",
     paste("R package version", meta$Version),
-    "https://github.com/cmerinos/Itemanalysis"
+    "https://github.com/cmerinos/ItemanalTools"
     )
 )

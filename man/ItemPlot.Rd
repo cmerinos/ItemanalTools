@@ -2,7 +2,7 @@
 % Please edit documentation in R/ItemPlot.R
 \name{ItemPlot}
 \alias{ItemPlot}
-\title{itemPlot: Plot of item coefficients with confidence intervals}
+\title{ItemPlot: Plot of item coefficients with confidence intervals}
 \usage{
 ItemPlot(
   data,
@@ -139,7 +139,7 @@ res <- data.frame(
   upr.ci = c(.70, .63, .57, .50, .45)
 )
 
-itemPlot(res,
+ItemPlot(res,
          show.values = TRUE,
          value.format = "both",
          threshold = 0.40)
@@ -156,7 +156,7 @@ res_g <- data.frame(
              .67, .58, .54, .48, .42)
 )
 
-itemPlot(res_g,
+ItemPlot(res_g,
          group = "group",
          show.values = TRUE,
          value.format = "both",
