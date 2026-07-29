@@ -1,5 +1,7 @@
 # ItemanalTools 0.1.4
-
+ - Remove: RotheryItems
+ - Check equations: MurakiPairs
+ 
 # ItemanaTools 0.1.3
  - Package, project and web: changing name
  
