@@ -21,11 +21,11 @@
 #' \item{n}{Number of valid (non-missing) responses.}
 #'
 #' @examples
-#' data <- data.frame(
+#'  data <- data.frame(
 #'   item1 = c(0, 1, 2, 3, 4, 5, NA),
 #'   item2 = c(1, 2, 2, 2, 3, 4, 5)
 #' )
-#' AENOmulti(data, k = 6)
+#' AENOmulti(data, k = 6, min.cat = 0)
 #'
 #' @seealso \code{\link{AENOuni}}
 #'

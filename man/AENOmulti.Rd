@@ -31,11 +31,11 @@ are treated as \emph{incidental zeros} (Linacre, 1999; 2002) and replaced with a
 value (default \code{0.05}) to allow entropy-based computations.
 }
 \examples{
-data <- data.frame(
+ data <- data.frame(
   item1 = c(0, 1, 2, 3, 4, 5, NA),
   item2 = c(1, 2, 2, 2, 3, 4, 5)
 )
-AENOmulti(data, k = 6)
+AENOmulti(data, k = 6, min.cat = 0)
 
 }
 \references{

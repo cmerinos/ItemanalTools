@@ -1,4 +1,4 @@
-Package: ItemanaTools
+Package: ItemanalTools
 Title: Tools for Item-Level Statistical Analysis in Psychometrics
 Version: 0.1.3
 Authors@R: 
@@ -11,7 +11,9 @@ Imports:
     PMCMRplus,
     rcompanion,
     stats,
-    ordinal
+    ordinal,
+    boot,
+    psych
 Suggests:
     knitr,
     rmarkdown
