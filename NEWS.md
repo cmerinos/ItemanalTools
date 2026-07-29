@@ -1,5 +1,6 @@
 # ItemanaTools 0.1.3
-
+ - Package, project and web: changing name
+ 
 # Itemanalysis 0.1.2
  - Non ASCII characters: removing
 
