@@ -39,14 +39,14 @@ CucconiMult(x, group, B = 999)
 }
 \references{
 Cucconi, O. (1968). Un nuovo test non parametrico per il confronto tra due gruppi campionari.
-\emph{Giornale degli Economisti e Annali di Economia}, 17(1), 225-–248. https://www.jstor.org/stable/23241361
+\emph{Giornale degli Economisti e Annali di Economia}, 17(1), 225--248. https://www.jstor.org/stable/23241361
 
 Marozzi, M. (2014). The multisample Cucconi test.
 \emph{Statistical Methods and Applications}, 23, 209--227. https://doi.org/10.1007/s10260-014-0255-x
 
-Marozzi, M. (2009). Some notes on the location–scale Cucconi test. \emph{Journal of Nonparametric Statistics},
+Marozzi, M. (2009). Some notes on the location-scale Cucconi test. \emph{Journal of Nonparametric Statistics},
 21(5), 629--647. https://doi.org/10.1080/10485250902952435
 
 Marozzi, M. (2013). Nonparametric Simultaneous Tests for Location and Scale Testing: A Comparison of Several Methods.
-\emph{Communications in Statistics -- Simulation and Computation}, 42(6), 1298–1317. https://doi.org/10.1080/03610918.2012.665546
+\emph{Communications in Statistics -- Simulation and Computation}, 42(6), 1298-1317. https://doi.org/10.1080/03610918.2012.665546
 }

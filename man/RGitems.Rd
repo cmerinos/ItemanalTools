@@ -63,5 +63,5 @@ Cureton, E. E. (1968). Rank-Biserial Correlation when Ties Are Present. \emph{Ed
 
 Glass, G. V. (1966). Note on Rank Biserial Correlation. \emph{Educational and Psychological Measurement}, 26(3), 623-631. \doi{10.1177/001316446602600307}
 
-Cureton, E. E. (1956). Rank-biserial correlation. \emph{Psychometrika}, 21, 287–290. \doi{10.1007/BF02289138}
+Cureton, E. E. (1956). Rank-biserial correlation. \emph{Psychometrika}, 21, 287-290. \doi{10.1007/BF02289138}
 }

@@ -55,8 +55,8 @@ head(attr(res, "means.long"))  # internal long-format means
 }
 \references{
 Cuzick J. (1985). A Wilcoxon-type test for trend. Statistics in medicine, 4(1),
-87–90. https://doi.org/10.1002/sim.4780040112
+87-90. https://doi.org/10.1002/sim.4780040112
 
 Jonckheere, A. R. (1954) A distribution-free k-sample test against ordered alternatives.
-Biometrica 41, 133–145. http://dx.doi.org/10.2307/2333011
+Biometrica 41, 133-145. http://dx.doi.org/10.2307/2333011
 }

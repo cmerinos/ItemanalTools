@@ -1,4 +1,4 @@
-#' Ulrich–Wirtz Correlation between a Naturally and an Artificially Dichotomized Variable
+#' Ulrich-Wirtz Correlation between a Naturally and an Artificially Dichotomized Variable
 #'
 #' Calculates the correlation coefficient \eqn{\nu} proposed by Ulrich and Wirtz (2004)
 #' for assessing the relationship between a naturally dichotomous variable (\eqn{X})
@@ -80,13 +80,13 @@
 #' @references
 #' Ulrich, R., & Wirtz, M. (2004). On the correlation of a naturally and an
 #' artificially dichotomized variable. *British Journal of Mathematical and
-#' Statistical Psychology*, 57(2), 235–251.
+#' Statistical Psychology*, 57(2), 235-251.
 #'
 #' Brown, M. B., & Benedetti, J. K. (1977). On the mean and variance of the
-#' tetrachoric correlation coefficient. *Psychometrika*, 42(3), 347–355.
+#' tetrachoric correlation coefficient. *Psychometrika*, 42(3), 347-355.
 #'
 #' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of
-#' a ratio of frequencies. *Annals of Human Genetics*, 20(4), 309–311.
+#' a ratio of frequencies. *Annals of Human Genetics*, 20(4), 309-311.
 #'
 #' Islam, T. U., & Rizwan, M. (2020). Comparison of Correlation Measures for
 #' Nominal Data. *Preprints*, 202004.0276.v1.

@@ -23,11 +23,11 @@
 #'
 #' @references
 #' Chambers, R. G. (1982). Correlation coefficients from 2×2 tables and from biserial data.
-#' *British Journal of Mathematical and Statistical Psychology*, 35(2), 216–227.
+#' *British Journal of Mathematical and Statistical Psychology*, 35(2), 216-227.
 #'
 #' Alexander, R. A., Alliger, G. M., Carson, K. P., & Barrett, G. V. (1985).
 #' The Empirical Performance of Measures of Association in the 2×2 Table.
-#' *Educational and Psychological Measurement*, 45(1), 79–87.
+#' *Educational and Psychological Measurement*, 45(1), 79-87.
 #'
 #' @examples
 #' set.seed(123)

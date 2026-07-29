@@ -44,8 +44,8 @@ CucconiMult2(dat, g, B = 500)
 }
 \references{
 Cucconi, O. (1968). Un nuovo test non parametrico per il confronto tra due gruppi campionari.
-\emph{Giornale degli Economisti e Annali di Economia}, 17(1), 225–248.
+\emph{Giornale degli Economisti e Annali di Economia}, 17(1), 225-248.
 
 Marozzi, M. (2014). The multisample Cucconi test.
-\emph{Statistical Methods and Applications}, 23, 209–227. \doi{10.1007/s10260-014-0255-x}
+\emph{Statistical Methods and Applications}, 23, 209-227. \doi{10.1007/s10260-014-0255-x}
 }

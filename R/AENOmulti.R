@@ -41,9 +41,9 @@
 #' Item-Level Psychometric Analysis of the Psychosocial Processes at Work Scale (PROPSIT) in Workers.
 #' \emph{International Journal of Environmental Research and Public Health}, 19(13), 7972. https://doi.org/10.3390/ijerph19137972
 #'
-#' Linacre, J. M. (1999). Investigating rating scale category utility. \emph{Journal of Outcome Measurement}, 3(2), 103–122.
+#' Linacre, J. M. (1999). Investigating rating scale category utility. \emph{Journal of Outcome Measurement}, 3(2), 103-122.
 #'
-#' Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement}, 3(1), 85–106.
+#' Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement}, 3(1), 85-106.
 #'
 #' @export
 AENOmulti <- function(data, k, min.cat = 1) {

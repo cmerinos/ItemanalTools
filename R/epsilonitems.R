@@ -40,9 +40,9 @@
 #' Frieman, J., Saucier, D. A., & Miller, S. (2017). Principles & Methods of Statistical Analysis.
 #'
 #' Carroll, R. M., & Nordholm, L. A. (1975). Sampling characteristics of Kelley’s ε² and Hays’ ω².
-#' Educational and Psychological Measurement, 35, 541–554.
+#' Educational and Psychological Measurement, 35, 541-554.
 #'
-#' Kelley, T. L. (1935). An unbiased correlation ratio measure. Proceedings of the National Academy of Sciences, 21(9), 554–559.
+#' Kelley, T. L. (1935). An unbiased correlation ratio measure. Proceedings of the National Academy of Sciences, 21(9), 554-559.
 #'
 #' Vogt, W. P. (2005). Dictionary of Statistics & Methodology: A Nontechnical Guide for the Social Sciences. SAGE Publications.
 #'

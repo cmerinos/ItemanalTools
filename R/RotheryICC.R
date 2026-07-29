@@ -82,7 +82,7 @@
 #'
 #' @references
 #' Rothery, P. (1979). A nonparametric measure of intraclass correlation.
-#' \emph{Biometrika}, 66(3), 629–639. \doi{10.1093/biomet/66.3.629}
+#' \emph{Biometrika}, 66(3), 629-639. \doi{10.1093/biomet/66.3.629}
 #'
 #' Rocha, B., Jonaitis, E. M., Hamwi, A., & Engelman, C. D. (2026). Longitudinal,
 #' Intra-Individual Stability of Untargeted Plasma and Cerebrospinal Fluid

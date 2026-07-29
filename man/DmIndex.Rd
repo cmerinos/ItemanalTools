@@ -102,9 +102,9 @@ DmIndex(df, coef.col = "tau", ref.value = 0.30,
 }
 \references{
 Dominguez Lara, S. (2013). Propuesta para el cálculo del índice DM para la validez de los
-ítemes. \emph{Interdisciplinaria Revista de Psicología y Ciencias Afines}, 30(2), 297–303.
+ítemes. \emph{Interdisciplinaria Revista de Psicología y Ciencias Afines}, 30(2), 297-303.
 \doi{10.16888/interd.2013.30.2.8}
 
 Taras, V., & Kline, T. (2010). Scale validation via quantifying item validity using the
-Dm index. \emph{Psychological Reports}, 107(2), 535–546. \doi{10.2466/03.PR0.107.5.535-546}
+Dm index. \emph{Psychological Reports}, 107(2), 535-546. \doi{10.2466/03.PR0.107.5.535-546}
 }

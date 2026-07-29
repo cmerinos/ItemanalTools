@@ -99,10 +99,10 @@ ralerting(actr = c(.10, .35, .08, .31, .17, .33),
 }
 \references{
 Furr, R. M., & Heuckeroth, S. (2019). The “quantifying construct validity” procedure: Its role,
-value, interpretations, and computation. \emph{Assessment}, 26(4), 555–566. https://doi.org/10.1177/1073191118820638
+value, interpretations, and computation. \emph{Assessment}, 26(4), 555-566. https://doi.org/10.1177/1073191118820638
 
 Westen, D., & Rosenthal, R. (2003). Quantifying construct validity: Two simple measures.
-\emph{Journal of Personality and Social Psychology}, 84(3), 608–618. https://doi.org/10.1037/0022-3514.84.3.608
+\emph{Journal of Personality and Social Psychology}, 84(3), 608-618. https://doi.org/10.1037/0022-3514.84.3.608
 
 See also the \code{qcv} R package for an implementation of QCV indices.
 }

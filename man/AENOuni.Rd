@@ -9,7 +9,7 @@ AENOuni(vector, k, min.cat = 1, pseudo_zero = 0.05)
 \arguments{
 \item{vector}{A numeric, factor, or character vector of item responses.}
 
-\item{k}{The total number of theoretical response options (e.g., \code{k = 6} for 0–5).
+\item{k}{The total number of theoretical response options (e.g., \code{k = 6} for 0-5).
 This value is required, even if some categories were unused.}
 
 \item{min.cat}{Possible minimum value of theoretical response options. Default is \code{1}.}
@@ -50,7 +50,7 @@ Merino-Soto, C., Juárez-García, A., Salinas-Escudero, G., & Toledano-Toledano,
 Item-Level Psychometric Analysis of the Psychosocial Processes at Work Scale (PROPSIT) in Workers.
 \emph{International Journal of Environmental Research and Public Health}, 19(13), 7972. https://doi.org/10.3390/ijerph19137972
 
-Linacre, J. M. (1999). Investigating rating scale category utility. \emph{Journal of Outcome Measurement}, 3(2), 103–122.
+Linacre, J. M. (1999). Investigating rating scale category utility. \emph{Journal of Outcome Measurement}, 3(2), 103-122.
 
-Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement}, 3(1), 85–106.
+Linacre, J. M. (2002). Optimizing rating scale category effectiveness. \emph{Journal of Applied Measurement}, 3(1), 85-106.
 }

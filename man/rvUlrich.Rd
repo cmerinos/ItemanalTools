@@ -2,7 +2,7 @@
 % Please edit documentation in R/rvUlrich.R
 \name{rvUlrich}
 \alias{rvUlrich}
-\title{Ulrich–Wirtz Correlation between a Naturally and an Artificially Dichotomized Variable}
+\title{Ulrich-Wirtz Correlation between a Naturally and an Artificially Dichotomized Variable}
 \usage{
 rvUlrich(
   data.items,
@@ -124,13 +124,13 @@ rvUlrich(items, criterion, add = 0.5, ci = FALSE)
 \references{
 Ulrich, R., & Wirtz, M. (2004). On the correlation of a naturally and an
 artificially dichotomized variable. \emph{British Journal of Mathematical and
-Statistical Psychology}, 57(2), 235–251.
+Statistical Psychology}, 57(2), 235-251.
 
 Brown, M. B., & Benedetti, J. K. (1977). On the mean and variance of the
-tetrachoric correlation coefficient. \emph{Psychometrika}, 42(3), 347–355.
+tetrachoric correlation coefficient. \emph{Psychometrika}, 42(3), 347-355.
 
 Haldane, J. B. S. (1956). The estimation and significance of the logarithm of
-a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309–311.
+a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309-311.
 
 Islam, T. U., & Rizwan, M. (2020). Comparison of Correlation Measures for
 Nominal Data. \emph{Preprints}, 202004.0276.v1.

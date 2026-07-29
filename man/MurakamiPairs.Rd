@@ -57,8 +57,8 @@ MurakamiPairs(x = x, group = group, B = 1000, adjust.method = "holm")
 }
 \references{
 Murakami, H. (2016). All-pairs multiple comparisons based on the Cucconi test.
-\emph{AStA Advances in Statistical Analysis}, 100, 355-–368. https://doi.org/10.1007/s10182-016-0268-x
+\emph{AStA Advances in Statistical Analysis}, 100, 355--368. https://doi.org/10.1007/s10182-016-0268-x
 
 Marozzi, M. (2013). Nonparametric Simultaneous Tests for Location and Scale Testing: A Comparison of Several
-Methods. \emph{Communications in Statistics -- Simulation and Computation}, 42(6), 1298-–1317. https://doi.org/10.1080/03610918.2012.665546
+Methods. \emph{Communications in Statistics -- Simulation and Computation}, 42(6), 1298--1317. https://doi.org/10.1080/03610918.2012.665546
 }

@@ -1,6 +1,6 @@
-#' Hall–Lambert Correlation for Ordinal Items and a Dichotomous Criterion
+#' Hall-Lambert Correlation for Ordinal Items and a Dichotomous Criterion
 #'
-#' Computes the Hall–Lambert correlation coefficient (\eqn{r_{rd}}) between
+#' Computes the Hall-Lambert correlation coefficient (\eqn{r_{rd}}) between
 #' ordinal items and a dichotomous criterion, with optional chi-square test
 #' or bootstrap confidence intervals and p-value.
 #'
@@ -24,7 +24,7 @@
 #' @references
 #' Hall, A. C., & Lambert, J. A. (1962). A modification of biserial r for the
 #' correlation of a ranked variable with a dichotomous variable.
-#' *The British Journal of Statistical Psychology*, 15(2), 129–132.
+#' *The British Journal of Statistical Psychology*, 15(2), 129-132.
 #'
 #' @examples
 #' set.seed(123)
