@@ -4,7 +4,15 @@
 \alias{rChambers}
 \title{Chambers Excess‑Area Correlation for Biserial Data}
 \usage{
-rChambers(data.items, criterion, cut.point, ci = TRUE, B = 1000, type = "perc")
+rChambers(
+  data.items,
+  criterion,
+  cut.point,
+  ci = TRUE,
+  conf.level = 0.95,
+  B = 1000,
+  type = "perc"
+)
 }
 \arguments{
 \item{data.items}{A data frame or matrix with items in columns and subjects in rows.}
@@ -15,6 +23,8 @@ rChambers(data.items, criterion, cut.point, ci = TRUE, B = 1000, type = "perc")
 
 \item{ci}{Logical. If \code{TRUE} (default), bootstrap CIs and a two‑sided p‑value are returned.}
 
+\item{conf.level}{Confidence level for bootstrap intervals (if \code{ci = TRUE}). Default \code{0.95}.}
+
 \item{B}{Number of bootstrap replicates (if \code{ci = TRUE}). Default 1000.}
 
 \item{type}{Method for bootstrap confidence intervals: \code{"perc"}, \code{"norm"}, or \code{"bca"}.}
@@ -23,7 +33,16 @@ rChambers(data.items, criterion, cut.point, ci = TRUE, B = 1000, type = "perc")
 A data frame with columns depending on \code{ci}.
 }
 \description{
-Chambers Excess‑Area Correlation for Biserial Data
+Computes the excess‑area correlation coefficient (\eqn{r_E}) proposed by
+Chambers (1982) for biserial data. It provides a robust alternative to the
+point‑biserial and biserial coefficients, with optional bootstrap confidence
+intervals and p‑value.
+}
+\details{
+When \code{ci = TRUE}, the bootstrap confidence intervals are computed at the
+specified \code{conf.level} (e.g., 0.95 for 95\% intervals). The two‑sided p‑value
+is derived from the bootstrap distribution as the proportion of replicates
+whose absolute value is at least as large as the observed coefficient.
 }
 \examples{
 set.seed(123)
@@ -33,7 +52,7 @@ items <- data.frame(
 )
 total_score <- rowSums(items) + rnorm(100, 0, 2)
 rChambers(items, total_score, cut.point = 10, ci = FALSE)
-rChambers(items, total_score, cut.point = 10, ci = TRUE, B = 500)
+rChambers(items, total_score, cut.point = 10, ci = TRUE, B = 500, conf.level = 0.90)
 
 }
 \references{

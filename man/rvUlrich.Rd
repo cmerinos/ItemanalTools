@@ -11,7 +11,9 @@ rvUlrich(
   add = NULL,
   ci = FALSE,
   B = 1000,
-  type = "perc"
+  type = "perc",
+  conf.level = 0.95,
+  min.boot = 50
 )
 }
 \arguments{
@@ -39,6 +41,9 @@ p-value are computed. Default \code{FALSE}.}
 
 \item{type}{Method for bootstrap confidence intervals: \code{"perc"}, \code{"norm"}, or
 \code{"bca"}. Default \code{"perc"}. Ignored if \code{ci = FALSE}.}
+
+\item{conf.level}{Confidence level for the bootstrap intervals. Default 0.95.
+Used only if \code{ci = TRUE}.}
 }
 \value{
 A data frame with columns:

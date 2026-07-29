@@ -9,6 +9,7 @@ rHallLambert(
   criterion,
   lower.level = NULL,
   ci = "chi",
+  conf.level = 0.95,
   B = 1000,
   type = "perc",
   ties.method = "average"
@@ -23,6 +24,8 @@ rHallLambert(
 
 \item{ci}{Character or logical: \code{NULL}/\code{FALSE}, \code{"chi"}, or \code{"boot"}.}
 
+\item{conf.level}{Confidence level for bootstrap intervals (if \code{ci = "boot"}). Default \code{0.95}.}
+
 \item{B}{Number of bootstrap replicates (if \code{ci = "boot"}). Default 1000.}
 
 \item{type}{Method for bootstrap confidence intervals: \code{"perc"}, \code{"norm"}, or \code{"bca"}.}
@@ -33,7 +36,15 @@ rHallLambert(
 A data frame with columns depending on \code{ci}.
 }
 \description{
-Hall–Lambert Correlation for Ordinal Items and a Dichotomous Criterion
+Computes the Hall–Lambert correlation coefficient (\eqn{r_{rd}}) between
+ordinal items and a dichotomous criterion, with optional chi-square test
+or bootstrap confidence intervals and p-value.
+}
+\details{
+When \code{ci = "boot"}, the bootstrap confidence intervals are computed at the
+specified \code{conf.level} (e.g., 0.95 for 95\% intervals). The two‑sided p‑value
+is derived from the bootstrap distribution as the proportion of replicates
+whose absolute value is at least as large as the observed coefficient.
 }
 \examples{
 set.seed(123)
@@ -43,7 +54,7 @@ items <- data.frame(
 )
 group <- sample(c(0, 1), 100, replace = TRUE)
 rHallLambert(items, group)
-rHallLambert(items, group, ci = "boot", B = 500)
+rHallLambert(items, group, ci = "boot", B = 500, conf.level = 0.90)
 
 }
 \references{
