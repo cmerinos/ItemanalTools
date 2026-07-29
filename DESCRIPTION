@@ -18,7 +18,7 @@ Suggests:
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-BugReports: https://github.com/cmerinos/Itemanalysis/issues
+BugReports: https://github.com/cmerinos/ItemanalTools/issues
 LazyData: true
-URL: https://github.com/cmerinos/Itemanalysis
+URL: https://github.com/cmerinos/ItemanalTools
 Config/roxygen2/version: 8.0.0
