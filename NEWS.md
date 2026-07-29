@@ -1,7 +1,9 @@
 # Itemanalysis 0.1.2
+ - Non ASCII characters: removing
 
 # Itemanalysis 0.1.1
  - Changes pre CRAN
+ - Creation of development brach
  
 # Itemanalysis 0.1.0
 
