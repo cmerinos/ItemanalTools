@@ -1,12 +1,11 @@
 Package: Itemanalysis
 Title: Tools for Item-Level Statistical Analysis in Psychometrics
-Version: 0.1.0
-Date: 2025-11-05
+Version: 0.1.1
 Authors@R: 
     person("Cesar", "Merino Soto", email = "sikayax@yahoo.com.ar", role = c("aut", "cre"))
-Description: Collection of tools for analyzing items in psychological and educational scales, from a mainly nonparametric approach: similarity of item responses, effect of groups, etc.
+Description: Collection of tools for analyzing items in psychological and educational scales from a expanded focus and mainly nonparametric approach. Methods include analysis of item response similarity, evaluation of group effects, and other item-level statistical procedures used in psychometrics.
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports:
     ggplot2,
     PMCMRplus,
@@ -20,5 +19,6 @@ License: GPL-3 | file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 BugReports: https://github.com/cmerinos/Itemanalysis/issues
+LazyData: true
 URL: https://github.com/cmerinos/Itemanalysis
 Config/roxygen2/version: 8.0.0

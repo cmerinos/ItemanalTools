@@ -1,6 +1,9 @@
+# Itemanalysis 0.1.1
+ - Changes pre CRAN
+ 
 # Itemanalysis 0.1.0
 
-## Initial CRAN release
+## Initial steps: creation of functions
 
 * Provides a collection of tools for item-level statistical analysis in psychometrics, including:
   - Effective Number of Nominal Options (AENO)
