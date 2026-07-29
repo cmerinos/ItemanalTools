@@ -21,7 +21,7 @@ Must be one of the options supported by \code{\link{p.adjust}}, e.g., \code{"hol
 A data frame with one row per pairwise group comparison, and the following columns:
 \describe{
 \item{\code{Group1, Group2}}{The names of the two groups being compared.}
-\item{\code{CucconiStatistic}}{The Cucconi statistic \{eqn( C_{st}} for that pair.}
+\item{\code{CucconiStatistic}}{The Cucconi statistic \{eqn{C_{st}} for that pair.}
 \item{\code{p.value}}{Empirical p-value computed via permutation.}
 \item{\code{p.adjusted}}{Adjusted p-value using the selected method.}
 }
@@ -36,7 +36,7 @@ This function implements the pairwise version of the Cucconi test as described b
 Each comparison is made using only the two groups involved (i.e., pairwise ranking),
 and permutation resampling is used to compute the p-value.
 
-The maximum observed value of the Cucconi statistic across all pairs: {max(C_st)}.
+The maximum observed value of the Cucconi statistic across all pairs: (max(C_st)).
 }
 \examples{
 # Reproducing Example 1 from Murakami (2016)

@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Itemanalysis** is an R package for in-depth item-level psychometric analysis. It provides functions to assess:
+**ItemanalTools** is an R package for in-depth item-level psychometric analysis. It provides functions to assess:
 
 - **Effective Number of Nominal Options (Samejima's AENO)**
 
@@ -64,7 +64,7 @@ SpearItems(data.items = Science, criteria = sample(1:2, size = 392, replace = TR
 
 catOrder(data = Science, score.total = rowSums(Science))
 
-science.catorder <- Itemanalysis::catOrder(data = Science, score.total = rowSums(Science))
+science.catorder <- ItemanalTools::catOrder(data = Science, score.total = rowSums(Science))
 
 catPlot(data = science.catorder)
 ```
@@ -72,7 +72,7 @@ catPlot(data = science.catorder)
 ## Selected Functions
 
 | Function | Description |
-|----|----|
+|------------------------------------|------------------------------------|
 | `AENO()` | Calculates the Actual Equivalent Number of Options (AENO) for a single ordinal item |
 | `AENOmulti()` | Actual Equivalent Number of Options for Multiple Items |
 | `cat.order()` | Monotonicity test using category means across response levels |
