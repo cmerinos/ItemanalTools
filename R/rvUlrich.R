@@ -23,6 +23,7 @@
 #' @param conf.level Confidence level for the bootstrap intervals. Default 0.95.
 #'   Used only if `ci = TRUE`.
 #' @param B Number of bootstrap replicates (if `ci = TRUE`). Default 1000.
+#' @param min.boot Minimum number of valid (non-NA) bootstrap replicates required to calculate confidence intervals and the p-value. If there are fewer, NA is returned along with a warning.
 #' @param type Method for bootstrap confidence intervals: `"perc"`, `"norm"`, or
 #'   `"bca"`. Default `"perc"`. Ignored if `ci = FALSE`.
 #'
@@ -108,7 +109,7 @@
 #' # With Haldane correction for zero cells
 #' rvUlrich(items, criterion, add = 0.5, ci = FALSE)
 #'
-#' @importFrom stats qnorm
+#' @importFrom stats qnorm  complete.cases
 #'
 #' @export
 rvUlrich <- function(data.items,

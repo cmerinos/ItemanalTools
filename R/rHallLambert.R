@@ -36,7 +36,8 @@
 #' rHallLambert(items, group)
 #' rHallLambert(items, group, ci = "boot", B = 500, conf.level = 0.90)
 #'
-#' @importFrom stats pchisq qnorm
+#' @importFrom stats pchisq qnorm complete.cases
+#'
 #' @export
 rHallLambert <- function(data.items,
                          criterion,

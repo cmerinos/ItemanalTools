@@ -95,6 +95,8 @@
 #'
 #' @return A ggplot2 object.
 #'
+#' @importFrom stats aggregate
+#'
 #' @examples
 #' # Example without grouping
 #' res <- data.frame(
@@ -154,31 +156,31 @@ ItemPlot <- function(data,
                         xlab = NULL,
                         ylab = NULL,
                         title = NULL) {
-  
+
   # =========================
   # Checks
   # =========================
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package 'ggplot2' is required.")
   }
-  
+
   sort.items  <- match.arg(sort.items)
   orientation <- match.arg(orientation)
   theme.style <- match.arg(theme.style)
   value.format <- match.arg(value.format)
-  
+
   needed.cols <- c(item.col, value.col, lwr.ci.col, upr.ci.col)
   if (!all(needed.cols %in% names(data))) {
     stop("Missing required columns.")
   }
-  
+
   df <- data
-  
+
   # =========================
   # Group handling
   # =========================
   group.name <- NULL
-  
+
   if (!is.null(group)) {
     if (is.character(group) && group %in% names(df)) {
       group.name <- group
@@ -189,12 +191,12 @@ ItemPlot <- function(data,
     }
     df[[group.name]] <- as.factor(df[[group.name]])
   }
-  
+
   # =========================
   # Ordering
   # =========================
   df[[item.col]] <- as.character(df[[item.col]])
-  
+
   if (sort.items != "none") {
     if (is.null(group.name)) {
       ord <- df[order(df[[value.col]]), item.col]
@@ -207,17 +209,17 @@ ItemPlot <- function(data,
   } else {
     df[[item.col]] <- factor(df[[item.col]], levels = unique(df[[item.col]]))
   }
-  
+
   # =========================
   # Labels
   # =========================
   if (show.values) {
     fmt <- function(x) format(round(x, value.digits), nsmall = value.digits)
-    
+
     est <- fmt(df[[value.col]])
     lwr <- fmt(df[[lwr.ci.col]])
     upr <- fmt(df[[upr.ci.col]])
-    
+
     df$.label <- switch(
       value.format,
       estimate = est,
@@ -225,7 +227,7 @@ ItemPlot <- function(data,
       both = paste0(est, " [", lwr, ", ", upr, "]")
     )
   }
-  
+
   # =========================
   # Themes
   # =========================
@@ -236,23 +238,23 @@ ItemPlot <- function(data,
         plot.title = ggplot2::element_text(hjust = 0.5, face = "bold")
       )
   }
-  
+
   theme_selected <- switch(
     theme.style,
     academic = theme_academic(),
     classic = ggplot2::theme_classic(),
     minimal = ggplot2::theme_minimal()
   )
-  
+
   dodge <- ggplot2::position_dodge(width = dodge.width)
-  
+
   # =========================
   # Plot
   # =========================
   if (orientation == "h") {
-    
+
     if (is.null(group.name)) {
-      
+
       p <- ggplot2::ggplot(df,
                            ggplot2::aes(x = .data[[value.col]], y = .data[[item.col]])) +
         ggplot2::geom_errorbarh(
@@ -261,7 +263,7 @@ ItemPlot <- function(data,
           color = bar.color
         ) +
         ggplot2::geom_point(size = point.size, color = point.color)
-      
+
       if (show.values) {
         p <- p + ggplot2::geom_text(
           ggplot2::aes(label = .data[[".label"]]),
@@ -270,9 +272,9 @@ ItemPlot <- function(data,
           size = value.size
         )
       }
-      
+
     } else {
-      
+
       p <- ggplot2::ggplot(df,
                            ggplot2::aes(x = .data[[value.col]],
                                         y = .data[[item.col]],
@@ -284,7 +286,7 @@ ItemPlot <- function(data,
           position = dodge
         ) +
         ggplot2::geom_point(size = point.size, position = dodge)
-      
+
       if (show.values) {
         p <- p + ggplot2::geom_text(
           ggplot2::aes(label = .data[[".label"]]),
@@ -296,22 +298,22 @@ ItemPlot <- function(data,
         )
       }
     }
-    
+
     if (!is.null(threshold)) {
       p <- p + ggplot2::geom_vline(xintercept = threshold,
                                    linetype = "dashed",
                                    color = line.color)
     }
-    
+
     if (!is.null(xlim)) {
       p <- p + ggplot2::coord_cartesian(xlim = xlim)
     }
-    
+
     p <- p + ggplot2::labs(x = "Coefficient", y = NULL, title = title) +
       theme_selected
-    
+
   } else {
-    
+
     p <- ggplot2::ggplot(df,
                          ggplot2::aes(x = .data[[item.col]], y = .data[[value.col]])) +
       ggplot2::geom_point() +
@@ -319,7 +321,7 @@ ItemPlot <- function(data,
         ggplot2::aes(ymin = .data[[lwr.ci.col]],
                      ymax = .data[[upr.ci.col]])
       )
-    
+
     if (show.values) {
       p <- p + ggplot2::geom_text(
         ggplot2::aes(label = .data[[".label"]]),
@@ -328,15 +330,15 @@ ItemPlot <- function(data,
         size = value.size
       )
     }
-    
+
     if (!is.null(threshold)) {
       p <- p + ggplot2::geom_hline(yintercept = threshold,
                                    linetype = "dashed",
                                    color = line.color)
     }
-    
+
     p <- p + theme_selected
   }
-  
+
   return(p)
 }

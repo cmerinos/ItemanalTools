@@ -39,6 +39,8 @@
 #' rChambers(items, total_score, cut.point = 10, ci = FALSE)
 #' rChambers(items, total_score, cut.point = 10, ci = TRUE, B = 500, conf.level = 0.90)
 #'
+#' @importFrom stats complete.cases
+#'
 #' @export
 rChambers <- function(data.items,
                       criterion,

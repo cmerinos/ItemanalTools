@@ -15,7 +15,7 @@
 #' @return A data frame with one row per pairwise group comparison, and the following columns:
 #' \describe{
 #'   \item{\code{Group1, Group2}}{The names of the two groups being compared.}
-#'   \item{\code{CucconiStatistic}}{The Cucconi statistic \( C_{st} \) for that pair.}
+#'   \item{\code{CucconiStatistic}}{The Cucconi statistic \{eqn( C_{st}} for that pair.}
 #'   \item{\code{p.value}}{Empirical p-value computed via permutation.}
 #'   \item{\code{p.adjusted}}{Adjusted p-value using the selected method.}
 #' }
@@ -25,15 +25,17 @@
 #' Each comparison is made using only the two groups involved (i.e., pairwise ranking),
 #' and permutation resampling is used to compute the p-value.
 #'
-#' The maximum observed value of the Cucconi statistic across all pairs (\code{max(C_{st})})
+#' The maximum observed value of the Cucconi statistic across all pairs \code{max(C_st)}
 #' is sometimes referred to as SDC in the literature.
 #'
 #' @references
 #' Murakami, H. (2016). All-pairs multiple comparisons based on the Cucconi test.
-#' \emph{AStA Advances in Statistical Analysis}, 100, 355--368. https://doi.org/10.1007/s10182-016-0268-x
+#' \emph{AStA Advances in Statistical Analysis}, 100, 355--368.
+#' \doi{10.1007/s10182-016-0268-x}
 #'
 #' Marozzi, M. (2013). Nonparametric Simultaneous Tests for Location and Scale Testing: A Comparison of Several
-#' Methods. \emph{Communications in Statistics -- Simulation and Computation}, 42(6), 1298--1317. https://doi.org/10.1080/03610918.2012.665546
+#' Methods. \emph{Communications in Statistics -- Simulation and Computation}, 42(6), 1298--1317.
+#' \doi{10.1080/03610918.2012.665546}
 #'
 #' @examples
 #' # Reproducing Example 1 from Murakami (2016)

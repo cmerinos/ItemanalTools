@@ -44,6 +44,8 @@ p-value are computed. Default \code{FALSE}.}
 
 \item{conf.level}{Confidence level for the bootstrap intervals. Default 0.95.
 Used only if \code{ci = TRUE}.}
+
+\item{min.boot}{Minimum number of valid (non-NA) bootstrap replicates required to calculate confidence intervals and the p-value. If there are fewer, NA is returned along with a warning.}
 }
 \value{
 A data frame with columns:
