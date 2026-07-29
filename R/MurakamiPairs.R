@@ -15,7 +15,7 @@
 #' @return A data frame with one row per pairwise group comparison, and the following columns:
 #' \describe{
 #'   \item{\code{Group1, Group2}}{The names of the two groups being compared.}
-#'   \item{\code{CucconiStatistic}}{The Cucconi statistic \{eqn{C_{st}} for that pair.}
+#'   \item{\code{CucconiStatistic}}{The Cucconi statistic \eqn{C_{st}} for that pair.}
 #'   \item{\code{p.value}}{Empirical p-value computed via permutation.}
 #'   \item{\code{p.adjusted}}{Adjusted p-value using the selected method.}
 #' }
