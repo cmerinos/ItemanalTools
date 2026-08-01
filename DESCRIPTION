@@ -1,6 +1,6 @@
 Package: ItemanalTools
 Title: Tools for Item-Level Statistical Analysis in Psychometrics
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: 
     person("Cesar", "Merino Soto", email = "sikayax@yahoo.com.ar", role = c("aut", "cre"))
 Description: Collection of tools for analyzing items in psychological and educational scales from a expanded focus and mainly nonparametric approach. Methods include analysis of item response similarity, evaluation of group effects, and other item-level statistical procedures used in psychometrics.
