@@ -23,7 +23,7 @@ A data frame with the following columns:
 \itemize{
 \item \code{Item}: Item name.
 \item \code{eps2}: Epsilon squared effect size.
-\item \code{lwr.ci}, \code{lwr.upp}: Lower and upper bounds of the confidence interval (if \code{ci = TRUE}).
+\item \code{lwr.ci}, \code{upr.ci}: Lower and upper bounds of the confidence interval (if \code{ci = TRUE}).
 }
 
 #' @details
@@ -50,12 +50,12 @@ epsilonItems(items, group, ci = TRUE, B = 500, type = "perc")
 
 }
 \references{
-Frieman, J., Saucier, D. A., & Miller, S. (2017). Principles & Methods of Statistical Analysis.
+Frieman, J., Saucier, D. A., & Miller, S. (2017). \emph{Principles & Methods of Statistical Analysis}. Thousand Oaks, California : SAGE Publications
 
 Carroll, R. M., & Nordholm, L. A. (1975). Sampling characteristics of Kelley’s ε² and Hays’ ω².
-Educational and Psychological Measurement, 35, 541-554.
+\emph{Educational and Psychological Measurement, 35}, 541-554. \doi{10.1177/001316447503500304}
 
-Kelley, T. L. (1935). An unbiased correlation ratio measure. Proceedings of the National Academy of Sciences, 21(9), 554-559.
+Kelley, T. L. (1935). An unbiased correlation ratio measure. \emph{Proceedings of the National Academy of Sciences, 21}(9), 554-559.
 
-Vogt, W. P. (2005). Dictionary of Statistics & Methodology: A Nontechnical Guide for the Social Sciences. SAGE Publications.
+Vogt, W. P. (2005). \emph{Dictionary of Statistics & Methodology: A Nontechnical Guide for the Social Sciences}. SAGE Publications.
 }

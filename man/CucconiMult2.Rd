@@ -23,7 +23,7 @@ partial statistics by variable.}
 }
 \description{
 Performs a nonparametric test for assessing simultaneous location and scale differences
-across multiple groups for several variables (e.g., test items).
+across multiple groups for several variables (e.g., multiple items).
 It applies a multigroup Cucconi test to each variable using permutation.
 }
 \details{

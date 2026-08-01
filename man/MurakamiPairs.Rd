@@ -39,6 +39,7 @@ and permutation resampling is used to compute the p-value.
 The maximum observed value of the Cucconi statistic across all pairs: (max(C_st)).
 }
 \examples{
+\donttest{
 # Reproducing Example 1 from Murakami (2016)
 g1 <- c(5.7, 10.2, 13.9, 10.3, 1.3, 12.0, 14.0,
         15.1, 8.8, 12.7, 15.0, 17.0, 15.2)
@@ -52,6 +53,7 @@ group <- factor(rep(1:3, each = 13))
 
 set.seed(123)
 MurakamiPairs(x = x, group = group, B = 1000, adjust.method = "holm")
+}
 
 }
 \references{
