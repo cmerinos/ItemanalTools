@@ -20,6 +20,8 @@
 
 - **Concordance and differences tests for multiple items**
 
+- **Information-loss indices for comparing an original item-response with a reduced recoded version item-response**
+
 The package is aimed at researchers and practitioners conducting scale development, validation, and item refinement using both classical and modern psychometric methods. It is especially recommended for obtaining evidence on the statistical behavior of items within a content validity framework, with a focus on quantitative indicators.
 
 ## Installation

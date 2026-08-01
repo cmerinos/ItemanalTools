@@ -106,6 +106,7 @@ coefficient. The logistic version is mentioned for completeness and historical
 context.
 }
 \examples{
+\donttest{
 set.seed(123)
 items <- data.frame(
   Item1 = sample(0:1, 100, replace = TRUE),
@@ -121,19 +122,20 @@ rvUlrich(items, criterion, ci = TRUE, B = 500, type = "perc")
 
 # With Haldane correction for zero cells
 rvUlrich(items, criterion, add = 0.5, ci = FALSE)
+}
 
 }
 \references{
 Ulrich, R., & Wirtz, M. (2004). On the correlation of a naturally and an
 artificially dichotomized variable. \emph{British Journal of Mathematical and
-Statistical Psychology}, 57(2), 235-251.
+Statistical Psychology, 57}(2), 235-251. \doi{10.1348/0007110042307203}
 
 Brown, M. B., & Benedetti, J. K. (1977). On the mean and variance of the
-tetrachoric correlation coefficient. \emph{Psychometrika}, 42(3), 347-355.
+tetrachoric correlation coefficient. \emph{Psychometrika, 42}(3), 347-355. \doi{10.1007/BF02293655}
 
 Haldane, J. B. S. (1956). The estimation and significance of the logarithm of
-a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309-311.
+a ratio of frequencies. \emph{Annals of Human Genetics, 20}(4), 309-311. \doi{j.1469-1809.1955.tb01285.x}
 
 Islam, T. U., & Rizwan, M. (2020). Comparison of Correlation Measures for
-Nominal Data. \emph{Preprints}, 202004.0276.v1.
+Nominal Data. \emph{Preprints}, \doi{10.20944/preprints202004.0276.v1}.
 }

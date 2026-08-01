@@ -106,11 +106,12 @@ infoLoss(data = data.orig, data.recoded = data.rec, nfact = 2)
 
 }
 \references{
-Mlodak, A. (2019). Using the Complex Measure in an Assessment of the Information Loss Due to the Microdata Disclosure Control. Przegląd Statystyczny, 2019, 66(1), 7-26. DOI: 10.5604/01.3001.0013.8285
+Mlodak, A. (2019). Using the Complex Measure in an Assessment of the Information Loss Due to the Microdata Disclosure Control. \emph{Przegląd Statystyczny, 66}(1), 7-26. \doi{10.5604/01.3001.0013.8285}
 
-Mlodak, A. (2020). Information loss resulting from statistical disclosure control of output data, Wiadomosci Statystyczne. The Polish Statistician, 2020, 65(9), 7-27, DOI: 10.5604/01.3001.0014.4121
+Mlodak, A. (2020). Information loss resulting from statistical disclosure control of output data, Wiadomosci Statystyczne. \emph{The Polish Statistician, 65}(9), 7-27, \doi{10.5604/01.3001.0014.4121}
 
-Templ, M., Kowarik, A., & Meindl, B. (2015). Statistical Disclosure Control for Micro-Data Using the R Package sdcMicro. Journal of Statistical Software, 67(4), 1-36. doi:10.18637/jss.v067.i04.
+Templ, M., Kowarik, A., & Meindl, B. (2015). Statistical Disclosure Control for Micro-Data Using the R Package sdcMicro. \emph{Journal of Statistical Software, 67}(4), 1-36. \doi{10.18637/jss.v067.i04}
 
-Hundepool, A., Domingo-Ferrer, J., Franconi, L., Giessing, S., Lenz, R., Naylor, J., Nordholt, E. S., Seri, G., De Wolf, P., Tent, R., Młodak, A., Gussenbauer, J., & Wilak, K. (2024). Handbook on Statistical Disclosure Control.https://julienjamme.github.io/handbook_sdc_from_doc_to_md/03-microdata.html#sec-informationloss-microdata
+Hundepool, A., Domingo-Ferrer, J., Franconi, L., Giessing, S., Lenz, R., Naylor, J., Nordholt, E. S., Seri, G., De Wolf, P., Tent, R., Młodak, A., Gussenbauer, J., & Wilak, K. (2024).
+\emph{Handbook on Statistical Disclosure Control}. \url{julienjamme.github.io/handbook_sdc_from_doc_to_md/03-microdata.html#sec-informationloss-microdata}
 }

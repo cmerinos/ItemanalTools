@@ -54,13 +54,14 @@
 #' smoothing option (`smooth`).
 #'
 #'@references
-#'Mlodak, A. (2019). Using the Complex Measure in an Assessment of the Information Loss Due to the Microdata Disclosure Control. Przegląd Statystyczny, 2019, 66(1), 7-26. DOI: 10.5604/01.3001.0013.8285
+#'Mlodak, A. (2019). Using the Complex Measure in an Assessment of the Information Loss Due to the Microdata Disclosure Control. \emph{Przegląd Statystyczny, 66}(1), 7-26. \doi{10.5604/01.3001.0013.8285}
 #'
-#'Mlodak, A. (2020). Information loss resulting from statistical disclosure control of output data, Wiadomosci Statystyczne. The Polish Statistician, 2020, 65(9), 7-27, DOI: 10.5604/01.3001.0014.4121
+#'Mlodak, A. (2020). Information loss resulting from statistical disclosure control of output data, Wiadomosci Statystyczne. \emph{The Polish Statistician, 65}(9), 7-27, \doi{10.5604/01.3001.0014.4121}
 #'
-#'Templ, M., Kowarik, A., & Meindl, B. (2015). Statistical Disclosure Control for Micro-Data Using the R Package sdcMicro. Journal of Statistical Software, 67(4), 1-36. doi:10.18637/jss.v067.i04.
+#'Templ, M., Kowarik, A., & Meindl, B. (2015). Statistical Disclosure Control for Micro-Data Using the R Package sdcMicro. \emph{Journal of Statistical Software, 67}(4), 1-36. \doi{10.18637/jss.v067.i04}
 #'
-#'Hundepool, A., Domingo-Ferrer, J., Franconi, L., Giessing, S., Lenz, R., Naylor, J., Nordholt, E. S., Seri, G., De Wolf, P., Tent, R., Młodak, A., Gussenbauer, J., & Wilak, K. (2024). Handbook on Statistical Disclosure Control.https://julienjamme.github.io/handbook_sdc_from_doc_to_md/03-microdata.html#sec-informationloss-microdata
+#'Hundepool, A., Domingo-Ferrer, J., Franconi, L., Giessing, S., Lenz, R., Naylor, J., Nordholt, E. S., Seri, G., De Wolf, P., Tent, R., Młodak, A., Gussenbauer, J., & Wilak, K. (2024).
+#'\emph{Handbook on Statistical Disclosure Control}. \url{julienjamme.github.io/handbook_sdc_from_doc_to_md/03-microdata.html#sec-informationloss-microdata}
 #'
 #'
 #' @return
@@ -99,43 +100,43 @@ infoLoss <- function(data,
                      correct = 0.5,
                      smooth = TRUE,
                      digits = 3) {
-  
+
   cor.type <- match.arg(cor.type)
   use <- match.arg(use)
-  
+
   if (is.matrix(data)) data <- as.data.frame(data)
   if (is.matrix(data.recoded)) data.recoded <- as.data.frame(data.recoded)
-  
+
   if (!is.data.frame(data) || !is.data.frame(data.recoded)) {
     stop("`data` and `data.recoded` must be data.frames or matrices.")
   }
-  
+
   if (nrow(data) != nrow(data.recoded)) {
     stop("`data` and `data.recoded` must have the same number of rows.")
   }
-  
+
   if (ncol(data) != ncol(data.recoded)) {
     stop("`data` and `data.recoded` must have the same number of columns.")
   }
-  
+
   p <- ncol(data)
-  
+
   if (p < 2) stop("At least two items are required.")
-  
+
   if (is.null(colnames(data))) {
     colnames(data) <- paste0("Item", seq_len(p))
   }
-  
+
   if (is.null(colnames(data.recoded))) {
     colnames(data.recoded) <- paste0("Item.recoded", seq_len(p))
   }
-  
+
   non.numeric.data <- !vapply(data, is.numeric, logical(1))
   non.numeric.rec  <- !vapply(data.recoded, is.numeric, logical(1))
   if (any(non.numeric.data) || any(non.numeric.rec)) {
     stop("All columns in `data` and `data.recoded` must be numeric.")
   }
-  
+
   if (!is.null(nfact)) {
     if (length(nfact) != 1L || !is.numeric(nfact) || is.na(nfact)) {
       stop("`nfact` must be a single positive integer or NULL.")
@@ -147,26 +148,26 @@ infoLoss <- function(data,
   } else {
     nfact <- p
   }
-  
+
   if (!is.numeric(log.base) || length(log.base) != 1L ||
       is.na(log.base) || log.base <= 0 || log.base == 1) {
     stop("`log.base` must be a single positive number different from 1.")
   }
-  
+
   if (!is.numeric(correct) || length(correct) != 1L ||
       is.na(correct) || correct < 0) {
     stop("`correct` must be a single non-negative numeric value.")
   }
-  
+
   if (!is.logical(smooth) || length(smooth) != 1L || is.na(smooth)) {
     stop("`smooth` must be TRUE or FALSE.")
   }
-  
+
   if (!is.numeric(digits) || length(digits) != 1L || is.na(digits) || digits < 0) {
     stop("`digits` must be a single non-negative number.")
   }
   digits <- as.integer(digits)
-  
+
   .entropy.item <- function(x, log.base = exp(1)) {
     x <- x[!is.na(x)]
     if (length(x) == 0L) return(NA_real_)
@@ -174,21 +175,21 @@ infoLoss <- function(data,
     probs <- as.numeric(probs)
     -sum(probs * (log(probs) / log(log.base)))
   }
-  
+
   .lower.tri.vec <- function(R) {
     R[lower.tri(R, diag = FALSE)]
   }
-  
+
   .compute.cor <- function(dat, cor.type, use, correct, smooth) {
     if (cor.type == "pearson") {
       use.cor <- if (use == "pairwise") "pairwise.complete.obs" else "complete.obs"
       return(stats::cor(dat, use = use.cor, method = "pearson"))
     }
-    
+
     if (!requireNamespace("psych", quietly = TRUE)) {
       stop("Package 'psych' is required when `cor.type = \"poly\"`.")
     }
-    
+
     out <- tryCatch(
       psych::polychoric(dat, correct = correct, smooth = smooth),
       error = function(e) {
@@ -199,39 +200,39 @@ infoLoss <- function(data,
         )
       }
     )
-    
+
     out$rho
   }
-  
+
   .IL.correl <- function(R1, R2) {
     inv1 <- tryCatch(solve(R1), error = function(e) NULL)
     inv2 <- tryCatch(solve(R2), error = function(e) NULL)
-    
+
     if (is.null(inv1) || is.null(inv2)) return(NA_real_)
-    
+
     d1 <- diag(inv1)
     d2 <- diag(inv2)
-    
+
     if (anyNA(d1) || anyNA(d2)) return(NA_real_)
     if (sum(d1^2) == 0 || sum(d2^2) == 0) return(NA_real_)
-    
+
     d1 <- d1 / sqrt(sum(d1^2))
     d2 <- d2 / sqrt(sum(d2^2))
-    
+
     (1 / sqrt(2)) * sqrt(sum((d1 - d2)^2))
   }
-  
+
   .safe.round <- function(x, digits) {
     if (is.numeric(x)) round(x, digits) else x
   }
-  
+
   ## Distribution
   H.original <- vapply(data, .entropy.item, numeric(1), log.base = log.base)
   H.recoded  <- vapply(data.recoded, .entropy.item, numeric(1), log.base = log.base)
-  
+
   Delta.H <- H.original - H.recoded
   Relative.loss.H <- ifelse(H.original == 0, NA_real_, Delta.H / H.original)
-  
+
   Distribution <- data.frame(
     Item = colnames(data),
     H.original = H.original,
@@ -240,7 +241,7 @@ infoLoss <- function(data,
     Relative.loss.H = Relative.loss.H,
     stringsAsFactors = FALSE
   )
-  
+
   Distribution <- rbind(
     Distribution,
     data.frame(
@@ -254,18 +255,18 @@ infoLoss <- function(data,
       stringsAsFactors = FALSE
     )
   )
-  
+
   ## Correlation structure
   R.original <- .compute.cor(data, cor.type = cor.type, use = use,
                              correct = correct, smooth = smooth)
   R.recoded  <- .compute.cor(data.recoded, cor.type = cor.type, use = use,
                              correct = correct, smooth = smooth)
-  
+
   vec.original <- .lower.tri.vec(R.original)
   vec.recoded  <- .lower.tri.vec(R.recoded)
-  
+
   ok <- stats::complete.cases(vec.original, vec.recoded)
-  
+
   if (!any(ok)) {
     RMSE.R <- NA_real_
     MAD.R <- NA_real_
@@ -276,9 +277,9 @@ infoLoss <- function(data,
     MAD.R <- mean(abs(diffs))
     r.vec <- if (sum(ok) < 2) NA_real_ else stats::cor(vec.original[ok], vec.recoded[ok])
   }
-  
+
   IL.correl <- .IL.correl(R.original, R.recoded)
-  
+
   Correlation.structure <- data.frame(
     cor.type = cor.type,
     RMSE.R = RMSE.R,
@@ -287,26 +288,26 @@ infoLoss <- function(data,
     IL.correl = IL.correl,
     stringsAsFactors = FALSE
   )
-  
+
   ## Latent structure
   eig.original <- sort(eigen(R.original, symmetric = TRUE, only.values = TRUE)$values,
                        decreasing = TRUE)
   eig.recoded  <- sort(eigen(R.recoded, symmetric = TRUE, only.values = TRUE)$values,
                        decreasing = TRUE)
-  
+
   idx <- seq_len(nfact)
-  
+
   eig.original <- eig.original[idx]
   eig.recoded  <- eig.recoded[idx]
-  
+
   Delta.lambda <- eig.original - eig.recoded
   Abs.delta.lambda <- abs(Delta.lambda)
-  
+
   Prop.original <- eig.original / p
   Prop.recoded  <- eig.recoded / p
-  
+
   RL.lambda <- ifelse(eig.original == 0, NA_real_, Delta.lambda / eig.original)
-  
+
   Latent.structure <- data.frame(
     Component = paste0("Comp", idx),
     Eigen.original = eig.original,
@@ -318,7 +319,7 @@ infoLoss <- function(data,
     RL.lambda = RL.lambda,
     stringsAsFactors = FALSE
   )
-  
+
   Latent.structure <- rbind(
     Latent.structure,
     data.frame(
@@ -336,11 +337,11 @@ infoLoss <- function(data,
       stringsAsFactors = FALSE
     )
   )
-  
+
   Distribution[] <- lapply(Distribution, .safe.round, digits = digits)
   Correlation.structure[] <- lapply(Correlation.structure, .safe.round, digits = digits)
   Latent.structure[] <- lapply(Latent.structure, .safe.round, digits = digits)
-  
+
   list(
     Distribution = Distribution,
     Correlation.structure = Correlation.structure,
