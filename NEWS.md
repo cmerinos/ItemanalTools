@@ -1,9 +1,10 @@
-# ItemanalTools 0.1.5
-
 # ItemanalTools 1.0.0
  - 1sr summision: CRAN
  - Edition: format
 
+# ItemanalTools 0.1.5
+ - Edition: format of roxygen documentation for several version
+ 
 # ItemanalTools 0.1.4
  - Remove: RotheryItems
  - Check equations: MurakiPairs
