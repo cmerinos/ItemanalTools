@@ -2,7 +2,7 @@
 % Please edit documentation in R/itemThresholdsMult.R
 \name{itemThresholdsMult}
 \alias{itemThresholdsMult}
-\title{Item Thresholds and equidistance for Multiple Likert-type Items}
+\title{Item Thresholds, Monotonicity and Equidistance for Multiple Items}
 \usage{
 itemThresholdsMult(
   data,
@@ -13,16 +13,15 @@ itemThresholdsMult(
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} or matrix containing Likert-type items
-(preferably ordered factors, but numeric or factor variables are also
-accepted and coerced).}
+\item{data}{A \code{data.frame} or matrix containing Likert-type items.}
 
-\item{items}{Optional character vector or numeric indices indicating which
-columns of \code{data} to analyse. If \code{NULL} (default), all columns
-are used.}
+\item{items}{Optional character vector or numeric indices indicating
+which columns of \code{data} to analyse. If \code{NULL} (default), all
+columns are used.}
 
-\item{link}{The link function to use in the cumulative link model. Passed to
-\code{itemThresholds()} (e.g., "probit", "logit").}
+\item{link}{The link function to use in the cumulative link model.
+Passed to \code{itemThresholds()} (e.g., \code{"probit"},
+\code{"logit"}). Default is \code{"probit"}.}
 
 \item{conf.level}{Confidence level for the threshold intervals. Passed to
 \code{itemThresholds()}. Default is 0.95.}
@@ -30,19 +29,22 @@ are used.}
 \item{nd}{Number of digits used to round numeric outputs. Default is 3.}
 }
 \value{
-A list with three components:
+A list with four components:
 \item{items}{Named list of full \code{itemThresholds()} results, one per
 item.}
-\item{tables}{Named list of "figure-style" tables (data frames), one per
-item.}
-\item{summary}{Data frame with one row per item, containing:
-\code{item}, \code{K} (number of response categories),
-\code{EI.spratto}, \code{Wald.stat}, \code{df}, and \code{p.value}.}
+\item{tables}{Named list of formatted tables (data frames), one per item.}
+\item{summary}{Data frame with one row per item, containing
+\code{item}, \code{K}, \code{EI.spratto}, \code{Wald.stat}, \code{df},
+\code{p.value}, \code{any_disord}, and \code{n_redundant}.}
+\item{scale_summary}{One-row data frame with aggregate diagnostics of the
+scale: number of items, disordered items, redundant pairs, and summary
+statistics of the Equidistance Index and Cohen's d.}
 }
 \description{
-Applies \code{itemThresholds()} to multiple Likert-type items in a data set
-and produces per-item summaries, including a formated table with
-thresholds, threshold differences, and equidistance tests (Spratto index).
+Applies \code{itemThresholds()} to multiple Likert-type items in a data
+set and produces per-item summaries, a formatted table per item with
+thresholds, threshold differences, monotonicity and equidistance
+diagnostics, and an aggregate view at the scale level.
 }
 \details{
 For each selected item (column) in \code{data}, this function calls
@@ -50,60 +52,59 @@ For each selected item (column) in \code{data}, this function calls
 \itemize{
 \item Threshold estimates and standard errors.
 \item Confidence intervals for each threshold.
-\item Differences between consecutive thresholds and their z-tests.
+\item Differences between consecutive thresholds and their z-tests
+(with standard errors that account for the covariance between
+thresholds).
+\item Monotonicity diagnostics: raw sign, z-test, one-tailed p-value,
+and a binary flag for each adjacent pair.
+\item Standardized effect sizes (Cohen's d) and a redundancy flag for
+each adjacent pair.
 \item Equidistance diagnostics: second differences, Z-tests, Wald test,
 and the Equidistance Index (Spratto).
 }
 
-The output includes:
-\itemize{
-\item A list of full \code{itemThresholds()} results per item.
-\item A formated table per item with rows for thresholds,
-threshold differences, and an overall equidistance row.
-\item A summary data frame with one row per item, containing the number of
-categories, the Spratto index, and the global Wald test of
-equidistance.
-}
+In addition, the function returns an aggregate view of the scale
+(\code{scale_summary}) containing counts of disordered items and redundant
+pairs, and summary statistics of the Equidistance Index and Cohen's d
+across all items. This aggregate view is \strong{descriptive}: it summarizes
+the item-level diagnostics and does not assume a latent dimension
+underlying the items.
+\subsection{Formatted table per item}{
 
-The formated table for each item has the following columns:
+The formatted table for each item has the following columns:
 \describe{
-\item{row}{Label for the row (threshold name, contrast, "Diff-Thr. Item",
-or "Z.local (d1)", "Z.local (d2)", etc.).}
+\item{row}{Label for the row (threshold name, contrast,
+\code{"Diff-Thr. Item"}, or \code{"Z.local (d*)"}).}
 \item{Threshold}{Threshold estimate (if applicable).}
 \item{SE.threshold}{Standard error of the threshold.}
-\item{Diff.thresholds}{Difference between consecutive thresholds
-(if applicable).}
-\item{SE.diff}{Standard error of the difference between thresholds.}
-\item{Z}{Z-test of equidistance. For items with four categories (i.e.,
-three thresholds), this column is used in the "Diff-Thr. Item" row.
-For items with more than four categories, local Z-tests are shown
-in additional "Z.local (d*)" rows.}
+\item{Diff.thresholds}{Difference between consecutive thresholds.}
+\item{SE.diff}{Standard error of the difference (accounting for
+covariance between thresholds).}
+\item{Z}{z statistic. For contrast rows this is the z-test of the
+difference between consecutive thresholds. For equidistance rows
+this is the Z-test of the corresponding second difference.}
+\item{p.diff}{Two-tailed p-value for the difference.}
+\item{p.disord}{One-tailed p-value for the monotonicity test
+(\eqn{H_1: \Delta < 0}).}
+\item{d.cohen}{Standardized effect size (Cohen's d) for the difference.
+Interpretation depends on \code{link}: see \code{itemThresholds}.}
+\item{disordered}{1 if the raw difference is negative, 0 otherwise.}
 \item{Wald}{Global Wald statistic for equidistance (in the
-"Diff-Thr. Item" row).}
+\code{"Diff-Thr. Item"} row).}
 \item{df}{Degrees of freedom of the Wald test.}
 \item{EI.spratto}{Equidistance Index (Spratto) for the item.}
 }
-\subsection{Z-tests of second differences (local equidistance tests)}{
-
-For items with four response categories (i.e., three thresholds), there is
-only one second difference, so the Z-test of equidistance is shown directly
-in the "Diff-Thr. Item" row.
-
-For items with more than four categories (i.e., more than one second
-difference), the function adds one extra row per second difference:
-
-\itemize{
-\item \code{Z.local (d1)}
-\item \code{Z.local (d2)}
-\item \code{Z.local (d3)}, etc.
 }
 
-These rows display the individual Z-tests of equidistance for each second
-difference. The global Wald test and the Equidistance Index (Spratto)
-remain reported in the "Diff-Thr. Item" row.
+\subsection{Z-tests of second differences (local equidistance tests)}{
 
-This format mirrors the presentation style found in Spratto (2018) and
-similar analyses of threshold equidistance.
+For items with four response categories (three thresholds), there is only
+one second difference, and its Z-test is shown in the
+\code{"Diff-Thr. Item"} row. For items with more than four categories,
+the function adds one extra row per second difference
+(\code{"Z.local (d1)"}, \code{"Z.local (d2)"}, ...). The global Wald
+test and the Equidistance Index remain reported in the
+\code{"Diff-Thr. Item"} row.
 }
 }
 \examples{
@@ -114,6 +115,7 @@ x4 <- ordered(sample(1:4, 300, replace = TRUE,
 data4 <- data.frame(ItemA = x4)
 res4 <- itemThresholdsMult(data4)
 res4$summary
+res4$scale_summary
 res4$tables$ItemA
 
 ## Example 2: Item with 5 categories (multiple Z.local rows)
@@ -123,20 +125,9 @@ x5 <- ordered(sample(1:5, 400, replace = TRUE,
 data5 <- data.frame(ItemB = x5)
 res5 <- itemThresholdsMult(data5)
 res5$summary
+res5$scale_summary
 res5$tables$ItemB
 
-}
-\references{
-Christensen, R. H. B. (2019). \emph{ordinal: Regression Models for
-Ordinal Data}. R package version 2019.12-10.
-https://CRAN.R-project.org/package=ordinal
-
-Spratto, E. M. (2018). \emph{In search of equality: Developing an equal interval Likert response scale
-(Doctoral dissertations)}. https://commons.lib.jmu.edu/diss201019/172
-
-Sideridis, G., Tsaousis, I., & Ghamdi, H. (2022). Equidistant Response Options on Likert-Type
-Instruments: Testing the Interval Scaling Assumption Using Mplus. \emph{Educational and Psychological Measurement},
-83(5), 885-906. https://doi.org/10.1177/00131644221130482
 }
 \seealso{
 \code{\link{itemThresholds}}
